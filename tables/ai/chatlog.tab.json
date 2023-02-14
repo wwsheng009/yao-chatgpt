@@ -10,44 +10,40 @@
   },
   "fields": {
     "table": {
-      "view": {
-        "props": {},
-        "type": "Text"
-      }
-    },
-    "提问时间": {
-      "bind": "created_at",
-      "view": {
-        "props": {
-          "format": "YYYY-MM-DD HH:mm:ss"
-        },
-        "type": "Text"
-      }
-    },
-    "回答": {
-      "bind": "answer",
-      "view": {
-        "props": {
-          "title": "回答"
-        },
-        "compute": "scripts.text.Cut",
-        "type": "Tooltip"
-      }
-    },
-    "提问": {
-      "bind": "question",
-      "view": {
-        "props": {},
-        "type": "Text"
-      }
-    },
-    "更新时间": {
-      "bind": "updated_at",
-      "view": {
-        "props": {
-          "format": "YYYY-MM-DD HH:mm:ss"
-        },
-        "type": "Text"
+      "提问时间": {
+        "bind": "created_at",
+        "view": {
+          "props": {
+            "format": "YYYY-MM-DD HH:mm:ss"
+          },
+          "type": "Text"
+        }
+      },
+      "回答": {
+        "bind": "answer",
+        "view": {
+          "props": {
+            "title": "回答"
+          },
+          "compute": "scripts.text.Cut",
+          "type": "Tooltip"
+        }
+      },
+      "提问": {
+        "bind": "question",
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "更新时间": {
+        "bind": "updated_at",
+        "view": {
+          "props": {
+            "format": "YYYY-MM-DD HH:mm:ss"
+          },
+          "type": "Text"
+        }
       }
     }
   },

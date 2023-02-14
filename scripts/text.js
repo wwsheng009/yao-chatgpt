@@ -5,7 +5,7 @@
  * @returns 
  */
 function Cut(text) {
-    console.log("Cut text:", text)
+    // log.Info("Cut text:", text)
     if (text && text.length > 20) {
         return text.substring(0, 20) + "..."
     }
