@@ -1,0 +1,48 @@
+{
+      "name": "大屏",
+      "action": {
+            "data": {
+                  "process": "scripts.ai.dashboard.dataSource"
+            }
+      },
+      "layout": {
+            "dashboard": {
+                  "columns": [
+                        {
+                              "name": "列表",
+                              "width": 24
+                        },
+                        {
+                              "name": "图表",
+                              "width": 12
+                        }
+                  ]
+            }
+      },
+      "fields": {
+            "dashboard": {
+                  "列表": {
+                        "view": {
+                              "type": "base/Table",
+                              "props": {
+                                    "model": "ai.chatlog",
+                                    "onChangeEvent": true
+                              }
+                        }
+                  },
+                  "图表": {
+                        "bind": "chat_count",
+                        "view": {
+                              "type": "chart/NumberChart",
+                              "props": {
+                                    "height": 240,
+                                    "prefix": "¥",
+                                    "decimals": 2,
+                                    "nameKey": "date",
+                                    "valueKey": "value"
+                              }
+                        }
+                  }
+            }
+      }
+}

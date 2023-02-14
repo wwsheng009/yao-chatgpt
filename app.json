@@ -1,0 +1,19 @@
+{
+  "xgen": "1.0",
+  "name": "::AI Chat Application",
+  "short": "::Demo",
+  "description": "::Chat With AI",
+  "version": "0.10.3",
+  "adminRoot": "admin",
+  "setup": "",
+  "menu": {
+    "process": "flows.app.menu",
+    "args": [
+      "demo"
+    ]
+  },
+  "optional": {
+    "hideNotification": true,
+    "hideSetting": false
+  }
+}

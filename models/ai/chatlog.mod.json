@@ -1,0 +1,36 @@
+{
+  "name": "::AI Chat Log",
+  "table": {
+    "name": "ai_chat_log",
+    "label": "AI日志"
+  },
+  "columns": [
+    {
+      "name": "id",
+      "label": "ID",
+      "type": "ID"
+    },
+    {
+      "name": "question",
+      "label": "提问",
+      "type": "string",
+      "length": 1024,
+      "index": true,
+      "nullable": false
+    },
+    {
+      "name": "answer",
+      "label": "回答",
+      "type": "text",
+      "index": true,
+      "nullable": false
+    }
+  ],
+  "relations": {},
+  "values": [],
+  "indexes": [],
+  "option": {
+    "timestamps": true,
+    "soft_deletes": true
+  }
+}

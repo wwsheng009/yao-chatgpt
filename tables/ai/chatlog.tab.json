@@ -1,0 +1,155 @@
+{
+  "name": "::Chat Log",
+  "action": {
+    "bind": {
+      "model": "ai.chatlog",
+      "option": {
+        "form": "ai.chatlog"
+      }
+    }
+  },
+  "fields": {
+    "table": {
+      "view": {
+        "props": {},
+        "type": "Text"
+      }
+    },
+    "提问时间": {
+      "bind": "created_at",
+      "view": {
+        "props": {
+          "format": "YYYY-MM-DD HH:mm:ss"
+        },
+        "type": "Text"
+      }
+    },
+    "回答": {
+      "bind": "answer",
+      "view": {
+        "props": {
+          "title": "回答"
+        },
+        "compute": "scripts.text.Cut",
+        "type": "Tooltip"
+      }
+    },
+    "提问": {
+      "bind": "question",
+      "view": {
+        "props": {},
+        "type": "Text"
+      }
+    },
+    "更新时间": {
+      "bind": "updated_at",
+      "view": {
+        "props": {
+          "format": "YYYY-MM-DD HH:mm:ss"
+        },
+        "type": "Text"
+      }
+    }
+  },
+  "layout": {
+    "filter": {
+      "actions": [
+        {
+          "action": [
+            {
+              "name": "HistoryPush",
+              "payload": {
+                "pathname": "/x/Form/ai.chatlog/0/edit"
+              },
+              "type": "Common.historyPush"
+            }
+          ],
+          "icon": "icon-plus",
+          "title": "::Create",
+          "width": 3
+        }
+      ],
+      "columns": [
+        {
+          "name": "提问"
+        }
+      ]
+    },
+    "header": {
+      "actions": [],
+      "preset": {}
+    },
+    "table": {
+      "columns": [
+        {
+          "name": "提问",
+          "width": 160
+        },
+        {
+          "name": "回答",
+          "width": 260
+        },
+        {
+          "name": "提问时间",
+          "width": 160
+        }
+      ],
+      "operation": {
+        "actions": [
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "payload": {
+                  "Form": {
+                    "model": "ai.chatlog",
+                    "type": "view"
+                  }
+                },
+                "type": "Common.openModal"
+              }
+            ],
+            "icon": "icon-eye",
+            "title": "查看"
+          },
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "payload": {
+                  "Form": {
+                    "model": "ai.chatlog",
+                    "type": "edit"
+                  }
+                },
+                "type": "Common.openModal"
+              }
+            ],
+            "icon": "icon-edit-2",
+            "title": "编辑"
+          },
+          {
+            "action": [
+              {
+                "name": "Delete",
+                "payload": {
+                  "model": "ai.chatlog"
+                },
+                "type": "Table.delete"
+              }
+            ],
+            "confirm": {
+              "desc": "请确认删除，删除后数据无法恢复",
+              "title": "确认"
+            },
+            "icon": "icon-trash-2",
+            "style": "danger",
+            "title": "Delete"
+          }
+        ],
+        "width": 140
+      },
+      "props": {}
+    }
+  }
+}

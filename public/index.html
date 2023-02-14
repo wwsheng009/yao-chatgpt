@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>与AI机器人聊天</title>
+</head>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        background-color: #f2f2f2;
+    }
+
+    h1 {
+        font-size: 36px;
+        font-weight: bold;
+        text-align: center;
+        color: #333;
+    }
+
+    p {
+        font-size: 16px;
+        line-height: 1.5;
+        color: #666;
+    }
+
+    button {
+        padding: 10px;
+        margin: 10px;
+        border: none;
+        border-radius: 4px;
+        background-color: #4CAF50;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    button:hover {
+        background-color: #3e8e41;
+    }
+
+    .myform {
+        min-width: 500px;
+
+        max-width: 900px;
+        margin: 0 auto;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        display: flex;
+        /*this centers the text horizontally*/
+        justify-content: center;
+
+        /*this centers the text vertically*/
+        align-items: center;
+
+        font-size: 1.2rem;
+    }
+
+    #response {
+        background-color: #ccc;
+        border-width: 2px;
+        min-width: 500px;
+
+        max-width: 900px;
+        min-height: 500px;
+        margin: 20px auto;
+
+    }
+
+    input[type="text"] {
+        padding: 10px;
+        margin: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        color: #333;
+        flex: 1;
+    }
+
+    input[type="text"]:focus {
+        outline: none;
+        border-color: #4CAF50;
+    }
+
+    label {
+        margin-left: 10px;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #3e8e41;
+    }
+
+    .loader {
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #4CAF50;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<body>
+    <form id="my-form" class="myform">
+        <!-- <label for="question">问题:</label> -->
+        <input type="text" id="question" name="question"><br>
+
+        <button type="submit">向AI提问</button>
+    </form>
+    <div class="loader"></div>
+    <div id="response"></div>
+
+    <script>
+
+        //此处为独立函数
+        function LTrim(str, target) {
+            var i;
+            for (i = 0; i < str.length; i++) {
+                if (str.charAt(i) != target && str.charAt(i) != target) break;
+            }
+            str = str.substring(i, str.length);
+            return str;
+        }
+        function RTrim(str, target) {
+            var i;
+            for (i = str.length - 1; i >= 0; i--) {
+                if (str.charAt(i) != target && str.charAt(i) != target) break;
+            }
+            str = str.substring(0, i + 1);
+            return str;
+        }
+        function Trim(str, target) {
+            return LTrim(RTrim(str, target), target);
+        }
+        const form = document.getElementById('my-form');
+        // 隐藏等待效果
+        document.querySelector(".loader").style.display = "none";
+        form.addEventListener('submit', async (e) => {
+            // 显示等待效果
+            document.querySelector(".loader").style.display = "block";
+            e.preventDefault();
+
+            const responseElement = document.getElementById('response');
+            responseElement.innerHTML = ""
+
+            const name = document.getElementById('question').value;
+            const response = await fetch(`api/ai/ask?q=${name}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            let data = await response.json();
+
+            data = data.replaceAll('\n', '<br/>')
+            data = Trim(data, '"')
+            // data = JSON.stringify(data);
+            responseElement.innerHTML = data;
+            // 隐藏等待效果
+            document.querySelector(".loader").style.display = "none";
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,81 @@
+{
+  "name": "聊天数据图表",
+  "config": {
+    "full": false
+  },
+  "action": {
+    "before:data": "scripts.ai.stat.BeforeData",
+    "data": {
+      "process": "scripts.ai.stat.Data",
+      "default": [
+        "2022-09-20"
+      ]
+    },
+    "after:data": "scripts.ai.stat.AfterData"
+  },
+  "layout": {
+    "operation": {
+      "actions": [
+        {
+          "title": "官网文档",
+          "icon": "icon-book",
+          "action": {
+            "Common.historyPush": {
+              "pathname": "https://yaoapps.com/doc"
+            }
+          }
+        }
+      ]
+    },
+    "filter": {
+      "columns": [
+        {
+          "name": "时间区间",
+          "width": 6
+        },
+        {
+          "name": "类型",
+          "width": 6
+        }
+      ]
+    },
+    "chart": {
+      "columns": [
+        {
+          "name": "数量",
+          "width": 6
+        }
+      ]
+    }
+  },
+  "fields": {
+    "filter": {
+      "时间区间": {
+        "bind": "range",
+        "edit": {
+          "type": "RangePicker",
+          "props": {}
+        }
+      },
+      "类型": {
+        "bind": "range",
+        "edit": {
+          "type": "Input",
+          "props": {}
+        }
+      }
+    },
+    "chart": {
+      "数量": {
+        "bind": "count",
+        "link": "/x/Table/ai.chatlog",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "条"
+          }
+        }
+      }
+    }
+  }
+}

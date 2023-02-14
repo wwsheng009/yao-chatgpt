@@ -1,0 +1,71 @@
+{
+  "name": "::AI API Setting",
+  "table": {
+    "name": "ai_setting",
+    "label": "Setting"
+  },
+  "columns": [
+    {
+      "name": "id",
+      "label": "ID",
+      "type": "ID"
+    },
+    {
+      "name": "api_token",
+      "label": "API Token",
+      "type": "string",
+      "index": true,
+      "nullable": false
+    },
+    {
+      "name": "model",
+      "label": "模型",
+      "type": "string",
+      "default": "text-davinci-003",
+      "length": 80,
+      "index": true,
+      "nullable": true
+    },
+    {
+      "name": "max_tokens",
+      "label": "最大token",
+      "type": "integer",
+      "default": 1024
+    },
+    {
+      "name": "stop",
+      "label": "设置值",
+      "type": "string",
+      "nullable": true,
+      "default": "None"
+    },
+    {
+      "name": "temperature",
+      "label": "设置值",
+      "type": "float",
+      "default": 0.5
+    },
+    {
+      "name": "access_count",
+      "label": "调用计数",
+      "type": "integer",
+      "default": 0
+    }
+  ],
+  "relations": {},
+  "values": [
+    {
+      "api_token": "",
+      "model": "text-davinci-003",
+      "max_tokens": 1024,
+      "stop": "None",
+      "temperature": 0.5,
+      "access_count": 0
+    }
+  ],
+  "indexes": [],
+  "option": {
+    "timestamps": true,
+    "soft_deletes": true
+  }
+}

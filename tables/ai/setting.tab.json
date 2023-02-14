@@ -1,0 +1,11 @@
+{
+  "name": "::System Setting",
+  "action": {
+    "bind": {
+      "model": "ai.setting",
+      "option": {
+        "form": "ai.setting"
+      }
+    }
+  }
+}

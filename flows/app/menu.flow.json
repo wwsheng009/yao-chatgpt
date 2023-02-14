@@ -1,0 +1,62 @@
+{
+  "name": "APP Menu",
+  "nodes": [],
+  "output": {
+    "items": [
+      {
+        "id": 1,
+        "blocks": 0,
+        "icon": "icon-activity",
+        "name": "图表",
+        "parent": null,
+        "path": "/x/Dashboard/ai",
+        "visible_menu": 0,
+        "children": [
+          {
+            "id": 5,
+            "blocks": 0,
+            "icon": "icon-activity",
+            "name": "聊天图表",
+            "path": "/x/Chart/ai.chat",
+            "visible_menu": 0
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "blocks": 0,
+        "icon": "icon-book",
+        "name": "聊天记录",
+        "parent": null,
+        "path": "/x/Table/ai.chatlog",
+        "visible_menu": 1
+      }
+    ],
+    "setting": [
+      {
+        "icon": "icon-settings",
+        "id": 999999,
+        "name": "设置",
+        "path": "/x/Form/ai.setting/1/edit",
+        "dot": true,
+        "children": [
+          {
+            "id": 10002,
+            "name": "系统设置",
+            "path": "/setting"
+          },
+          {
+            "id": 10003,
+            "name": "AI接口配置",
+            "path": "/x/Table/ai.setting"
+          },
+          {
+            "id": 10003,
+            "name": "系统用户配置",
+            "path": "/x/Table/yao.user"
+          }
+        ]
+      }
+    ]
+  }
+}

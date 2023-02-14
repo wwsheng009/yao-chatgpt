@@ -1,0 +1,13 @@
+{
+    "name": "::System Menu Setting",
+    "version": "1.0.0",
+    "decription": "System Menu Setting",
+    "action": {
+        "bind": {
+            "model": "xiang.menu",
+            "option": {
+                "form": "yao.menu"
+            }
+        }
+    }
+}

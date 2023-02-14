@@ -1,0 +1,22 @@
+{
+    "name": "AI Chat API",
+    "version": "1.0.0",
+    "description": "User API",
+    "group": "ai",
+    "guard": "-",
+    "paths": [
+        {
+            "path": "/ask",
+            "method": "GET",
+            "guard": "-",
+            "process": "scripts.ai.chatgpt.Call",
+            "in": [
+                "$query.q"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        }
+    ]
+}

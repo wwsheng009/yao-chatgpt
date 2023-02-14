@@ -1,0 +1,150 @@
+{
+  "name": "::Chat Log",
+  "action": {
+    "bind": {
+      "model": "ai.chatlog",
+      "option": {}
+    }
+  },
+  "layout": {
+    "actions": [
+      {
+        "title": "返回",
+        "icon": "icon-arrow-left",
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          {
+            "name": "CloseModal",
+            "type": "Common.closeModal",
+            "payload": {}
+          }
+        ]
+      },
+      {
+        "title": "保存",
+        "icon": "icon-check",
+        "style": "primary",
+        "showWhenAdd": true,
+        "action": [
+          {
+            "name": "Submit",
+            "type": "Form.submit",
+            "payload": {}
+          },
+          {
+            "name": "Back",
+            "type": "Common.closeModal",
+            "payload": {}
+          }
+        ]
+      },
+      {
+        "action": [
+          {
+            "name": "Delete",
+            "payload": {
+              "model": "ai.chatlog"
+            },
+            "type": "Form.delete"
+          }
+        ],
+        "confirm": {
+          "desc": "请确认删除，删除后数据无法恢复",
+          "title": "确认"
+        },
+        "icon": "icon-trash-2",
+        "style": "danger",
+        "title": "Delete"
+      }
+    ],
+    "form": {
+      "sections": [
+        {
+          "columns": [
+            {
+              "name": "提问",
+              "width": 12
+            },
+            {
+              "name": "提问时间",
+              "width": 12
+            },
+            {
+              "name": "回答",
+              "width": 24
+            }
+          ]
+        }
+      ]
+    },
+    "hooks": {
+      "onChange": {}
+    },
+    "primary": "id"
+  },
+  "fields": {
+    "form": {
+      "ID": {
+        "bind": "id",
+        "edit": {
+          "props": {
+            "disabled": true,
+            "placeholder": "请输入 ID"
+          },
+          "type": "InputNumber"
+        }
+      },
+      "提问时间": {
+        "bind": "created_at",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 创建时间",
+            "showTime": {
+              "format": "HH:mm:ss"
+            }
+          },
+          "type": "DatePicker"
+        }
+      },
+      "回答": {
+        "bind": "answer",
+        "edit": {
+          "props": {
+            "autoSize": {
+              "maxRows": 20,
+              "minRows": 5
+            },
+            "placeholder": "请输入 回答"
+          },
+          "type": "TextArea"
+        }
+      },
+      "提问": {
+        "bind": "question",
+        "edit": {
+          "props": {
+            "placeholder": "请输入 提问"
+          },
+          "type": "Input"
+        },
+        "view": {
+          "props": {},
+          "type": "Tag"
+        }
+      },
+      "更新时间": {
+        "bind": "updated_at",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 更新时间",
+            "showTime": {
+              "format": "HH:mm:ss"
+            }
+          },
+          "type": "DatePicker"
+        }
+      }
+    }
+  }
+}
