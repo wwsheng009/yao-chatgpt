@@ -24,7 +24,7 @@ function AfterData(data) {
  * @param {*} params
  */
 function Data(params) {
-	console.log("[chart] process data query: %s", JSON.stringify(params));
+	//console.log("[chart] process data query: %s", JSON.stringify(params));
 	log.Info("[chart] process data query: %s", JSON.stringify(params));
 	return {
 		count: getCount(),
@@ -54,7 +54,7 @@ function getCount() {
 		wheres: [{ ":deleted_at": "删除", "=": null }],
 		from: "$ai.setting",
 	});
-	console.log(result[0].number)
+	//console.log(result[0].number)
 
 	return result[0].number
 }

@@ -16,7 +16,7 @@ function getCount() {
 		wheres: [{ ":deleted_at": "删除", "=": null }],
 		from: "$ai.setting",
 	});
-	console.log(result[0].number)
+	//console.log(result[0].number)
 
 	return result[0].number
 }
