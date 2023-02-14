@@ -32,6 +32,7 @@
       "提问": {
         "bind": "question",
         "view": {
+          "compute": "scripts.text.Cut",
           "props": {},
           "type": "Text"
         }

@@ -1,3 +1,4 @@
 logs
-db/*
+db/*.db
+db/*.session
 temp.json

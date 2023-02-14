@@ -123,8 +123,8 @@
 
 <body>
     <form id="my-form" class="myform">
-        <!-- <label for="question">问题:</label> -->
-        <input type="text" id="question" name="question"><br>
+        <!-- <label for="prompt">问题:</label> -->
+        <input type="text" id="prompt" name="prompt"><br>
 
         <button type="submit">向AI提问</button>
     </form>
@@ -164,9 +164,10 @@
             const responseElement = document.getElementById('response');
             responseElement.innerHTML = ""
 
-            const name = document.getElementById('question').value;
-            const response = await fetch(`api/ai/ask?q=${name}`, {
-                method: 'GET',
+            const prompt = document.getElementById('prompt').value;
+            const response = await fetch(`api/ai/ask`, {
+                method: 'POST',
+                body: JSON.stringify({ prompt: prompt }),
                 headers: { 'Content-Type': 'application/json' }
             });
 

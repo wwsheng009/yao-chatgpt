@@ -1,13 +1,28 @@
+
 /**
- * 调用chatgpt接口
+ * 处理GET请求，注意get请求无法处理包含特殊字符的请求
+ * 
+ * /api/ai/ask?q=xxx.xx.xx
+ * @param {*} message 
+ * @returns 
+ */
+function Callq(message) {
+
+    return Call({ prompt: message })
+}
+
+/**
+ * 处理post请求，并调用chatgpt接口
  * @param {string} message 消息文本
  * @returns 
  */
 function Call(message) {
-    if (!message) {
+
+    if (!message || !message.prompt) {
         return "请填写您的问题"
     }
-    if (message.length < 2) {
+    const prompt = message.prompt
+    if (prompt.length < 2) {
         return "请填写详细的问题"
     }
     const setting = GetSetting()
@@ -20,7 +35,7 @@ function Call(message) {
     let reply = http.Post(
         "https://api.openai.com/v1/completions",
         {
-            prompt: message,
+            prompt: prompt,
             model: setting.model,
             max_tokens: setting.max_tokens,
             n: 1,
@@ -39,7 +54,7 @@ function Call(message) {
         return reply.data.error.message
     }
     const answer = reply.data.choices[0].text
-    SaveLog(message, answer)
+    SaveLog(prompt, answer)
     SaveLog2(setting)
     return answer
 }

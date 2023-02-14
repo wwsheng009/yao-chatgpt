@@ -38,7 +38,6 @@
         "id": 999999,
         "name": "设置",
         "path": "/x/Form/ai.setting/1/edit",
-        "dot": true,
         "children": [
           {
             "id": 10002,

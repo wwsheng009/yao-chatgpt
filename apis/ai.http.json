@@ -9,9 +9,22 @@
             "path": "/ask",
             "method": "GET",
             "guard": "-",
-            "process": "scripts.ai.chatgpt.Call",
+            "process": "scripts.ai.chatgpt.Callq",
             "in": [
                 "$query.q"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            "path": "/ask",
+            "method": "POST",
+            "guard": "-",
+            "process": "scripts.ai.chatgpt.Call",
+            "in": [
+                ":payload"
             ],
             "out": {
                 "status": 200,
