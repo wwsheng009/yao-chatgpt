@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>与AI机器人聊天</title>
+</head>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        background-color: #f2f2f2;
+        font-size: 1.5rem;
+    }
+
+    h1 {
+        font-size: 4rem;
+        font-weight: bold;
+        text-align: center;
+        color: #333;
+    }
+
+    p {
+        font-size: 1.5rem;
+        line-height: 1.5;
+        color: #666;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        height: 100vh;
+        width: 80%;
+
+    }
+
+    .myform {
+        width: 100%;
+        margin: 10px auto;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        display: flex;
+        /*this centers the text horizontally*/
+        justify-content: center;
+        /*this centers the text vertically*/
+        align-items: center;
+        padding: 10px
+    }
+
+    .myform button {
+        padding: 10px;
+        margin: 10px;
+        border: none;
+        border-radius: 4px;
+        background-color: #4CAF50;
+        color: #fff;
+        cursor: pointer;
+        font-size: 1.5rem;
+    }
+
+    .myform button:hover {
+        background-color: #3e8e41;
+    }
+
+    .myform .prompt {
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        color: #333;
+        flex: 1;
+        font-size: 1.5rem;
+        overflow-y: hidden;
+        min-height: 3rem;
+    }
+
+    .myform .prompt:focus {
+        outline: none;
+        border-color: #4CAF50;
+    }
+
+    .myform input[type="submit"]:hover {
+        background-color: #3e8e41;
+    }
+
+    .loader {
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #4CAF50;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+
+    #response {
+        flex: 1;
+        border: 5px solid #f3f3f3;
+        width: 100%;
+        margin: 20px auto;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
+    }
+
+
+    @media only screen and (max-width: 980px) {
+        body {
+            font-size: 3rem;
+        }
+
+        .container {
+            width: 100%;
+        }
+
+        .prompt {
+            font-size: 3rem;
+        }
+
+        .myform input[type="submit"] {
+            font-size: 3rem;
+        }
+    }
+</style>
+
+<body>
+    <div class="container">
+        <form id="my-form" class="myform">
+            <!-- <label for="prompt">问题:</label> -->
+            <textarea type="text" id="prompt" name="prompt" class="prompt" rows="1"
+                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' /></textarea>
+            <button type="submit">向AI提问</button>
+        </form>
+        <div class="loader"></div>
+        <div id="response"></div>
+    </div>
+
+
+    <script>
+
+        //此处为独立函数
+        function LTrim(str, target) {
+            var i;
+            for (i = 0; i < str.length; i++) {
+                if (str.charAt(i) != target && str.charAt(i) != target) break;
+            }
+            str = str.substring(i, str.length);
+            return str;
+        }
+        function RTrim(str, target) {
+            var i;
+            for (i = str.length - 1; i >= 0; i--) {
+                if (str.charAt(i) != target && str.charAt(i) != target) break;
+            }
+            str = str.substring(0, i + 1);
+            return str;
+        }
+        function Trim(str, target) {
+            return LTrim(RTrim(str, target), target);
+        }
+        const form = document.getElementById('my-form');
+        // 隐藏等待效果
+        document.querySelector(".loader").style.display = "none";
+
+
+        form.addEventListener('submit', async (e) => {
+            // 显示等待效果
+            document.querySelector(".loader").style.display = "block";
+            e.preventDefault();
+
+            const responseElement = document.getElementById('response');
+            responseElement.innerHTML = ""
+
+            const prompt = document.getElementById('prompt').value;
+            const response = await fetch(`api/ai/ask`, {
+                method: 'POST',
+                body: JSON.stringify({ prompt: prompt }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            let data = await response.json();
+
+            // data = data.replaceAll('\n', '<br/>')
+            data = Trim(data, '"')
+            // data = JSON.stringify(data);
+            responseElement.innerText = data;
+            // 隐藏等待效果
+            document.querySelector(".loader").style.display = "none";
+        });
+    </script>
+</body>
+
+</html>

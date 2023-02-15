@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>ChatGPT</title>
+    <script src="jquery.min.js"></script>
+    <style>
+        body {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .bottom-box {
+            width: 100%;
+            height: 80px;
+            background-color: #353740;
+            text-align: center;
+            padding-top: 20px;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+        }
+
+        .bottom-box input {
+            width: 400px;
+            height: 32px;
+            border-radius: 0.375rem;
+        }
+
+        .bottom-box button {
+            height: 36px;
+            border-radius: 0.375rem;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        #chat-list {
+            margin-bottom: 100px;
+            padding: 0px;
+        }
+
+        #chat-list li {
+            list-style: none;
+        }
+
+        .ai-words {
+            background-color: #f6f6f7;
+        }
+
+        .words {
+            padding: 10px;
+        }
+
+        .response {
+            -ms-word-break: break-all;
+            word-break: break-all;
+
+            /* Non standard for webkit */
+            word-break: break-word;
+
+            -webkit-hyphens: auto;
+            -moz-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+        }
+
+        @media screen and (min-width: 400px) {
+            .bottom-box button {
+                width: 160px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="chat-history">
+        <ul id="chat-list">
+        </ul>
+    </div>
+    <div class="bottom-box">
+        <input type="text" id="q">
+        <button id="submit" class="btn btn-primary">提交</button>
+    </div>
+</body>
+<script>
+
+    // //此处为独立函数
+    // function LTrim(str, target) {
+    //     var i;
+    //     for (i = 0; i < str.length; i++) {
+    //         if (str.charAt(i) != target && str.charAt(i) != target) break;
+    //     }
+    //     str = str.substring(i, str.length);
+    //     return str;
+    // }
+    // function RTrim(str, target) {
+    //     var i;
+    //     for (i = str.length - 1; i >= 0; i--) {
+    //         if (str.charAt(i) != target && str.charAt(i) != target) break;
+    //     }
+    //     str = str.substring(0, i + 1);
+    //     return str;
+    // }
+    // function Trim(str, target) {
+    //     return LTrim(RTrim(str, target), target);
+    // }
+    function disableInputBox() {
+        $('#submit').attr('disabled', 'disabled');
+        $('#q').attr('disabled', 'disabled');
+        $('#submit').text("加载中...")
+    }
+
+    function enableInputBox() {
+        $('#submit').removeAttr('disabled');
+        $('#q').removeAttr('disabled');
+        $('#submit').text("提交")
+    }
+
+    function call() {
+        disableInputBox();
+        $("#chat-list").append('<li class="user-words words"><span>你：</span><span>' + $("#q").val() + '</span></li>');
+        console.log($("#q").val());
+        $.ajax({
+            type: "POST",
+            url: "/api/ai/ask",
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify({ "prompt": $("#q").val() }),
+            success: function (message) {
+                console.log(message);
+                // message = message.replace(/(?:(?:\r\n|\r|\n)\s*){2}/m, "");
+                // var text_only = Trim(message, '"');
+                var escaped = $('<div class="response"/>').text(message).html();
+
+                $("#chat-list").append('<li class="ai-words words">' + escaped + '</li>');
+                enableInputBox();
+            },
+            error: function (message) {
+                $("#chat-list").append('<li class="ai-words words"><span>' + '提交失败' + '</span></li>');
+                enableInputBox();
+            }
+        });
+        $("#q").val("")
+    }
+
+    $("#submit").click(call)
+</script>
+
+</html>
