@@ -4,7 +4,6 @@
 </template>
 
 <style>
-
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -12,8 +11,18 @@
   text-align: center;
   color: #2c3e50;
   height: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  flex: 1;
+  width: 100%;
 }
 
+@media only screen and (max-width: 980px) {
+  #app {
+    padding: 0.5rem;
+  }
+}
 #nav {
   padding: 30px;
 }
