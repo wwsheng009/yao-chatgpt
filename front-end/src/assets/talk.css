@@ -10,17 +10,27 @@
     word-wrap: break-word;
     margin-right: 20px;
     font-size: 1rem;
-    text-align: right;
+    text-align: left;
     border-radius: 4px;
     display: flex;
     justify-content: flex-end;
 }
 
-.content_right div {
+.content_right pre {
     background-color: #ffffff;
     max-width: 80%;
     padding: 5px;
-    border-radius: 4px;
+
+    white-space: pre-wrap;
+    /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;
+    /* Mozilla, since 1999 */
+    white-space: -pre-wrap;
+    /* Opera 4-6 */
+    white-space: -o-pre-wrap;
+    /* Opera 7 */
+    word-wrap: break-word;
+    /* Internet Explorer 5.5+ */
 }
 
 .content_left {

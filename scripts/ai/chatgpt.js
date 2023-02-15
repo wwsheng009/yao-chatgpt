@@ -38,9 +38,11 @@ function Call(message) {
             prompt: prompt,
             model: setting.model,
             max_tokens: setting.max_tokens,
-            n: 1,
+            top_p: setting.top_p,
             stop: setting.stop,
             temperature: setting.temperature,
+            presence_penalty: setting.presence_penalty,
+            frequency_penalty: setting.frequency_penalty,
         },
         null,
         null,
@@ -82,6 +84,15 @@ function SaveLog(question, answer) {
 }
 
 function GetSetting() {
-    const setting = Process("models.ai.setting.Find", 1, {})
-    return setting
+    const setting = Process("models.ai.setting.Get", {
+        wheres: [{
+            Column: "default",
+            Value: true,
+        },
+        {
+            Column: "deleted_at",
+            Value: null,
+        }]
+    })
+    return setting[0]
 }

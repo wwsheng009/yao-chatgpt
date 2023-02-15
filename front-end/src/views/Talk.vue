@@ -26,7 +26,7 @@
           </div>
 
           <div class="content_right">
-            <div v-text="item.content"></div>
+            <pre>{{ item.content }}</pre>
           </div>
         </div>
         <div v-if="!item.right">
@@ -57,6 +57,7 @@
     <div class="talk-message">
       <div class="talk-message-content">
         <a-textarea
+          id="textinput"
           style="overflow-y: hidden"
           v-model:value="textarea"
           resize="none"
@@ -121,9 +122,11 @@ export default {
 
     async submit() {
       let a = this.textarea;
-      console.log("content:", a);
+      // console.log("content:", a);
       this.textarea = "";
-
+      let inputbox = this.$el.querySelector("#textinput");
+      inputbox.style.height = "";
+      // inputbox.style.height = inputbox.scrollHeight + "px";
       let c = {
         name: "你",
         url: "",
@@ -141,7 +144,7 @@ export default {
 
       let data = await response.json();
       data = data.replace(/^\s*\n/, "");
-      console.log(data);
+      // console.log(data);
       let d = {
         name: "AI",
         url: "",

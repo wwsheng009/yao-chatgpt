@@ -11,11 +11,17 @@
       "type": "ID"
     },
     {
-      "name": "api_token",
-      "label": "API Token",
+      "name": "description",
+      "label": "描述",
       "type": "string",
       "index": true,
       "nullable": false
+    },
+    {
+      "name": "default",
+      "label": "默认接口",
+      "type": "boolean",
+      "default": false
     },
     {
       "name": "model",
@@ -27,23 +33,105 @@
       "nullable": true
     },
     {
+      "name": "api_token",
+      "label": "API Token",
+      "type": "string",
+      "index": true,
+      "nullable": false
+    },
+    {
       "name": "max_tokens",
-      "label": "最大token",
+      "label": "最大令牌",
       "type": "integer",
       "default": 1024
     },
     {
       "name": "stop",
-      "label": "设置值",
+      "label": "分割符列表",
       "type": "string",
       "nullable": true,
       "default": "None"
     },
     {
       "name": "temperature",
-      "label": "设置值",
+      "label": "温度",
       "type": "float",
-      "default": 0.5
+      "default": 0.0,
+      "validations": [
+        {
+          "method": "min",
+          "args": [
+            0
+          ],
+          "message": "{{label}}应大于等于0"
+        },
+        {
+          "method": "max",
+          "args": [
+            1
+          ],
+          "message": "{{label}}应小于等于1"
+        }
+      ]
+    },
+    {
+      "name": "top_p",
+      "label": "采样阈值",
+      "type": "float",
+      "default": 1.0,
+      "validations": [
+        {
+          "method": "min",
+          "args": [
+            0
+          ],
+          "message": "{{label}}应大于等于0"
+        }
+      ]
+    },
+    {
+      "name": "frequency_penalty",
+      "label": "频率惩罚",
+      "type": "float",
+      "default": 0.0,
+      "validations": [
+        {
+          "method": "min",
+          "args": [
+            0
+          ],
+          "message": "{{label}}应大于等于0"
+        },
+        {
+          "method": "max",
+          "args": [
+            1
+          ],
+          "message": "{{label}}应小于等于1"
+        }
+      ]
+    },
+    {
+      "name": "presence_penalty",
+      "label": "存在惩罚",
+      "type": "float",
+      "default": 0.0,
+      "validations": [
+        {
+          "method": "min",
+          "args": [
+            0
+          ],
+          "message": "{{label}}应大于等于0"
+        },
+        {
+          "method": "max",
+          "args": [
+            1
+          ],
+          "message": "{{label}}应小于等于1"
+        }
+      ]
     },
     {
       "name": "access_count",
@@ -55,9 +143,10 @@
   "relations": {},
   "values": [
     {
+      "default": true,
       "api_token": "",
       "model": "text-davinci-003",
-      "max_tokens": 1024,
+      "max_tokens": 150,
       "stop": "None",
       "temperature": 0.5,
       "access_count": 0
