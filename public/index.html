@@ -18,85 +18,77 @@
 
     body {
         background-color: #f2f2f2;
+        font-size: 1.5rem;
     }
 
     h1 {
-        font-size: 36px;
+        font-size: 4rem;
         font-weight: bold;
         text-align: center;
         color: #333;
     }
 
     p {
-        font-size: 16px;
+        font-size: 1.5rem;
         line-height: 1.5;
         color: #666;
     }
 
-    button {
+    .container {
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        height: 100vh;
+        width: 80%;
+
+    }
+
+
+
+    .myform {
+        width: 100%;
+        margin: 10px auto;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        display: flex;
+        /*this centers the text horizontally*/
+        justify-content: center;
+        /*this centers the text vertically*/
+        align-items: center;
+        padding: 10px
+    }
+
+    .myform button {
         padding: 10px;
         margin: 10px;
         border: none;
         border-radius: 4px;
         background-color: #4CAF50;
         color: #fff;
-        font-size: 16px;
         cursor: pointer;
-        font-size: 16px;
+        font-size: 1.5rem;
     }
 
-    button:hover {
+    .myform button:hover {
         background-color: #3e8e41;
     }
 
-    .myform {
-        min-width: 500px;
 
-        max-width: 900px;
-        margin: 0 auto;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        overflow: hidden;
-        display: flex;
-        /*this centers the text horizontally*/
-        justify-content: center;
-
-        /*this centers the text vertically*/
-        align-items: center;
-
-        font-size: 1.2rem;
-    }
-
-    #response {
-        background-color: #ccc;
-        border-width: 2px;
-        min-width: 500px;
-
-        max-width: 900px;
-        min-height: 500px;
-        margin: 20px auto;
-
-    }
-
-    input[type="text"] {
-        padding: 10px;
+    .myform input[type="text"] {
         margin: 10px;
         border: 1px solid #ccc;
         border-radius: 4px;
-        font-size: 16px;
         color: #333;
         flex: 1;
+        font-size: 2.5rem;
     }
 
-    input[type="text"]:focus {
+    .myform input[type="text"]:focus {
         outline: none;
         border-color: #4CAF50;
     }
 
-    label {
-        margin-left: 10px;
-    }
-
-    input[type="submit"]:hover {
+    .myform input[type="submit"]:hover {
         background-color: #3e8e41;
     }
 
@@ -119,17 +111,49 @@
             transform: rotate(360deg);
         }
     }
+
+
+    #response {
+        flex: 1;
+        border-width: 2px;
+        width: 100%;
+        margin: 20px auto;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
+    }
+
+
+    @media only screen and (max-width: 980px) {
+        body {
+            font-size: 3rem;
+        }
+
+        .container {
+            width: 100%;
+        }
+
+        .myform input[type="text"] {
+            font-size: 3rem;
+        }
+
+        .myform input[type="submit"] {
+            font-size: 3rem;
+        }
+    }
 </style>
 
 <body>
-    <form id="my-form" class="myform">
-        <!-- <label for="prompt">问题:</label> -->
-        <input type="text" id="prompt" name="prompt"><br>
+    <div class="container">
+        <form id="my-form" class="myform">
+            <!-- <label for="prompt">问题:</label> -->
+            <input type="text" id="prompt" name="prompt"><br>
 
-        <button type="submit">向AI提问</button>
-    </form>
-    <div class="loader"></div>
-    <div id="response"></div>
+            <button type="submit">向AI提问</button>
+        </form>
+        <div class="loader"></div>
+        <div id="response"></div>
+    </div>
+
 
     <script>
 
@@ -156,6 +180,8 @@
         const form = document.getElementById('my-form');
         // 隐藏等待效果
         document.querySelector(".loader").style.display = "none";
+
+
         form.addEventListener('submit', async (e) => {
             // 显示等待效果
             document.querySelector(".loader").style.display = "block";
@@ -173,10 +199,10 @@
 
             let data = await response.json();
 
-            data = data.replaceAll('\n', '<br/>')
+            // data = data.replaceAll('\n', '<br/>')
             data = Trim(data, '"')
             // data = JSON.stringify(data);
-            responseElement.innerHTML = data;
+            responseElement.innerText = data;
             // 隐藏等待效果
             document.querySelector(".loader").style.display = "none";
         });
