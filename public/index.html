@@ -79,6 +79,8 @@
         color: #333;
         flex: 1;
         font-size: 1.5rem;
+        overflow-y: hidden;
+        min-height: 3rem;
     }
 
     .myform .prompt:focus {
@@ -144,7 +146,8 @@
     <div class="container">
         <form id="my-form" class="myform">
             <!-- <label for="prompt">问题:</label> -->
-            <textarea type="text" id="prompt" name="prompt" class="prompt" /></textarea>
+            <textarea type="text" id="prompt" name="prompt" class="prompt" rows="1"
+                oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' /></textarea>
             <button type="submit">向AI提问</button>
         </form>
         <div class="loader"></div>
