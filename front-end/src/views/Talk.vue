@@ -2,14 +2,6 @@
   <div class="talk" v-show="flag">
     <div class="talk-header">
       <h2>智能AI对话</h2>
-      <!-- <div class="talk-header-icon">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-gengduocaozuo"></use>
-        </svg>
-        <svg class="icon" aria-hidden="true" @click="exit">
-          <use xlink:href="#icon-guanbi"></use>
-        </svg>
-      </div> -->
     </div>
 
     <div class="talk-content">
@@ -56,26 +48,21 @@
           </div>
 
           <div class="content_left">
-            <div v-text="item.content"></div>
+            <pre>{{ item.content }}</pre>
           </div>
         </div>
       </div>
     </div>
 
     <div class="talk-message">
-      <!-- <div class="talk-message-face">
-        <svg class="icon" aria-hidden="true" @click="isShow">
-          <use xlink:href="#icon-biaoqing"></use>
-        </svg>
-      </div> -->
       <div class="talk-message-content">
         <a-textarea
           style="overflow-y: hidden"
           v-model:value="textarea"
           resize="none"
           type="textarea"
-          rows="1"
-          @keyup.enter.native="submit"
+          :rows="1"
+          @keypress.enter.prevent="submit"
           oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
         ></a-textarea>
       </div>
@@ -87,10 +74,7 @@
 </template>
 
 <script lang="ts">
-// import emotion from "../components/emotion.vue";
 import "../assets/talk.css";
-// import { timePickerProps } from "ant-design-vue/lib/time-picker/time-picker";
-// import "../utils/iconfont";
 
 interface Content {
   name: String;
@@ -101,17 +85,15 @@ interface Content {
 }
 
 export default {
-  components: {
-    // emotion,
-  },
+  components: {},
 
   data() {
     return {
       contentDiv: [] as Content[],
       textarea: "",
-      a: [],
-      flag: true,
+      right: true,
       show: false,
+      flag: true,
       closeChat: this.close,
     };
   },
@@ -158,7 +140,8 @@ export default {
       });
 
       let data = await response.json();
-
+      data = data.replace(/^\s*\n/, "");
+      console.log(data);
       let d = {
         name: "AI",
         url: "",

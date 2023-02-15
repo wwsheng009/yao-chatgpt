@@ -24,7 +24,7 @@
 }
 
 .content_left {
-    word-wrap: break-word;
+    /* word-wrap: break-word; */
     margin-left: 20px;
     font-size: 1rem;
     text-align: left;
@@ -33,11 +33,23 @@
     display: flex;
 }
 
-.content_left div {
+.content_left pre {
+    /* word-wrap: break-word; */
     background-color: #ffffff;
     max-width: 80%;
     padding: 5px;
     border-radius: 4px;
+
+    white-space: pre-wrap;
+    /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;
+    /* Mozilla, since 1999 */
+    white-space: -pre-wrap;
+    /* Opera 4-6 */
+    white-space: -o-pre-wrap;
+    /* Opera 7 */
+    word-wrap: break-word;
+    /* Internet Explorer 5.5+ */
 }
 
 .url_right {
@@ -178,7 +190,7 @@
 .talk-message-send {
     /* padding-top: 20px; */
 
-    margin: 0 10px;
+    margin: 0 0 0 10px;
     cursor: pointer;
 }
 
