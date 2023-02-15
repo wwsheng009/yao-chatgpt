@@ -39,6 +39,12 @@ xiang@iqka.com
 密码:
 A123456p+
 
+登录管理系统端后，需要在设置菜单界面输入您的 open ai 的调用 api key。
+
+## 如何获取 openai api key.
+
+可以在 OpenAI 官网上申请，也可以在 GitHub 上搜索，会有一些免费的 API Key 可以使用。
+
 ## 贡献者
 
 ## 许可证
