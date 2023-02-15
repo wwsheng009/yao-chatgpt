@@ -43,8 +43,6 @@
 
     }
 
-
-
     .myform {
         width: 100%;
         margin: 10px auto;
@@ -73,17 +71,17 @@
         background-color: #3e8e41;
     }
 
-
-    .myform input[type="text"] {
+    .myform .prompt {
         margin: 10px;
+        padding: 10px;
         border: 1px solid #ccc;
         border-radius: 4px;
         color: #333;
         flex: 1;
-        font-size: 2.5rem;
+        font-size: 1.5rem;
     }
 
-    .myform input[type="text"]:focus {
+    .myform .prompt:focus {
         outline: none;
         border-color: #4CAF50;
     }
@@ -115,7 +113,7 @@
 
     #response {
         flex: 1;
-        border-width: 2px;
+        border: 5px solid #f3f3f3;
         width: 100%;
         margin: 20px auto;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -132,7 +130,7 @@
             width: 100%;
         }
 
-        .myform input[type="text"] {
+        .prompt {
             font-size: 3rem;
         }
 
@@ -146,8 +144,7 @@
     <div class="container">
         <form id="my-form" class="myform">
             <!-- <label for="prompt">问题:</label> -->
-            <input type="text" id="prompt" name="prompt"><br>
-
+            <textarea type="text" id="prompt" name="prompt" class="prompt" /></textarea>
             <button type="submit">向AI提问</button>
         </form>
         <div class="loader"></div>
