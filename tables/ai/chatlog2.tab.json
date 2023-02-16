@@ -1,0 +1,8 @@
+{
+  "name": "::Chat Log",
+  "action": {
+    "bind": {
+      "model": "ai.chatlog"
+    }
+  }
+}

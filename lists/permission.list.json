@@ -1,0 +1,332 @@
+{
+    "name": "::AI Model Permission",
+    "action": {
+        "bind": {
+            "table": "ai.permission"
+        }
+    },
+    "layout": {
+        "list": {
+            "props": {},
+            "columns": [
+                {
+                    "name": "创建时间",
+                    "width": 100
+                },
+                {
+                    "name": "allow_create_engine",
+                    "width": 100
+                },
+                {
+                    "name": "allow_fine_tuning",
+                    "width": 100
+                },
+                {
+                    "name": "allow_sampling",
+                    "width": 100
+                },
+                {
+                    "name": "allow_search_indices",
+                    "width": 100
+                },
+                {
+                    "name": "is_blocking",
+                    "width": 100
+                },
+                {
+                    "name": "allow_logprobs",
+                    "width": 100
+                },
+                {
+                    "name": "allow_view",
+                    "width": 100
+                },
+                {
+                    "name": "组织",
+                    "width": 100
+                },
+                {
+                    "name": "分组",
+                    "width": 100
+                }
+            ]
+        }
+    },
+    "fields": {
+        "list": {
+            "IDX": {
+                "bind": "idx",
+                "edit": {
+                    "props": {
+                        "placeholder": "请输入 IDX"
+                    },
+                    "type": "Input"
+                },
+                "view": {
+                    "props": {},
+                    "type": "Text"
+                }
+            },
+            "allow_create_engine": {
+                "bind": "allow_create_engine",
+                "view": {
+                    "props": {
+                        "checkedChildren": "开启",
+                        "checkedValue": true,
+                        "unCheckedChildren": "关闭",
+                        "unCheckedValue": false
+                    },
+                    "type": "Switch"
+                },
+                "edit": {
+                    "props": {
+                        "options": [
+                            {
+                                "label": "开启",
+                                "value": true
+                            },
+                            {
+                                "label": "关闭",
+                                "value": false
+                            }
+                        ]
+                    },
+                    "type": "RadioGroup"
+                }
+            },
+            "allow_fine_tuning": {
+                "bind": "allow_fine_tuning",
+                "view": {
+                    "props": {
+                        "checkedChildren": "开启",
+                        "checkedValue": true,
+                        "unCheckedChildren": "关闭",
+                        "unCheckedValue": false
+                    },
+                    "type": "Switch"
+                },
+                "edit": {
+                    "props": {
+                        "options": [
+                            {
+                                "label": "开启",
+                                "value": true
+                            },
+                            {
+                                "label": "关闭",
+                                "value": false
+                            }
+                        ]
+                    },
+                    "type": "RadioGroup"
+                }
+            },
+            "allow_logprobs": {
+                "bind": "allow_logprobs",
+                "view": {
+                    "props": {
+                        "checkedChildren": "开启",
+                        "checkedValue": true,
+                        "unCheckedChildren": "关闭",
+                        "unCheckedValue": false
+                    },
+                    "type": "Switch"
+                },
+                "edit": {
+                    "props": {
+                        "options": [
+                            {
+                                "label": "开启",
+                                "value": true
+                            },
+                            {
+                                "label": "关闭",
+                                "value": false
+                            }
+                        ]
+                    },
+                    "type": "RadioGroup"
+                }
+            },
+            "allow_sampling": {
+                "bind": "allow_sampling",
+                "view": {
+                    "props": {
+                        "checkedChildren": "开启",
+                        "checkedValue": true,
+                        "unCheckedChildren": "关闭",
+                        "unCheckedValue": false
+                    },
+                    "type": "Switch"
+                },
+                "edit": {
+                    "props": {
+                        "options": [
+                            {
+                                "label": "开启",
+                                "value": true
+                            },
+                            {
+                                "label": "关闭",
+                                "value": false
+                            }
+                        ]
+                    },
+                    "type": "RadioGroup"
+                }
+            },
+            "allow_search_indices": {
+                "bind": "allow_search_indices",
+                "view": {
+                    "props": {
+                        "checkedChildren": "开启",
+                        "checkedValue": true,
+                        "unCheckedChildren": "关闭",
+                        "unCheckedValue": false
+                    },
+                    "type": "Switch"
+                },
+                "edit": {
+                    "props": {
+                        "options": [
+                            {
+                                "label": "开启",
+                                "value": true
+                            },
+                            {
+                                "label": "关闭",
+                                "value": false
+                            }
+                        ]
+                    },
+                    "type": "RadioGroup"
+                }
+            },
+            "allow_view": {
+                "bind": "allow_view",
+                "id": "72b96170bdce941e079867bc669010be",
+                "view": {
+                    "props": {
+                        "checkedChildren": "开启",
+                        "checkedValue": true,
+                        "unCheckedChildren": "关闭",
+                        "unCheckedValue": false
+                    },
+                    "type": "Switch"
+                },
+                "edit": {
+                    "props": {
+                        "options": [
+                            {
+                                "label": "开启",
+                                "value": true
+                            },
+                            {
+                                "label": "关闭",
+                                "value": false
+                            }
+                        ]
+                    },
+                    "type": "RadioGroup"
+                }
+            },
+            "创建时间": {
+                "bind": "created",
+                "edit": {
+                    "props": {
+                        "placeholder": "请选择 创建时间",
+                        "showTime": {
+                            "format": "HH:mm:ss"
+                        }
+                    },
+                    "type": "DatePicker"
+                },
+                "view": {
+                    "props": {
+                        "format": "YYYY-MM-DD HH:mm:ss"
+                    },
+                    "type": "Text"
+                }
+            },
+            "分组": {
+                "bind": "group",
+                "edit": {
+                    "props": {
+                        "placeholder": "请输入 group"
+                    },
+                    "type": "Input"
+                },
+                "view": {
+                    "props": {},
+                    "type": "Text"
+                }
+            },
+            "is_blocking": {
+                "bind": "is_blocking",
+                "view": {
+                    "props": {
+                        "checkedChildren": "开启",
+                        "checkedValue": true,
+                        "unCheckedChildren": "关闭",
+                        "unCheckedValue": false
+                    },
+                    "type": "Switch"
+                },
+                "edit": {
+                    "props": {
+                        "options": [
+                            {
+                                "label": "开启",
+                                "value": true
+                            },
+                            {
+                                "label": "关闭",
+                                "value": false
+                            }
+                        ]
+                    },
+                    "type": "RadioGroup"
+                }
+            },
+            "model_id": {
+                "bind": "model_id",
+                "edit": {
+                    "props": {
+                        "placeholder": "请输入 model_id"
+                    },
+                    "type": "InputNumber"
+                },
+                "view": {
+                    "props": {},
+                    "type": "Text"
+                }
+            },
+            "对象": {
+                "bind": "object",
+                "edit": {
+                    "props": {
+                        "placeholder": "请输入 对象"
+                    },
+                    "type": "Input"
+                },
+                "view": {
+                    "props": {},
+                    "type": "Text"
+                }
+            },
+            "组织": {
+                "bind": "organization",
+                "edit": {
+                    "props": {
+                        "placeholder": "请输入 组织"
+                    },
+                    "type": "Input"
+                },
+                "view": {
+                    "props": {},
+                    "type": "Text"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "name": "下载Excel",
+    "version": "1.0.0",
+    "description": "下载Excel",
+    "group": "utils",
+    "guard": "bearer-jwt",
+    "paths": [
+        {
+            "guard": "-",
+            "path": "/export/:name",
+            "method": "GET",
+            "process": "flows.utils.export",
+            "in": [
+                "$param.name"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "headers": {
+                    "Content-Disposition": "attachment;filename=导出数据.xlsx"
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,24 @@
+{
+    "label": "下载",
+    "version": "1.0.0",
+    "description": "下载",
+    "nodes": [
+        {
+            "name": "文件",
+            "process": "yao.table.Export",
+            "args": [
+                "{{$in.0}}",
+                {},
+                50
+            ]
+        },
+        {
+            "name": "数据",
+            "process": "fs.system.ReadFile",
+            "args": [
+                "{{$res.文件}}"
+            ]
+        }
+    ],
+    "output": "{{$res.数据}}"
+}

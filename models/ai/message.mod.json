@@ -1,0 +1,47 @@
+{
+    "name": "::AI Conversation message",
+    "table": {
+        "name": "ai_message",
+        "label": "AI 会话消息"
+    },
+    "columns": [
+        {
+            "name": "id",
+            "label": "ID",
+            "type": "ID"
+        },
+        {
+            "name": "parent_id",
+            "label": "会话ID",
+            "type": "integer",
+            "nullable": false,
+            "index": true
+        },
+        {
+            "name": "user",
+            "label": "用户",
+            "type": "string",
+            "index": true,
+            "nullable": false
+        },
+        {
+            "name": "message",
+            "label": "消息",
+            "type": "string",
+            "index": true,
+            "nullable": false
+        },
+        {
+            "name": "length",
+            "label": "消息长度",
+            "type": "integer"
+        }
+    ],
+    "relations": {},
+    "values": [],
+    "indexes": [],
+    "option": {
+        "timestamps": true,
+        "soft_deletes": false
+    }
+}

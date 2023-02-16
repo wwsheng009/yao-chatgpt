@@ -1,0 +1,14 @@
+{
+    "name": "::AI message detail",
+    "action": {
+        "bind": {
+            "model": "ai.message",
+            "option": {
+                "form": "ai.message",
+                "withs": {
+                    "permissions": {}
+                }
+            }
+        }
+    }
+}

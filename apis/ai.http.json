@@ -30,6 +30,32 @@
                 "status": 200,
                 "type": "application/json"
             }
+        },
+        {
+            "path": "/ask2",
+            "method": "POST",
+            "guard": "-",
+            "process": "scripts.ai.chatgpt2.Call",
+            "in": [
+                ":payload"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
+        },
+        {
+            "path": "/context",
+            "method": "GET",
+            "guard": "-",
+            "process": "scripts.utils.test.test",
+            "in": [
+                ":context"
+            ],
+            "out": {
+                "status": 200,
+                "type": "application/json"
+            }
         }
     ]
 }

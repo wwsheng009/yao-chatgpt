@@ -1,0 +1,62 @@
+{
+    "name": "::AI Model",
+    "table": {
+        "name": "ai_model",
+        "label": "AI模型列表"
+    },
+    "columns": [
+        {
+            "name": "id",
+            "label": "ID",
+            "type": "ID"
+        },
+        {
+            "name": "idx",
+            "label": "模型标识",
+            "type": "string",
+            "nullable": false,
+            "index": true
+        },
+        {
+            "name": "object",
+            "label": "类型",
+            "type": "string",
+            "nullable": false
+        },
+        {
+            "name": "owned_by",
+            "label": "拥有者",
+            "type": "string",
+            "nullable": false
+        },
+        {
+            "name": "created",
+            "label": "创建时间",
+            "type": "datetime"
+        },
+        {
+            "name": "parent",
+            "label": "上级",
+            "type": "string"
+        },
+        {
+            "name": "root",
+            "label": "根节点",
+            "type": "string"
+        }
+    ],
+    "relations": {
+        "permissions": {
+            "type": "hasMany",
+            "model": "ai.permission",
+            "key": "model_id",
+            "foreign": "idx"
+        }
+    },
+    "values": [],
+    "indexes": [],
+    "option": {
+        "timestamps": false,
+        "soft_deletes": false
+    }
+}

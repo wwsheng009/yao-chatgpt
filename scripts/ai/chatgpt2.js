@@ -10,13 +10,6 @@ function Callq(message) {
 }
 
 /**
- * yao-debug run scripts.ai.chatgpt.Call '::{"prompt":"你好"}'
- * yao-debug run scripts.ai.chatgpt.Call '::{"prompt":"可以帮我找一下python学习资源吗","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
- * yao-debug run scripts.ai.chatgpt.Call '::{"prompt":"廖雪峰的Python教程","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
- *
- *  yao-debug run scripts.ai.conversation.FindConversationById "938d58a4-b976-46b8-a342-7644a2566476"
- */
-/**
  * 处理post请求，并调用chatgpt接口
  * @param {object} message 消息文本
  * @returns
@@ -26,52 +19,22 @@ function Call(message) {
   if (!setting || !setting.api_token) {
     return "请在管理界面维护AI连接设置值";
   }
-  if (!message || !message.prompt || !message.prompt.length) {
+  if (!message || !message.prompt) {
     return "请填写您的问题";
   }
   const ask = message.prompt;
   if (ask.length < 2) {
     return "请填写详细的问题";
   }
-  let session_id = message.session_id;
 
-  let newId = -1;
-  let newMessages = [];
-  if (session_id !== undefined) {
-    console.log("FindConversation", session_id);
-    const data = Process(
-      "scripts.ai.conversation.FindConversationById",
-      session_id
-    );
-    if (data) {
-      newId = data.id;
-      session_id = data.uuid;
-      newMessages = data.messages;
-    }
-  }
+  let conversation = message.conversation;
 
-  if (newId < 0) {
-    console.log("NewConversation");
-    const { uuid, id } = Process("scripts.ai.conversation.NewConversation");
-    session_id = uuid;
-    newId = id;
-  }
-  var userName = setting.user_nickname || "用户";
-  //   console.log("session_id", session_id);
-  //   console.log("id", newId);
-  //   return;
-  Process("scripts.ai.conversation.NewMessage", newId, userName, ask);
-  newMessages.push({
-    message: ask,
-    user: userName,
-  });
-
-  let conversation = checkLenAndDelete(newMessages, setting.max_tokens);
+  conversation = checkLenAndDelete(conversation, setting.max_tokens);
   // console.log('对话内容列表:')
   // console.log(conversation)
 
   var chatGptName = setting.ai_nickname || "AI智能助理";
-
+  var userName = setting.user_nickname || "用户";
   var stopword = setting.stop || "<|endoftext|>";
   var prompt =
     "提示:你叫" +
@@ -84,7 +47,11 @@ function Call(message) {
     stopword;
 
   conversation.map((line) => {
-    prompt += line.user + ":" + line.message + stopword;
+    if (line.u) {
+      prompt += userName + ":" + line.u + stopword;
+    } else if (line.ai) {
+      prompt += chatGptName + ":" + line.ai + stopword;
+    }
   });
 
   prompt += chatGptName + ":";
@@ -117,19 +84,9 @@ function Call(message) {
     return reply.data.error.message;
   }
   const answer = reply.data.choices[0].text;
-
-  Process(
-    "scripts.ai.conversation.NewMessage",
-    newId,
-    setting.ai_nickname,
-    answer
-  );
-  //   SaveLog(ask, answer);
-  //   SaveLog2(setting);
-  return {
-    message: answer,
-    session_id,
-  };
+  SaveLog(ask, answer);
+  SaveLog2(setting);
+  return answer;
 }
 
 /**
@@ -143,8 +100,10 @@ function checkLenAndDelete(conversation, limit) {
   let idx = 0;
   for (let index = conversation.length - 1; index >= 0; index--) {
     const element = conversation[index];
-    if (element.message) {
-      total += element.user.length + element.message.length + 1;
+    if (element.u) {
+      total += element.u?.length;
+    } else if (element.ai) {
+      total += element.ai?.length;
     }
     if (total > limit) {
       idx = index;

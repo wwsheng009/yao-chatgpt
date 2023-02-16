@@ -70,9 +70,6 @@
       <div class="talk-message-send">
         <a-button type="text" @click="submit">发送</a-button>
       </div>
-      <div class="talk-message-clear">
-        <a-button type="text" @click="clear">新会话</a-button>
-      </div>
     </div>
   </div>
 </template>
@@ -103,20 +100,10 @@ export default {
       flag: true,
       closeChat: this.close,
 
-      session_id: "",
+      conversation: [] as Conversation[],
     };
   },
-  created() {
-    let item = localStorage.getItem("session_id");
-    if (item) {
-      this.session_id = item;
-
-      let message = localStorage.getItem(this.session_id);
-      if (message) {
-        this.contentDiv = JSON.parse(message);
-      }
-    }
-  },
+  created() {},
   mounted() {
     this.scrollToBottom();
   },
@@ -138,14 +125,6 @@ export default {
     },
     iptFocus() {},
 
-    clear() {
-      if (this.session_id) {
-        localStorage.removeItem(this.session_id);
-        localStorage.removeItem("session_id");
-        this.contentDiv = [];
-        this.session_id = "";
-      }
-    },
     /**
      * 用户点击提问
      */
@@ -164,7 +143,6 @@ export default {
         time: new Date().toLocaleTimeString(),
       };
       this.contentDiv.push(c);
-      this.save();
       let data = await this.ask(prompt);
       // console.log(data);
       let d = {
@@ -176,38 +154,56 @@ export default {
       };
 
       this.contentDiv.push(d);
-      this.save();
     },
-    save() {
-      if (this.session_id) {
-        localStorage.setItem(this.session_id, JSON.stringify(this.contentDiv));
-      }
-    },
-
     async ask(q: string): Promise<string> {
       //对数据进行缓存
+      this.conversation.push({
+        u: q,
+      });
 
-      const response = await fetch(`/api/ai/ask`, {
+      const response = await fetch(`/api/ai/ask2`, {
         method: "POST",
         body: JSON.stringify({
           prompt: q,
-          session_id: this.session_id,
+          conversation: this.conversation,
         }),
         headers: { "Content-Type": "application/json" },
       });
 
       let data = await response.json();
       // data = data.replace(/^\s*\n/, "");
-      if (data.session_id && (!this.session_id || !this.session_id.length)) {
-        this.session_id = data.session_id;
-        this.saveSession(this.session_id);
-      }
+      this.conversation.push({
+        ai: data,
+      });
 
-      return data.message;
+      this.checkLenAndDelete();
+
+      return data;
     },
-    saveSession(data: string) {
-      localStorage.setItem("session_id", data);
+    checkLenAndDelete() {
+      let total = 0;
+      let idx = 0;
+      for (let index = this.conversation.length - 1; index >= 0; index--) {
+        const element = this.conversation[index];
+        if (element.u) {
+          total += element.u?.length;
+        } else if (element.ai) {
+          total += element.ai?.length;
+        }
+        if (total > 10240) {
+          idx = index;
+          break;
+        }
+      }
+      console.log(idx);
+      console.log(this.conversation);
+      while (idx > 0);
+      {
+        this.conversation.shift();
+        idx--;
+      }
     },
+
     exit() {
       this.$emit("close", this.flag);
     },

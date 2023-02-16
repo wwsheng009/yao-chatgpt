@@ -33,6 +33,22 @@
       "nullable": true
     },
     {
+      "name": "ai_nickname",
+      "label": "AI昵称",
+      "type": "string",
+      "index": true,
+      "default": "AI智能助理",
+      "nullable": false
+    },
+    {
+      "name": "user_nickname",
+      "label": "用户昵称",
+      "type": "string",
+      "index": true,
+      "default": "用户",
+      "nullable": false
+    },
+    {
       "name": "api_token",
       "label": "API Token",
       "type": "string",
@@ -41,22 +57,22 @@
     },
     {
       "name": "max_tokens",
-      "label": "最大令牌",
+      "label": "最大允许的字符数量",
       "type": "integer",
       "default": 1024
     },
     {
       "name": "stop",
-      "label": "分割符列表",
+      "label": "分割字符串",
       "type": "string",
       "nullable": true,
-      "default": "None"
+      "default": "<|endoftext|>"
     },
     {
       "name": "temperature",
-      "label": "温度",
+      "label": "热度",
       "type": "float",
-      "default": 0.0,
+      "default": 0.8,
       "validations": [
         {
           "method": "min",
@@ -144,10 +160,12 @@
   "values": [
     {
       "default": true,
-      "api_token": "",
+      "ai_nickname": "AI智能助理",
+      "user_nickname": "用户",
+      "api_token": "sk-",
       "model": "text-davinci-003",
-      "max_tokens": 150,
-      "stop": "None",
+      "max_tokens": 2048,
+      "stop": "<|endoftext|>",
       "temperature": 0.5,
       "access_count": 0
     }

@@ -1,0 +1,14 @@
+{
+  "name": "::AI model",
+  "action": {
+    "bind": {
+      "model": "ai.model",
+      "option": {
+        "form": "ai.model",
+        "withs": {
+          "permissions": {}
+        }
+      }
+    }
+  }
+}

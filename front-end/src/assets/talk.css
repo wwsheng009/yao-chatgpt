@@ -216,3 +216,23 @@
 .talk-message-send button:hover {
     background-color: #3e8e41;
 }
+
+.talk-message-clear {
+    /* padding-top: 20px; */
+
+    margin: 0 0 0 10px;
+    cursor: pointer;
+}
+
+.talk-message-clear button {
+    border: none;
+    border-radius: 4px;
+    background-color: #b5b6b5;
+    color: #fff;
+    cursor: pointer;
+}
+
+
+.talk-message-clear button:hover {
+    background-color: #ebe70c;
+}
