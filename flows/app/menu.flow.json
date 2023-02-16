@@ -35,13 +35,31 @@
             "id": 13,
             "blocks": 0,
             "icon": "icon-book",
+            "name": "会话列表",
+            "parent": null,
+            "path": "/x/Table/ai.conversation",
+            "visible_menu": 1
+          },
+          {
+            "id": 14,
+            "blocks": 0,
+            "icon": "icon-book",
+            "name": "会话消息",
+            "parent": null,
+            "path": "/x/Table/ai.message",
+            "visible_menu": 1
+          },
+          {
+            "id": 15,
+            "blocks": 0,
+            "icon": "icon-book",
             "name": "模型列表",
             "parent": null,
             "path": "/x/Table/ai.model",
             "visible_menu": 1
           },
           {
-            "id": 14,
+            "id": 16,
             "blocks": 0,
             "icon": "icon-book",
             "name": "模型权限列表",

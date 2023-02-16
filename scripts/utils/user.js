@@ -1,5 +1,6 @@
 /**
  * 重置管理员密码
+ * yao run scripts.utils.user.ResetAdmin 18012341234 xxx@qq.com Abcd1234+
  * @param {string} mobile 手机号码
  * @param {string} email 邮件地址
  * @param {string} password 密码

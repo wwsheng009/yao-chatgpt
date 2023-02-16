@@ -45,6 +45,21 @@ A123456p+
 
 可以在 OpenAI 官网上申请，也可以在 GitHub 上搜索，会有一些免费的 API Key 可以使用。
 
+## 读取所有的 openai 的模型列表到本地
+
+```
+yao run scripts.ai.model.UpdateModel
+
+```
+
+## 重置管理员
+
+删除重置系统用户
+
+```sh
+yao run scripts.utils.user.ResetAdmin 18012341234 xxx@qq.com Abcd1234+
+```
+
 ## 贡献者
 
 ## 许可证

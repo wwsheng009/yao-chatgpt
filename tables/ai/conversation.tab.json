@@ -1,0 +1,14 @@
+{
+    "name": "::AI Conversation ",
+    "action": {
+        "bind": {
+            "model": "ai.conversation",
+            "option": {
+                "form": "ai.conversation",
+                "withs": {
+                    "messages": {}
+                }
+            }
+        }
+    }
+}
