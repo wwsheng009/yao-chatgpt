@@ -38,7 +38,7 @@ function Call(message) {
   let newId = -1;
   let newMessages = [];
   if (session_id !== undefined) {
-    console.log("FindConversation", session_id);
+    //console.log("FindConversation", session_id);
     const data = Process(
       "scripts.ai.conversation.FindConversationById",
       session_id
@@ -51,14 +51,14 @@ function Call(message) {
   }
 
   if (newId < 0) {
-    console.log("NewConversation");
+    //console.log("NewConversation");
     const { uuid, id } = Process("scripts.ai.conversation.NewConversation");
     session_id = uuid;
     newId = id;
   }
   var userName = setting.user_nickname || "用户";
-  //   console.log("session_id", session_id);
-  //   console.log("id", newId);
+  //   //console.log("session_id", session_id);
+  //   //console.log("id", newId);
   //   return;
   Process("scripts.ai.conversation.NewMessage", newId, userName, ask);
   newMessages.push({
@@ -67,8 +67,8 @@ function Call(message) {
   });
 
   let conversation = checkLenAndDelete(newMessages, setting.max_tokens);
-  // console.log('对话内容列表:')
-  // console.log(conversation)
+  //console.log('对话内容列表:')
+  //console.log(conversation)
 
   var chatGptName = setting.ai_nickname || "AI智能助理";
 
@@ -89,7 +89,7 @@ function Call(message) {
 
   prompt += chatGptName + ":";
 
-  // console.log(prompt);
+  //console.log(prompt);
   access_count = setting.access_count;
 
   //console.log("ask:", message)
