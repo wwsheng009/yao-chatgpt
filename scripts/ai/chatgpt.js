@@ -153,7 +153,10 @@ function Call(message) {
   const endDate = new Date();
   const seconds = (endDate.getTime() - startDate.getTime()) / 1000;
   if (reply.code != 200) {
-    return reply.data.error.message;
+    return {
+      message: reply.data.error.message,
+      session_id,
+    };
   }
 
   // will delete the '\n\n'
