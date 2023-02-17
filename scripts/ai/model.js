@@ -75,17 +75,18 @@ function ConvertTimeCmd(unixTimestamp) {
   return convertUTCDateToLocalDate(times);
 }
 /**
- * 把utc时间转换成本地时间
+ * 把utc时间转换成北京时间
  * @param {integer} unixTimestamp
  * @returns string
  */
 function convertUTCDateToLocalDate(unixTimestamp) {
   var date = new Date(unixTimestamp * 1000);
   // utc时间整时区
-  var newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
-  var offset = date.getTimezoneOffset() / 60;
-  var hours = date.getHours();
-  newDate.setHours(hours - offset);
-  return newDate.toISOString().slice(0, 19).replace("T", " ");
+  date.setHours(date.getHours() + 8);
+  // console.log(date.toISOString().slice(0, 19) + "08:00");
+  return date.toISOString().slice(0, 19) + "08:00"; //北京时区
+  // return newDate.toISOString().slice(0, 19).replace("T", " ");
   // return dateObj.toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " ");
 }
+
+// convertUTCDateToLocalDate(1676642163);

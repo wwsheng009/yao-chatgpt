@@ -138,7 +138,7 @@ function Call(message) {
   if (stopword) {
     RequestBody.stop = stopword;
   }
-
+  // console.log(setting.api_token);
   const reply = http.Post(
     "https://api.openai.com/v1/completions",
     RequestBody,
@@ -322,14 +322,28 @@ function test_checkLenAndDelete() {
 function CurrentTime() {
   var date = new Date();
   // utc时间整时区
-  var newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
-  var offset = date.getTimezoneOffset() / 60;
-  var hours = date.getHours();
-  newDate.setHours(hours - offset);
-  return newDate.toISOString().slice(0, 19).replace("T", " ");
+
+  date.setHours(date.getHours() + 8);
+  // console.log(date.toISOString().slice(0, 19) + "Z08:00");
+  return date.toISOString().slice(0, 19) + "Z08:00"; //北京时区
+  // return newDate.toISOString().slice(0, 19).replace("T", " ");
   // return dateObj.toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " ");
 }
+// CurrentTime();
 
+function testTime() {
+  var newDate = new Date();
+  var timeoffset = -480; //newDate.getTimezoneOffset();
+
+  var offset = timeoffset / 60;
+  var hours = newDate.getHours();
+  newDate.setHours(hours - offset);
+  console.log(newDate.toISOString());
+  console.log(newDate.toUTCString());
+  console.log(newDate.toLocaleDateString());
+  console.log(newDate.toISOString().slice(0, 19) + "Z08:00"); //北京时区
+}
+// testTime();
 /**
  * 更新访问统计
  * @param {object} setting

@@ -37,6 +37,7 @@ function testDummyMessage() {
   for (let index = 0; index < 100; index++) {
     var d = new Date();
     if (isUser) {
+      // return newDate.toISOString().slice(0, 19) + "Z08:00"; //北京时区
       NewMessage(id, "user", d.toISOString().slice(0, 19).replace("T", " "));
       isUser = false;
     } else {
@@ -45,7 +46,6 @@ function testDummyMessage() {
     }
   }
 }
-
 /**
  * yao-debug migrate -n ai.conversation --reset
  * yao-debug run scripts.ai.conversation.NewConversation
@@ -152,7 +152,7 @@ function FindConversationById(uuid) {
       },
     ],
   });
-  if (list.length) {
+  if (list.length && list[0].messages) {
     list[0].messages = list[0].messages.reverse();
     return list[0];
   }
