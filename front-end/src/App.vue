@@ -2,7 +2,31 @@
   <!-- <div id="nav"></div> -->
   <router-view />
 </template>
+<script lang="ts">
+export default {
+  components: {},
+  created() {
+    this.changeHeightEventHandler();
+    window.addEventListener("resize", this.changeHeightEventHandler);
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.changeHeightEventHandler);
+  },
 
+  methods: {
+    changeHeightEventHandler() {
+      // your code for handling resize...
+      let body = document.body;
+      body.style.height = `${window.innerHeight}px`;
+
+      document.documentElement.style.setProperty(
+        "--viewport-height",
+        `${window.innerHeight}px`
+      );
+    },
+  },
+};
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

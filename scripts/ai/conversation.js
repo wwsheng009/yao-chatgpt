@@ -53,13 +53,13 @@ function testDummyMessage() {
  *
  */
 
-function NewConversation() {
+function NewConversation(title, description) {
   let uuid = generateUUID();
   let newID = Process("models.ai.conversation.Create", {
     uuid: uuid,
     api_setting: 1,
-    title: "new conversation",
-    description: "new conversation with openai",
+    title: title || "new conversation",
+    description: description, //|| "new conversation with openai",
   });
   return { id: newID, uuid: uuid };
 }

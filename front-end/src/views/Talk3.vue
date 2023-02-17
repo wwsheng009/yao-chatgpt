@@ -1,17 +1,13 @@
 <template>
   <div class="talk" v-show="flag">
     <div class="talk-header">
-      <div class="talk-message-title">智能AI对话</div>
-      <div class="talk-message-clear">
-        <a-button type="text" @click="clear">新会话</a-button>
-      </div>
+      <h2>智能AI对话</h2>
     </div>
 
     <div class="talk-content">
       <div v-for="item in contentDiv" style="margin-top: 20px">
         <div v-if="item.right">
           <div
-            v-if="item.showAvartar"
             style="
               display: flex;
               justify-content: flex-end;
@@ -34,10 +30,7 @@
           </div>
         </div>
         <div v-if="!item.right">
-          <div
-            v-if="item.showAvartar"
-            style="display: flex; align-items: center"
-          >
+          <div style="display: flex; align-items: center">
             <div class="url_left">
               <a-avatar
                 shape="circle"
@@ -46,6 +39,9 @@
                 >AI</a-avatar
               >
             </div>
+            <!-- <div class="name_left">
+              <p style="font-size: 0.5rem">{{ item.name }}</p>
+            </div> -->
             <div class="name_left">
               <p style="font-size: 0.5rem; color: #9b9b9b">{{ item.time }}</p>
             </div>
@@ -74,6 +70,9 @@
       <div class="talk-message-send">
         <a-button type="text" @click="submit">发送</a-button>
       </div>
+      <div class="talk-message-clear">
+        <a-button type="text" @click="clear">新会话</a-button>
+      </div>
     </div>
   </div>
 </template>
@@ -85,7 +84,6 @@ interface Content {
   name: String;
   url: String;
   content: String;
-  showAvartar: Boolean;
   right: boolean;
   time: String;
 }
@@ -158,14 +156,9 @@ export default {
       let inputbox = this.$el.querySelector("#textinput");
       inputbox.style.height = "";
       // inputbox.style.height = inputbox.scrollHeight + "px";
-      let showAvartar = false;
-      if (this.contentDiv.length == 0) {
-        showAvartar = true;
-      }
       let c = {
         name: "你",
         url: "",
-        showAvartar: showAvartar,
         content: prompt,
         right: true,
         time: new Date().toLocaleTimeString(),
@@ -177,7 +170,6 @@ export default {
       let d = {
         name: "AI",
         url: "",
-        showAvartar: showAvartar,
         content: data,
         right: false,
         time: new Date().toLocaleTimeString(),

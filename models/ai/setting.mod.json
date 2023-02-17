@@ -56,6 +56,12 @@
       "nullable": false
     },
     {
+      "name": "max_send_lines",
+      "label": "最大允许的对话数量",
+      "type": "integer",
+      "default": 6
+    },
+    {
       "name": "max_tokens",
       "label": "最大允许的字符数量",
       "type": "integer",

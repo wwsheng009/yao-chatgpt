@@ -61,6 +61,51 @@
         "style": "danger",
         "title": "Delete"
       }
-    ]
+    ],
+    "form": {
+      "sections": [
+        {
+          "columns": [
+            {
+              "name": "会话ID",
+              "width": 6
+            },
+            {
+              "name": "消息长度",
+              "width": 6
+            },
+            {
+              "name": "用户",
+              "width": 12
+            },
+            {
+              "name": "创建时间",
+              "width": 12
+            },
+            {
+              "name": "消息",
+              "width": 24
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "fields": {
+    "form": {
+      "消息": {
+        "bind": "message",
+        "edit": {
+          "props": {
+            "autoSize": {
+              "maxRows": 20,
+              "minRows": 5
+            },
+            "placeholder": "请输入 回答"
+          },
+          "type": "TextArea"
+        }
+      }
+    }
   }
 }

@@ -31,11 +31,12 @@ body {
   flex-direction: column;
   place-items: center;
   min-width: 320px;
-  height: 100vh;
+  /* height: 100%; */
+  height: var(--viewport-height)
 }
 
 body {
-  background-color: rgba(244, 244, 244, 0.582);
+  background-color: #F1F1F1;
 }
 
 h1 {

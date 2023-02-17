@@ -38,7 +38,6 @@ function Call(message) {
   let newId = -1;
   let newMessages = [];
   if (session_id !== undefined) {
-    //console.log("FindConversation", session_id);
     const data = Process(
       "scripts.ai.conversation.FindConversationById",
       session_id
@@ -49,50 +48,63 @@ function Call(message) {
       newMessages = data.messages;
     }
   }
+  setting.user_nickname = setting.user_nickname || "用户";
+  setting.ai_nickname = setting.ai_nickname || "AI智能助理";
+
+  // console.log(setting);
+
+  let stopword = GetStopWord(setting);
+  // console.log("stopword:", stopword);
+  let chatGptName = setting.ai_nickname;
+  let userName = setting.user_nickname;
+
+  //新对话
+  let newSessionInitMessage; //= "提示:你叫" + chatGptName + "。\n";
 
   if (newId < 0) {
-    //console.log("NewConversation");
-    const { uuid, id } = Process("scripts.ai.conversation.NewConversation");
+    const { uuid, id } = Process(
+      "scripts.ai.conversation.NewConversation",
+      ask
+    );
     session_id = uuid;
     newId = id;
   }
-  var userName = setting.user_nickname || "用户";
-  //   //console.log("session_id", session_id);
-  //   //console.log("id", newId);
+
   //   return;
   Process("scripts.ai.conversation.NewMessage", newId, userName, ask);
+
   newMessages.push({
     message: ask,
     user: userName,
   });
 
+  // 取最后几行
+  if (
+    setting.max_send_lines > 0 &&
+    newMessages.length > setting.max_send_lines
+  ) {
+    newMessages = newMessages.splice(
+      -setting.max_send_lines,
+      setting.max_send_lines
+    );
+  }
+
   let conversation = checkLenAndDelete(newMessages, setting.max_tokens);
-  //console.log('对话内容列表:')
-  //console.log(conversation)
 
-  var chatGptName = setting.ai_nickname || "AI智能助理";
-
-  var stopword = setting.stop || "<|endoftext|>";
-  var prompt =
-    "提示:你叫" +
-    chatGptName +
-    "。" +
-    stopword +
-    "当前时间：" +
-    CurrentTime() +
-    "。" +
-    stopword;
-
+  let prompt = "";
+  if (newSessionInitMessage && newSessionInitMessage.length) {
+    prompt = newSessionInitMessage;
+  }
   conversation.map((line) => {
-    prompt += line.user + ":" + line.message + stopword;
+    prompt += line.user + ":" + line.message + "\n"; //+ stopword;
   });
 
   prompt += chatGptName + ":";
 
-  //console.log(prompt);
+  // console.log("ask:" + prompt);
+  // return;
   access_count = setting.access_count;
 
-  //console.log("ask:", message)
   let reply = http.Post(
     "https://api.openai.com/v1/completions",
     {
@@ -100,7 +112,7 @@ function Call(message) {
       model: setting.model,
       max_tokens: setting.max_tokens,
       top_p: setting.top_p,
-      stop: setting.stop,
+      stop: stopword,
       temperature: setting.temperature,
       presence_penalty: setting.presence_penalty,
       frequency_penalty: setting.frequency_penalty,
@@ -116,8 +128,10 @@ function Call(message) {
   if (reply.code != 200) {
     return reply.data.error.message;
   }
-  const answer = reply.data.choices[0].text;
-
+  let answer = reply.data.choices[0].text.trim();
+  //删除第一个空行
+  answer = answer.replace(/^\s*\n/, "");
+  // console.log("res:\n" + answer);
   Process(
     "scripts.ai.conversation.NewMessage",
     newId,
@@ -131,6 +145,60 @@ function Call(message) {
     session_id,
   };
 }
+function GetStopWord(setting) {
+  let stop_word = setting.stop;
+  let stopwords = []; //=  setting.stop || "<|endoftext|>";
+  if (typeof stop_word === "string" || stop_word instanceof String) {
+    try {
+      stop_word = JSON.parse(stop_word);
+    } catch (error) {}
+  }
+  if (Array.isArray(stop_word)) {
+    stopwords = stop_word;
+  } else if (stop_word) {
+    stopwords.push(stop_word);
+  }
+  setting.ai_nickname &&
+    !stopwords.includes(setting.ai_nickname) &&
+    stopwords.push(setting.ai_nickname);
+  setting.user_nickname &&
+    !stopwords.includes(setting.user_nickname) &&
+    stopwords.push(setting.user_nickname);
+  let stop = JSON.stringify(stopwords);
+  // console.log("stop:", stop);
+  return stop;
+}
+function test_stopWord() {
+  const setting = {
+    stop: '["endofword","endofword2"]',
+    user_nickname: "Human",
+    ai_nickname: "AI",
+  };
+  // GetStopWord(setting);
+
+  const setting2 = {
+    access_count: 39,
+    ai_nickname: "AI智能助理",
+    api_token: "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",
+    created_at: "2023-02-15 21:14:10",
+    default: true,
+    deleted_at: null,
+    description: "目前最强大的模型",
+    frequency_penalty: 0,
+    id: 1,
+    max_send_lines: 10,
+    max_tokens: 1024,
+    model: "text-davinci-003",
+    presence_penalty: 1,
+    stop: "\u003c|endoftext|\u003e",
+    temperature: 0.5,
+    top_p: 1,
+    updated_at: "2023-02-16 23:58:47",
+    user_nickname: "用户",
+  };
+  GetStopWord(setting2);
+}
+// test_stopWord();
 
 /**
  * 检查会话是否超过限制，如果超过，从开始端删除内容
@@ -144,7 +212,10 @@ function checkLenAndDelete(conversation, limit) {
   for (let index = conversation.length - 1; index >= 0; index--) {
     const element = conversation[index];
     if (element.message) {
-      total += element.user.length + element.message.length + 1;
+      total += element.message.length;
+    }
+    if (element.user) {
+      total += element.user;
     }
     if (total > limit) {
       idx = index;
@@ -152,13 +223,26 @@ function checkLenAndDelete(conversation, limit) {
     }
   }
 
-  while (idx > 0);
-  {
+  while (idx > 0) {
     conversation.shift();
     idx--;
   }
   return conversation;
 }
+
+function test_checkLenAndDelete() {
+  checkLenAndDelete(
+    [
+      {
+        message: "你好",
+        user: "用户",
+      },
+    ],
+    1000
+  );
+}
+// test_checkLenAndDelete();
+
 function CurrentTime() {
   var date = new Date();
   // utc时间整时区
