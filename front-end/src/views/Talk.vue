@@ -8,7 +8,7 @@
     </div>
 
     <div class="talk-content">
-      <div v-for="item in contentDiv" style="margin-top: 20px">
+      <div v-for="item in contentDiv">
         <div v-if="item.right">
           <div
             v-if="item.showAvartar"
