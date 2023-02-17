@@ -34,7 +34,7 @@
         "view": {
           "compute": "scripts.text.Cut",
           "props": {},
-          "type": "Text"
+          "type": "Tooltip"
         }
       },
       "更新时间": {

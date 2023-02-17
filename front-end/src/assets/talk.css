@@ -16,7 +16,7 @@
     justify-content: flex-end;
 }
 
-.content_right pre {
+.content_right .content {
     background-color: #1AAD19;
     color: white;
     max-width: 90%;
@@ -44,7 +44,7 @@
     display: flex;
 }
 
-.content_left pre {
+.content_left .content {
     /* word-wrap: break-word; */
     background-color: #ffffff;
     max-width: 90%;

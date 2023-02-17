@@ -4,7 +4,7 @@
 
 /**
  * 更新open ai 模型列表
- * 测试 yao run scripts.ai.model.UpdateModel
+ * 测试 yao-debug run scripts.ai.model.UpdateModel
  */
 function UpdateModel() {
   //清除所有的数据
@@ -42,6 +42,7 @@ function UpdateModel() {
 
   let perms = [];
   res.forEach((line) => {
+    //处理权限
     line.permission.map((item) => {
       item.model_id = line.id;
       item.idx = item.id; //xgen目前不支持非数字类型的主键
@@ -51,6 +52,7 @@ function UpdateModel() {
     line.idx = line.id;
     delete line.id; //xgen目前不支持非数字类型的主键
     line.created = convertUTCDateToLocalDate(line.created);
+    line.title = line.idx; //更新标题
 
     perms = perms.concat(line.permission);
 

@@ -7,5 +7,473 @@
         "form": "ai.setting"
       }
     }
+  },
+  "layout": {
+    "filter": {
+      "actions": [
+        {
+          "action": [
+            {
+              "name": "HistoryPush",
+              "payload": {
+                "pathname": "/x/Form/ai.setting/0/edit"
+              },
+              "type": "Common.historyPush"
+            }
+          ],
+          "icon": "icon-plus",
+          "title": "创建",
+          "width": 3
+        }
+      ],
+      "columns": [
+        {
+          "name": "描述"
+        },
+        {
+          "name": "模型"
+        }
+      ]
+    },
+    "header": {
+      "actions": [],
+      "preset": {}
+    },
+    "name": "系统设置",
+    "primary": "id",
+    "table": {
+      "columns": [
+        {
+          "name": "ID",
+          "width": 100
+        },
+        {
+          "name": "描述",
+          "width": 160
+        },
+        {
+          "name": "默认接口",
+          "width": 160
+        },
+        {
+          "name": "模型",
+          "width": 160
+        },
+        {
+          "name": "AI昵称",
+          "width": 160
+        },
+        {
+          "name": "用户昵称",
+          "width": 160
+        },
+        {
+          "name": "API Token",
+          "width": 240
+        },
+        {
+          "name": "最大允许的对话数量",
+          "width": 100
+        },
+        {
+          "name": "最大允许的字符数量",
+          "width": 100
+        },
+        {
+          "name": "分割字符串",
+          "width": 160
+        },
+        {
+          "name": "热度",
+          "width": 100
+        },
+        {
+          "name": "采样阈值",
+          "width": 100
+        },
+        {
+          "name": "频率惩罚",
+          "width": 100
+        },
+        {
+          "name": "存在惩罚",
+          "width": 100
+        },
+        {
+          "name": "调用计数",
+          "width": 100
+        },
+        {
+          "name": "创建时间",
+          "width": 160
+        },
+        {
+          "name": "更新时间",
+          "width": 160
+        }
+      ],
+      "operation": {
+        "actions": [
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "payload": {
+                  "Form": {
+                    "model": "ai.setting",
+                    "type": "view"
+                  }
+                },
+                "type": "Common.openModal"
+              }
+            ],
+            "icon": "icon-eye",
+            "title": "查看"
+          },
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "payload": {
+                  "Form": {
+                    "model": "ai.setting",
+                    "type": "edit"
+                  }
+                },
+                "type": "Common.openModal"
+              }
+            ],
+            "icon": "icon-edit-2",
+            "title": "编辑"
+          },
+          {
+            "action": [
+              {
+                "name": "Delete",
+                "payload": {
+                  "model": "ai.setting"
+                },
+                "type": "Table.delete"
+              }
+            ],
+            "confirm": {
+              "desc": "请确认删除，删除后数据无法恢复",
+              "title": "确认"
+            },
+            "icon": "icon-trash-2",
+            "style": "danger",
+            "title": "Delete"
+          }
+        ],
+        "width": 140
+      },
+      "props": {
+        "scroll": {
+          "x": "max-content"
+        }
+      }
+    }
+  },
+  "fields": {
+    "filter": {
+      "描述": {
+        "bind": "where.description.match",
+        "edit": {
+          "props": {
+            "placeholder": "请输入 描述"
+          },
+          "type": "Input"
+        }
+      },
+      "模型": {
+        "bind": "where.model.match",
+        "edit": {
+          "props": {
+            "placeholder": "请输入 模型"
+          },
+          "type": "Input"
+        }
+      }
+    },
+    "table": {
+      "AI昵称": {
+        "bind": "ai_nickname",
+        "edit": {
+          "props": {
+            "placeholder": "请输入 AI昵称"
+          },
+          "type": "Input"
+        },
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "API Token": {
+        "bind": "api_token",
+        "edit": {
+          "props": {
+            "placeholder": "请输入 API Token"
+          },
+          "type": "Input"
+        },
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "ID": {
+        "bind": "id",
+        "edit": {
+          "props": {
+            "disabled": true,
+            "placeholder": "请输入 ID"
+          },
+          "type": "InputNumber"
+        },
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "分割字符串": {
+        "bind": "stop",
+        "edit": {
+          "props": {
+            "placeholder": "请输入 分割字符串"
+          },
+          "type": "Input"
+        },
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "创建时间": {
+        "bind": "created_at",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 创建时间",
+            "showTime": {
+              "format": "HH:mm:ss"
+            }
+          },
+          "type": "DatePicker"
+        },
+        "view": {
+          "props": {
+            "format": "YYYY-MM-DD HH:mm:ss"
+          },
+          "type": "Text"
+        }
+      },
+      "存在惩罚": {
+        "bind": "presence_penalty",
+        "edit": {
+          "props": {
+            "placeholder": "请输入 存在惩罚"
+          },
+          "type": "InputNumber"
+        },
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "描述": {
+        "bind": "description",
+        "edit": {
+          "props": {
+            "placeholder": "请输入 描述"
+          },
+          "type": "Input"
+        },
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "更新时间": {
+        "bind": "updated_at",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 更新时间",
+            "showTime": {
+              "format": "HH:mm:ss"
+            }
+          },
+          "type": "DatePicker"
+        },
+        "view": {
+          "props": {
+            "format": "YYYY-MM-DD HH:mm:ss"
+          },
+          "type": "Text"
+        }
+      },
+      "最大允许的字符数量": {
+        "bind": "max_tokens",
+        "edit": {
+          "props": {
+            "placeholder": "请输入 最大允许的字符数量"
+          },
+          "type": "InputNumber"
+        },
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "最大允许的对话数量": {
+        "bind": "max_send_lines",
+        "edit": {
+          "props": {
+            "placeholder": "请输入 最大允许的对话数量"
+          },
+          "type": "InputNumber"
+        },
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "模型": {
+        "bind": "model",
+        "edit": {
+          "props": {
+            "placeholder": "请输入 模型",
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "ai.model",
+                  "label": "title",
+                  "value": "idx",
+                  "wheres": [
+                    {
+                      "column": "status",
+                      "op": "eq",
+                      "value": "enabled"
+                    }
+                  ],
+                  "orders": [
+                    {
+                      "column": "idx",
+                      "option": "desc"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "type": "Select"
+        },
+        "view": {
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "ai.model",
+                  "label": "title",
+                  "value": "idx",
+                  "wheres": [
+                    {
+                      "column": "status",
+                      "op": "eq",
+                      "value": "enabled"
+                    }
+                  ],
+                  "orders": [
+                    {
+                      "column": "idx",
+                      "option": "desc"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "type": "Tag"
+        }
+      },
+      "热度": {
+        "bind": "temperature",
+        "edit": {
+          "props": {
+            "placeholder": "请输入 热度"
+          },
+          "type": "InputNumber"
+        },
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "用户昵称": {
+        "bind": "user_nickname",
+        "edit": {
+          "props": {
+            "placeholder": "请输入 用户昵称"
+          },
+          "type": "Input"
+        },
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "调用计数": {
+        "bind": "access_count",
+        "edit": {
+          "props": {
+            "placeholder": "请输入 调用计数"
+          },
+          "type": "InputNumber"
+        },
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "采样阈值": {
+        "bind": "top_p",
+        "edit": {
+          "props": {
+            "placeholder": "请输入 采样阈值"
+          },
+          "type": "InputNumber"
+        },
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "频率惩罚": {
+        "bind": "frequency_penalty",
+        "edit": {
+          "props": {
+            "placeholder": "请输入 频率惩罚"
+          },
+          "type": "InputNumber"
+        },
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "默认接口": {
+        "bind": "default",
+        "view": {
+          "props": {
+            "checkedChildren": "开启",
+            "checkedValue": true,
+            "unCheckedChildren": "关闭",
+            "unCheckedValue": false
+          },
+          "type": "Switch"
+        }
+      }
+    }
   }
 }

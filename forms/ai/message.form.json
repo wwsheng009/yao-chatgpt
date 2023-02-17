@@ -67,23 +67,43 @@
         {
           "columns": [
             {
-              "name": "会话ID",
+              "name": "会话",
               "width": 6
             },
             {
-              "name": "消息长度",
+              "name": "模型",
+              "width": 6
+            },
+            {
+              "name": "对象",
+              "width": 6
+            },
+            {
+              "name": "创建时间",
+              "width": 6
+            },
+            {
+              "name": "总Token数量",
+              "width": 6
+            },
+            {
+              "name": "AI",
               "width": 6
             },
             {
               "name": "用户",
-              "width": 12
+              "width": 6
             },
             {
-              "name": "创建时间",
-              "width": 12
+              "name": "请求时间(秒)",
+              "width": 6
             },
             {
-              "name": "消息",
+              "name": "提问",
+              "width": 24
+            },
+            {
+              "name": "回复",
               "width": 24
             }
           ]
@@ -93,8 +113,21 @@
   },
   "fields": {
     "form": {
-      "消息": {
-        "bind": "message",
+      "提问": {
+        "bind": "prompt",
+        "edit": {
+          "props": {
+            "autoSize": {
+              "maxRows": 20,
+              "minRows": 2
+            },
+            "placeholder": "请输入 回答"
+          },
+          "type": "TextArea"
+        }
+      },
+      "回复": {
+        "bind": "completion",
         "edit": {
           "props": {
             "autoSize": {

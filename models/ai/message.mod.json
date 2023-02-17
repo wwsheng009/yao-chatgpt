@@ -18,23 +18,81 @@
             "index": true
         },
         {
-            "name": "user",
+            "name": "model",
+            "label": "模型",
+            "type": "string",
+            "nullable": false,
+            "index": true
+        },
+        {
+            "name": "object",
+            "label": "对象",
+            "type": "string",
+            "nullable": false,
+            "index": true
+        },
+        {
+            "name": "ai_user",
+            "label": "AI",
+            "type": "string",
+            "index": true,
+            "nullable": false
+        },
+        {
+            "name": "end_user",
             "label": "用户",
             "type": "string",
             "index": true,
             "nullable": false
         },
         {
-            "name": "message",
-            "label": "消息",
-            "type": "string",
+            "name": "prompt",
+            "label": "发送的消息",
+            "type": "text",
             "index": true,
             "nullable": false
         },
         {
-            "name": "length",
-            "label": "消息长度",
+            "name": "completion",
+            "label": "回复的消息",
+            "type": "text",
+            "index": true,
+            "nullable": false
+        },
+        {
+            "name": "prompt_len",
+            "label": "prompt消息长度",
             "type": "integer"
+        },
+        {
+            "name": "completion_len",
+            "label": "completion消息长度",
+            "type": "integer"
+        },
+        {
+            "name": "completion_tokens",
+            "label": "回复Token数量",
+            "type": "integer"
+        },
+        {
+            "name": "prompt_tokens",
+            "label": "提问Token数量",
+            "type": "integer"
+        },
+        {
+            "name": "total_tokens",
+            "label": "总Token数量",
+            "type": "integer"
+        },
+        {
+            "name": "request_total_time",
+            "label": "请求时间(秒)",
+            "type": "integer"
+        },
+        {
+            "name": "created",
+            "label": "创建时间",
+            "type": "datetime"
         }
     ],
     "relations": {},

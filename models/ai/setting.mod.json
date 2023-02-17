@@ -120,16 +120,16 @@
         {
           "method": "min",
           "args": [
-            0
+            -2.0
           ],
-          "message": "{{label}}应大于等于0"
+          "message": "{{label}}应大于等于-2.0"
         },
         {
           "method": "max",
           "args": [
-            1
+            2.0
           ],
-          "message": "{{label}}应小于等于1"
+          "message": "{{label}}应小于等于2"
         }
       ]
     },
@@ -142,16 +142,16 @@
         {
           "method": "min",
           "args": [
-            0
+            -2.0
           ],
-          "message": "{{label}}应大于等于0"
+          "message": "{{label}}应大于等于-2.0"
         },
         {
           "method": "max",
           "args": [
-            1
+            2.0
           ],
-          "message": "{{label}}应小于等于1"
+          "message": "{{label}}应小于等于2"
         }
       ]
     },

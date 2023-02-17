@@ -7,6 +7,7 @@ export default {
   components: {},
   created() {
     this.changeHeightEventHandler();
+
     window.addEventListener("resize", this.changeHeightEventHandler);
   },
   destroyed() {
@@ -15,9 +16,7 @@ export default {
 
   methods: {
     changeHeightEventHandler() {
-      // your code for handling resize...
-      let body = document.body;
-      body.style.height = `${window.innerHeight}px`;
+      document.body.style.height = `${window.innerHeight}px`;
 
       document.documentElement.style.setProperty(
         "--viewport-height",

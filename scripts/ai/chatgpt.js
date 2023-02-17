@@ -33,9 +33,10 @@ function Call(message) {
   if (ask.length < 2) {
     return "请填写详细的问题";
   }
+  //新会话
   let session_id = message.session_id;
 
-  let newId = -1;
+  let conversationId = -1;
   let newMessages = [];
   if (session_id !== undefined) {
     const data = Process(
@@ -43,7 +44,7 @@ function Call(message) {
       session_id
     );
     if (data) {
-      newId = data.id;
+      conversationId = data.id;
       session_id = data.uuid;
       newMessages = data.messages;
     }
@@ -55,27 +56,33 @@ function Call(message) {
 
   let stopword = GetStopWord(setting);
   // console.log("stopword:", stopword);
-  let chatGptName = setting.ai_nickname;
-  let userName = setting.user_nickname;
+  let aiUserName = setting.ai_nickname;
+  let endUserName = setting.user_nickname;
 
   //新对话
   let newSessionInitMessage; //= "提示:你叫" + chatGptName + "。\n";
 
-  if (newId < 0) {
+  if (conversationId < 0) {
     const { uuid, id } = Process(
       "scripts.ai.conversation.NewConversation",
       ask
     );
     session_id = uuid;
-    newId = id;
+    conversationId = id;
   }
 
   //   return;
-  Process("scripts.ai.conversation.NewMessage", newId, userName, ask);
+  // Process(
+  //   "scripts.ai.conversation.NewMessage",
+  //   conversationId,
+  //   endUserName,
+  //   ask
+  // );
 
   newMessages.push({
-    message: ask,
-    user: userName,
+    ai_user: aiUserName,
+    prompt: ask,
+    end_user: endUserName,
   });
 
   // 取最后几行
@@ -96,27 +103,45 @@ function Call(message) {
     prompt = newSessionInitMessage;
   }
   conversation.map((line) => {
-    prompt += line.user + ":" + line.message + "\n"; //+ stopword;
+    if (line.prompt) {
+      if (endUserName && endUserName.length) {
+        prompt += endUserName + ": ";
+      }
+
+      prompt += line.prompt + "\n\n";
+    }
+
+    if (line.completion) {
+      if (aiUserName && aiUserName.length) {
+        prompt += aiUserName + ": ";
+      }
+
+      prompt += line.completion + "\n\n"; //+ stopword;
+    }
   });
+  if (aiUserName && aiUserName.length) {
+    prompt += aiUserName + ": ";
+  }
 
-  prompt += chatGptName + ":";
+  const startDate = new Date();
 
-  // console.log("ask:" + prompt);
-  // return;
-  access_count = setting.access_count;
+  let RequestBody = {
+    prompt: prompt,
+    model: setting.model,
+    max_tokens: setting.max_tokens,
+    top_p: setting.top_p,
+    // stop: stopword,
+    temperature: setting.temperature,
+    presence_penalty: setting.presence_penalty,
+    frequency_penalty: setting.frequency_penalty,
+  };
+  if (stopword) {
+    RequestBody.stop = stopword;
+  }
 
-  let reply = http.Post(
+  const reply = http.Post(
     "https://api.openai.com/v1/completions",
-    {
-      prompt: prompt,
-      model: setting.model,
-      max_tokens: setting.max_tokens,
-      top_p: setting.top_p,
-      stop: stopword,
-      temperature: setting.temperature,
-      presence_penalty: setting.presence_penalty,
-      frequency_penalty: setting.frequency_penalty,
-    },
+    RequestBody,
     null,
     null,
     {
@@ -125,19 +150,47 @@ function Call(message) {
       Authorization: `Bearer ` + setting.api_token,
     }
   );
+  const endDate = new Date();
+  const seconds = (endDate.getTime() - startDate.getTime()) / 1000;
   if (reply.code != 200) {
     return reply.data.error.message;
   }
+
+  // will delete the '\n\n'
   let answer = reply.data.choices[0].text.trim();
   //删除第一个空行
+
   answer = answer.replace(/^\s*\n/, "");
+
+  let new_message = {
+    parent_id: conversationId,
+    ai_user: aiUserName,
+    end_user: endUserName,
+    prompt: ask,
+    completion: answer,
+    prompt_len: ask.length,
+    completion_len: answer.length,
+    completion_tokens: reply.data.usage.completion_tokens,
+    prompt_tokens: reply.data.usage.prompt_tokens,
+    total_tokens: reply.data.usage.total_tokens,
+    request_total_time: seconds,
+    created: Process(
+      "scripts.ai.model.convertUTCDateToLocalDate",
+      reply.data.created
+    ),
+    model: reply.data.model,
+    object: reply.data.object,
+  };
+
+  Process("scripts.ai.conversation.NewMessageObject", new_message);
+
   // console.log("res:\n" + answer);
-  Process(
-    "scripts.ai.conversation.NewMessage",
-    newId,
-    setting.ai_nickname,
-    answer
-  );
+  // Process(
+  //   "scripts.ai.conversation.NewMessage",
+  //   conversationId,
+  //   chatGptName,
+  //   answer
+  // );
   //   SaveLog(ask, answer);
   //   SaveLog2(setting);
   return {
@@ -145,6 +198,24 @@ function Call(message) {
     session_id,
   };
 }
+
+function testTrimWord() {
+  const ls =
+    "\n\n1. 丽江古城夕照湖：位于云南省，是中国最著名的湖泊之一。\n2. 青海湖：位于青海省，是中国著名的湖泊之一，也是世界文化遗产。\n3. 洞庭湖：位于湖南省，是中国第一大淡水湖，也是中国最著名的湖泊之一。\n4. 天津渤海：位于天津市，是中国最大的沿海湾，也是中国最著名的湖泊之一。\n5. 小五台：位于山西省，是中国著名的湖泊之一，也是世界文化遗产之一。\n6. 合肥太湖：位于安徽省，是中国最大的内陆湖泊，也是中国最著名的湖泊之一。\n7. 洱海：位于云南省，是中国最大的湖泊，也是中国最著名的湖泊之一。";
+
+  let answer = ls.trim();
+  //删除第一个空行
+  console.log("删除第一个空行:", answer);
+  answer = answer.replace(/^\s*\n/, "");
+  console.log();
+  console.log(answer);
+}
+//testTrimWord();
+/**
+ * 获取stop word
+ * @param {Object} setting 设置
+ * @returns string
+ */
 function GetStopWord(setting) {
   let stop_word = setting.stop;
   let stopwords = []; //=  setting.stop || "<|endoftext|>";
@@ -160,20 +231,22 @@ function GetStopWord(setting) {
   }
   setting.ai_nickname &&
     !stopwords.includes(setting.ai_nickname) &&
-    stopwords.push(setting.ai_nickname);
+    stopwords.push(" " + setting.ai_nickname + ":");
   setting.user_nickname &&
     !stopwords.includes(setting.user_nickname) &&
-    stopwords.push(setting.user_nickname);
+    stopwords.push(" " + setting.user_nickname + ":");
+
+  // stopwords.push("\n\n");
   let stop = JSON.stringify(stopwords);
-  // console.log("stop:", stop);
+
   return stop;
 }
 function test_stopWord() {
-  const setting = {
-    stop: '["endofword","endofword2"]',
-    user_nickname: "Human",
-    ai_nickname: "AI",
-  };
+  // const setting = {
+  //   stop: '["endofword","endofword2"]',
+  //   user_nickname: "Human",
+  //   ai_nickname: "AI",
+  // };
   // GetStopWord(setting);
 
   const setting2 = {
@@ -211,11 +284,11 @@ function checkLenAndDelete(conversation, limit) {
   let idx = 0;
   for (let index = conversation.length - 1; index >= 0; index--) {
     const element = conversation[index];
-    if (element.message) {
-      total += element.message.length;
+    if (element.prompt) {
+      total += element.prompt.length;
     }
-    if (element.user) {
-      total += element.user;
+    if (element.completion) {
+      total += element.completion;
     }
     if (total > limit) {
       idx = index;

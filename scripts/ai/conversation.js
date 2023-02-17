@@ -95,6 +95,16 @@ function NewMessage(conversation_id, user, message) {
   return newid;
 }
 
+function NewMessageObject(message) {
+  //   console.log();
+  if (message.length == 0) {
+    return;
+  }
+  CheckConversationId(message.parent_id);
+
+  let newid = Process("models.ai.message.create", message);
+  return newid;
+}
 /**
  *
  * @returns Array
@@ -120,7 +130,7 @@ function FindConversation() {
  * @param {*} uuid
  * @returns
  *
- * yao-debug run scripts.ai.conversation.FindConversationById 63d7eb9b-ba12-4a70-8624-575dfe53badc
+ * yao-debug run scripts.ai.conversation.FindConversationById d9a78a11-6890-46db-87e3-874ca25bdf93
  */
 function FindConversationById(uuid) {
   //   CheckConversationId(uuid);
@@ -129,7 +139,7 @@ function FindConversationById(uuid) {
     withs: {
       messages: {
         query: {
-          select: ["id", "message", "user"],
+          select: [],
           orders: [{ column: "id", option: "desc" }],
           limit: 10,
         },
@@ -154,7 +164,7 @@ function FindConversationById(uuid) {
  * @returns
  *
  *
- * yao-debug run scripts.ai.conversation.FindMessage 63d7eb9b-ba12-4a70-8624-575dfe53badc
+ * yao-debug run scripts.ai.conversation.FindMessage d9a78a11-6890-46db-87e3-874ca25bdf93
  */
 function FindMessage(uuid) {
   CheckConversationId(uuid);
@@ -163,7 +173,7 @@ function FindMessage(uuid) {
     withs: {
       messages: {
         query: {
-          select: ["id", "message", "user"],
+          select: [],
           orders: [{ column: "id", option: "desc" }],
           limit: 10,
         },

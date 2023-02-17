@@ -31,7 +31,7 @@ body {
   flex-direction: column;
   place-items: center;
   min-width: 320px;
-  /* height: 100%; */
+  height: 100vh;
   height: var(--viewport-height)
 }
 

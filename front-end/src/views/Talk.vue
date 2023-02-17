@@ -11,12 +11,12 @@
       <div v-for="item in contentDiv">
         <div v-if="item.right">
           <div
-            v-if="item.showAvartar"
             style="
               display: flex;
               justify-content: flex-end;
               align-items: center;
             "
+            v-if="item.showAvartar"
           >
             <div class="name_right">
               <p style="font-size: 0.5rem; color: #9b9b9b">{{ item.time }}</p>
@@ -30,7 +30,8 @@
           </div>
 
           <div class="content_right">
-            <pre>{{ item.content }}</pre>
+            <pre class="content">{{ item.content }}</pre>
+            <!-- <div class="content" v-html="item.content"></div> -->
           </div>
         </div>
         <div v-if="!item.right">
@@ -52,7 +53,8 @@
           </div>
 
           <div class="content_left">
-            <pre>{{ item.content }}</pre>
+            <pre class="content">{{ item.content }}</pre>
+            <!-- <div class="content" v-html="item.content"></div> -->
           </div>
         </div>
       </div>
@@ -61,14 +63,12 @@
     <div class="talk-message">
       <div class="talk-message-content">
         <a-textarea
+          ref="textarea"
           id="textinput"
-          style="overflow-y: hidden"
           v-model:value="textarea"
-          resize="none"
-          type="textarea"
+          autoSize
           :rows="1"
-          @keypress.enter.prevent="submit"
-          oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
+          @keydown.enter.exact.prevent="submit()"
         ></a-textarea>
       </div>
       <div class="talk-message-send">
@@ -80,7 +80,7 @@
 
 <script lang="ts">
 import "../assets/talk.css";
-
+// import { marked } from "marked";
 interface Content {
   name: String;
   url: String;
@@ -104,16 +104,15 @@ export default {
       show: false,
       flag: true,
       closeChat: this.close,
-
-      session_id: "",
+      sessionId: "",
     };
   },
   created() {
     let item = localStorage.getItem("session_id");
     if (item) {
-      this.session_id = item;
+      this.sessionId = item;
 
-      let message = localStorage.getItem(this.session_id);
+      let message = localStorage.getItem(this.sessionId);
       if (message) {
         this.contentDiv = JSON.parse(message);
       }
@@ -132,32 +131,26 @@ export default {
         box.scrollTop = box.scrollHeight;
       });
     },
-    sendInfo() {
-      alert("aaa");
-    },
-    isShow() {
-      // this.emotionIsShow = !this.emotionIsShow;
-    },
-    iptFocus() {},
 
     clear() {
-      if (this.session_id) {
-        localStorage.removeItem(this.session_id);
+      if (this.sessionId) {
+        localStorage.removeItem(this.sessionId);
         localStorage.removeItem("session_id");
-        this.contentDiv = [];
-        this.session_id = "";
       }
+      this.contentDiv = [];
+      this.sessionId = "";
     },
+
     /**
      * 用户点击提问
      */
     async submit() {
       let prompt = this.textarea;
-      // console.log("content:", a);
+      if (prompt.trim().length == 0) {
+        return;
+      }
       this.textarea = "";
-      let inputbox = this.$el.querySelector("#textinput");
-      inputbox.style.height = "";
-      // inputbox.style.height = inputbox.scrollHeight + "px";
+      // let inputbox = this.$el.querySelector("#textinput");
       let showAvartar = false;
       if (this.contentDiv.length == 0) {
         showAvartar = true;
@@ -187,28 +180,27 @@ export default {
       this.save();
     },
     save() {
-      if (this.session_id) {
-        localStorage.setItem(this.session_id, JSON.stringify(this.contentDiv));
+      if (this.sessionId) {
+        localStorage.setItem(this.sessionId, JSON.stringify(this.contentDiv));
       }
     },
 
     async ask(q: string): Promise<string> {
       //对数据进行缓存
-
       const response = await fetch(`/api/ai/ask`, {
         method: "POST",
         body: JSON.stringify({
           prompt: q,
-          session_id: this.session_id,
+          session_id: this.sessionId,
         }),
         headers: { "Content-Type": "application/json" },
       });
 
       let data = await response.json();
       // data = data.replace(/^\s*\n/, "");
-      if (data.session_id && (!this.session_id || !this.session_id.length)) {
-        this.session_id = data.session_id;
-        this.saveSession(this.session_id);
+      if (data.session_id && (!this.sessionId || !this.sessionId.length)) {
+        this.sessionId = data.session_id;
+        this.saveSession(this.sessionId);
       }
 
       return data.message;

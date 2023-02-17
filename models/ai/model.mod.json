@@ -15,13 +15,58 @@
             "label": "模型标识",
             "type": "string",
             "nullable": false,
+            "unique": true,
             "index": true
+        },
+        {
+            "name": "title",
+            "label": "标题",
+            "type": "string"
+        },
+        {
+            "name": "Remark",
+            "label": "备注",
+            "type": "string"
+        },
+        {
+            "name": "score",
+            "label": "评分",
+            "type": "integer"
         },
         {
             "name": "object",
             "label": "类型",
             "type": "string",
             "nullable": false
+        },
+        {
+            "label": "状态",
+            "comment": "Status",
+            "name": "status",
+            "type": "enum",
+            "default": "enabled",
+            "option": [
+                "enabled",
+                "disabled"
+            ],
+            "index": true,
+            "validations": [
+                {
+                    "method": "typeof",
+                    "args": [
+                        "string"
+                    ],
+                    "message": "{{input}} Error, {{label}} should be string"
+                },
+                {
+                    "method": "enum",
+                    "args": [
+                        "enabled",
+                        "disabled"
+                    ],
+                    "message": "{{input}} Error, {{label}} should be enabled/disabled"
+                }
+            ]
         },
         {
             "name": "owned_by",
