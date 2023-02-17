@@ -46,7 +46,7 @@ function Call(message) {
     if (data) {
       conversationId = data.id;
       session_id = data.uuid;
-      newMessages = data.messages;
+      newMessages = data.messages || [];
     }
   }
   setting.user_nickname = setting.user_nickname || "用户";
@@ -185,9 +185,9 @@ function Call(message) {
     object: reply.data.object,
   };
 
-  Process("scripts.ai.conversation.NewMessageObject", new_message);
+  let newId = Process("scripts.ai.conversation.NewMessageObject", new_message);
 
-  // console.log("res:\n" + answer);
+  // console.log("newId:" + newId);
   // Process(
   //   "scripts.ai.conversation.NewMessage",
   //   conversationId,
