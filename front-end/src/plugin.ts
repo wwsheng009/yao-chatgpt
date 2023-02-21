@@ -14,6 +14,7 @@ import {
   // Dropdown,
   // Form,
   Input,
+  Switch,
   // Layout,
   // Menu,
   // Popconfirm,
@@ -32,6 +33,7 @@ export function setupComponents(app: App<Element>) {
     .use(Avatar)
     // .use(Breadcrumb)
     .use(Button)
+    .use(Switch)
     // .use(Card)
     // .use(Col)
     // .use(DatePicker)

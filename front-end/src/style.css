@@ -12,6 +12,10 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --bg-color: #fafafa;
+  --text-color: #010101;
+  /* --bg-color: #213547; */
 }
 
 a {
@@ -25,18 +29,17 @@ a:hover {
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  place-items: center;
-  min-width: 320px;
   height: 100vh;
-  height: var(--viewport-height)
+  height: var(--viewport-height);
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
 }
 
-body {
-  background-color: #F1F1F1;
+#app {
+  height: 100%;
+  width: 100%;
 }
 
 h1 {
@@ -83,4 +86,19 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.light-theme {
+  --bg-color: #e5e2e274;
+  --text-color: #000000;
+  color: #000000;
+  background-color: var(--bg-color);
+}
+
+.dark-theme {
+
+  --bg-color: #213547;
+  --text-color: #FFF;
+  color: var(--text-color);
+  background-color: var(--bg-color);
 }

@@ -17,8 +17,8 @@
 }
 
 .content_right .content {
-    background-color: #1AAD19;
-    color: white;
+    /* background-color: #1AAD19;
+    color: white; */
     max-width: 90%;
     padding: 10px;
     border-radius: 10px;
@@ -32,6 +32,23 @@
     /* Opera 7 */
     word-wrap: break-word;
     /* Internet Explorer 5.5+ */
+}
+
+.dark-theme .content_right .content {
+    background-color: #1AAD19;
+    color: rgb(255, 255, 255);
+
+}
+
+.dark-theme .input-area {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.light-theme .content_right .content {
+    background-color: #1AAD19;
+    color: rgb(252, 252, 252);
+
 }
 
 .content_left {
@@ -46,7 +63,7 @@
 
 .content_left .content {
     /* word-wrap: break-word; */
-    background-color: #ffffff;
+    /* background-color: #9d9d9d; */
     max-width: 90%;
     padding: 10px;
     border-radius: 10px;
@@ -61,6 +78,16 @@
     /* Opera 7 */
     word-wrap: break-word;
     /* Internet Explorer 5.5+ */
+}
+
+.dark-theme .content_left .content {
+    background-color: #9d9d9d;
+    color: white;
+}
+
+.light-theme .content_left .content {
+    background-color: #ffffff;
+    color: rgb(2, 2, 2);
 }
 
 .url_right {
@@ -87,8 +114,6 @@
     border-width: 1px;
     background-clip: padding-box;
 }
-
-
 
 ::-webkit-scrollbar-track {
     /*滚动条里面轨道*/
@@ -208,8 +233,6 @@
 }
 
 .talk-message-send {
-    /* padding-top: 20px; */
-
     margin: 0 0 0 10px;
     cursor: pointer;
 }
@@ -228,17 +251,18 @@
 }
 
 .talk-message-clear {
-
     margin: 0 0 0 10px;
     cursor: pointer;
 }
 
 .talk-message-clear button {
-    margin: 5px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    margin-left: 5px;
+    margin-right: 5px;
     border: none;
     border-radius: 4px;
     background-color: #b5b6b5;
-    color: #fff;
     cursor: pointer;
 }
 

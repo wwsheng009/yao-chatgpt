@@ -1,10 +1,13 @@
 <template>
-  <!-- <div id="nav"></div> -->
-  <router-view />
+  <div class="wrap">
+    <router-view />
+  </div>
 </template>
 <script lang="ts">
 export default {
   components: {},
+  data() {},
+
   created() {
     this.changeHeightEventHandler();
 
@@ -27,12 +30,11 @@ export default {
 };
 </script>
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+.wrap {
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  min-width: 320px;
   height: 100%;
   max-width: 1280px;
   margin: 0 auto;
@@ -42,7 +44,7 @@ export default {
 }
 
 @media only screen and (max-width: 980px) {
-  #app {
+  .wrap {
     padding: 0.5rem;
   }
 }

@@ -15,24 +15,24 @@ function Server(payload) {
   const type = payload.type;
 
   const method = payload.method;
-  const params = payload.params;
+  const args = payload.args;
   const space = payload.space; //"dsl","script","system"
 
   switch (type) {
     case "Process":
       let localParams = [];
-      if (Array.isArray(params)) {
-        localParams = params;
+      if (Array.isArray(args)) {
+        localParams = args;
       } else {
-        localParams.push(params);
+        localParams.push(args);
       }
       return Process(method, ...localParams);
     case "Query":
       const query = new Query();
-      return query[method](params);
+      return query[method](args);
     case "FileSystem":
       const fs = new FS(space);
-      return fs[method](...params);
+      return fs[method](...args);
     case "Store":
       const cache = new Store(space);
       if (method == "Set") {
@@ -41,10 +41,10 @@ function Server(payload) {
         return cache.Get(payload.key);
       }
     case "Http":
-      return http[method](...params);
+      return http[method](...args);
     case "Log":
-      // console.log("Log params:", params);
-      log[method](...params);
+      // console.log("Log args:", args);
+      log[method](...args);
       return {};
     case "WebSocket":
       //目前yao只是实现了push一个方法，也是ws服务连接后push一条信息
@@ -53,6 +53,8 @@ function Server(payload) {
         ws.push(payload.message);
         return {};
       }
+    case "Translate":
+      return $L(payload.message);
     default:
       break;
   }
@@ -76,7 +78,7 @@ function testProcess2() {
   let RequestBody = {
     type: "Process",
     method: "utils.str.Concat",
-    params: ["name:", "value"],
+    args: ["name:", "value"],
   };
   const res = Main(RequestBody);
   console.log(res);
@@ -90,7 +92,7 @@ function testProcess3() {
   let RequestBody = {
     type: "Process",
     method: "utils.fmt.Print",
-    params: new Date(),
+    args: new Date(),
   };
   const res = Main(RequestBody);
   console.log(res);

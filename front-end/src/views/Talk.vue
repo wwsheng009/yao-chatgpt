@@ -3,6 +3,11 @@
     <div class="talk-header">
       <div class="talk-message-title">智能AI对话</div>
       <div class="talk-message-clear">
+        <a-switch
+          checked-children="暗"
+          un-checked-children="亮"
+          v-model:checked="isDarkTheme"
+        />
         <a-button type="text" @click="clear">新会话</a-button>
       </div>
     </div>
@@ -63,6 +68,7 @@
     <div class="talk-message">
       <div class="talk-message-content">
         <a-textarea
+          class="input-area"
           ref="textarea"
           id="textinput"
           v-model:value="textarea"
@@ -98,6 +104,7 @@ export default {
 
   data() {
     return {
+      isDarkTheme: false,
       contentDiv: [] as Content[],
       textarea: "",
       right: true,
@@ -108,6 +115,9 @@ export default {
     };
   },
   created() {
+    let dark_theme = localStorage.getItem("dark_theme");
+    this.isDarkTheme = dark_theme == "dark" ? true : false;
+
     let item = localStorage.getItem("session_id");
     if (item) {
       this.sessionId = item;
@@ -118,6 +128,31 @@ export default {
       }
     }
   },
+  watch: {
+    isDarkTheme: {
+      handler(newVal, oldVal) {
+        if (oldVal == undefined) {
+          return;
+        }
+        localStorage.setItem("dark_theme", this.isDarkTheme ? "dark" : "light");
+        if (this.isDarkTheme) {
+          //  document.documentElement.style.setProperty("--bg-color", "#213547");
+          //  document.documentElement.style.setProperty("--text-color", "#FFF");
+          document.body.classList.remove("light-theme");
+          document.body.classList.add("dark-theme");
+        } else {
+          //  document.documentElement.style.setProperty("--bg-color", "#ffffff");
+          //  document.documentElement.style.setProperty("--text-color", "#000000");
+          document.body.classList.remove("dark-theme");
+          document.body.classList.add("light-theme");
+        }
+        // console.log(newVal, oldVal);
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
+
   mounted() {
     this.scrollToBottom();
   },
