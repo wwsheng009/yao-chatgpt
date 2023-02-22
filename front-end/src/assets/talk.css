@@ -81,13 +81,13 @@
 }
 
 .dark-theme .content_left .content {
-    background-color: #9d9d9d;
+    background-color: #113f53;
     color: white;
 }
 
 .light-theme .content_left .content {
-    background-color: #ffffff;
-    color: rgb(2, 2, 2);
+    background-color: #ececec;
+    color: #000000;
 }
 
 .url_right {
@@ -109,7 +109,7 @@
 ::-webkit-scrollbar-thumb {
     border-radius: 0;
     border-style: dashed;
-    background-color: #DCE1E6;
+    background-color: var(--bg-scrollbar-color);
     border-color: #e2242400;
     border-width: 1px;
     background-clip: padding-box;
@@ -119,7 +119,7 @@
     /*滚动条里面轨道*/
     -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
     /*border-radius: 10px;*/
-    background: white;
+    background: var(--bg-color);
 }
 
 ::-webkit-scrollbar-thumb:hover {

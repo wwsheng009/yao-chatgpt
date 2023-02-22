@@ -4,7 +4,7 @@ import router from "./router";
 // import Antd from "ant-design-vue";
 
 import "ant-design-vue/dist/antd.css";
-import "./style.css";
+import "./assets/style.css";
 import { setupComponents } from "./plugin";
 
 const app = createApp(App);

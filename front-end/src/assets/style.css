@@ -89,7 +89,8 @@ button:focus-visible {
 }
 
 .light-theme {
-  --bg-color: #e5e2e274;
+  --bg-color: #ffffff;
+  --bg-scrollbar-color: #cdd0d2;
   --text-color: #000000;
   color: #000000;
   background-color: var(--bg-color);
@@ -98,6 +99,7 @@ button:focus-visible {
 .dark-theme {
 
   --bg-color: #213547;
+  --bg-scrollbar-color: #446480;
   --text-color: #FFF;
   color: var(--text-color);
   background-color: var(--bg-color);
