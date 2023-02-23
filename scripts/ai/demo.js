@@ -1,4 +1,4 @@
-const { Process } = require("../../remote-debug");
+// const { Process } = require("../../remote-debug");
 // console.log(global);
 function Main() {
   let setting = GetSetting();
@@ -19,4 +19,4 @@ function GetSetting() {
   });
   return setting[0];
 }
-Main();
+// Main();

@@ -5,3 +5,5 @@ temp.json
 node_modules
 data
 dist
+apis/proxy.http.json
+scripts/jsproxy.js

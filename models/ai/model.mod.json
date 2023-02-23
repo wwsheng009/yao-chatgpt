@@ -15,7 +15,6 @@
             "label": "模型标识",
             "type": "string",
             "nullable": false,
-            "unique": true,
             "index": true
         },
         {

@@ -15,14 +15,12 @@
       "label": "提问",
       "type": "string",
       "length": 1024,
-      "index": true,
       "nullable": false
     },
     {
       "name": "answer",
       "label": "回答",
       "type": "text",
-      "index": true,
       "nullable": false
     }
   ],
