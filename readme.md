@@ -47,6 +47,7 @@ A123456p+
 
 ## 读取所有的 openai 的模型列表到本地
 
+非必要，
 ```
 yao run scripts.ai.model.UpdateModel
 
@@ -58,6 +59,20 @@ yao run scripts.ai.model.UpdateModel
 
 ```sh
 yao run scripts.utils.user.ResetAdmin 18012341234 xxx@qq.com Abcd1234+
+```
+
+## 更新 api token
+
+```sh
+yao run models.ai.setting.Update 1 '::{"api_token":"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"}'
+```
+
+## 测试 api 接口
+
+```sh
+yao run scripts.ai.chatgpt.Call '::{"prompt":"你好"}'
+yao run models.ai.conversation.get '::{}'
+yao run models.ai.message.get '::{}'
 ```
 
 ## 贡献者
