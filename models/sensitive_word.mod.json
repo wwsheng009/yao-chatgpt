@@ -1,0 +1,28 @@
+{
+  "name": "::Sensitive Word",
+  "table": {
+    "name": "sensitive_word",
+    "label": "敏感词"
+  },
+  "columns": [
+    {
+      "name": "id",
+      "label": "ID",
+      "type": "ID"
+    },
+    {
+      "name": "word",
+      "label": "敏感词",
+      "type": "string",
+      "nullable": false,
+      "index": true
+    }
+  ],
+  "relations": {},
+  "values": [],
+  "indexes": [],
+  "option": {
+    "timestamps": true,
+    "soft_deletes": false
+  }
+}

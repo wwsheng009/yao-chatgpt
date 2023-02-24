@@ -1,0 +1,12 @@
+{
+  "name": "::Sensitive Word",
+  "action": {
+    "bind": {
+      "model": "sensitive_word",
+      "option": {
+        "form": "sensitive_word",
+        "withs": {}
+      }
+    }
+  }
+}
