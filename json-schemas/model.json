@@ -1,0 +1,518 @@
+{
+  "$ref": "#/definitions/YaoModel.ModelDSL",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "YaoModel.Column": {
+      "additionalProperties": false,
+      "properties": {
+        "comment": {
+          "description": "字段注释，对应数据表中字段注释",
+          "type": "string"
+        },
+        "crypt": {
+          "description": "字段加密存储方式。许可值 `AES(MySQL Only)`, `PASSWORD`",
+          "type": "string"
+        },
+        "default": {
+          "description": "String\\|Integer\\|Float|字段默认值"
+        },
+        "default_raw": {
+          "description": "字段默认值，支持数据库函数，如 `NOW()` default 和 default_raw 同时存在 default_raw 优先级高",
+          "type": "string"
+        },
+        "description": {
+          "description": "字段介绍，可用于开发平台中呈现",
+          "type": "string"
+        },
+        "example": {},
+        "generate": {
+          "description": "Increment, UUID,...",
+          "type": "string"
+        },
+        "index": {
+          "description": "字段是否为索引，默认为 false",
+          "type": "boolean"
+        },
+        "label": {
+          "description": "字段显示名称，用于在管理表单，开发平台等成场景下呈现",
+          "type": "string"
+        },
+        "length": {
+          "description": "字段长度，对 `string` 等类型字段有效",
+          "type": "number"
+        },
+        "model": {
+          "$ref": "#/definitions/YaoModel.ModelDSL",
+          "description": "模型元数据"
+        },
+        "name": {
+          "description": "字段名称，对应数据表中字段名称",
+          "type": "string"
+        },
+        "nullable": {
+          "description": "字段是否可以为空，默认为 false",
+          "type": "boolean"
+        },
+        "option": {
+          "description": "字段许可值，对 `enum` 类型字段有效",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "precision": {
+          "description": "字段位数(含小数位)，对 `float`、`decimal` 等类型字段有效",
+          "type": "number"
+        },
+        "primary": {
+          "description": "字段是否为主键，每张表至多一个主键字段。默认为 false",
+          "type": "boolean"
+        },
+        "scale": {
+          "description": "字段小数位位数，对 `float`、`decimal` 等类型字段有效",
+          "type": "number"
+        },
+        "title": {
+          "description": "字段标题，可用于开发平台中呈现",
+          "type": "string"
+        },
+        "type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/YaoModel.ColumnFieldTypeEnum"
+            }
+          ],
+          "description": "字段类型"
+        },
+        "unique": {
+          "description": "字段是否为唯一索引，默认为 false , 如为 true 无需同时将 `index` 设置为 true",
+          "type": "boolean"
+        },
+        "validations": {
+          "description": "字段校验规则",
+          "items": {
+            "$ref": "#/definitions/YaoModel.Validation"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
+    "YaoModel.ColumnFieldTypeEnum": {
+      "enum": [
+        "string",
+        "char",
+        "text",
+        "mediumText",
+        "longText",
+        "binary",
+        "date",
+        "datetime",
+        "datetimeTz",
+        "time",
+        "timeTz",
+        "timestamp",
+        "timestampTz",
+        "tinyInteger",
+        "tinyIncrements",
+        "unsignedTinyInteger",
+        "smallInteger",
+        "smallIncrements",
+        "unsignedSmallInteger",
+        "integer",
+        "increments",
+        "unsignedInteger",
+        "bigInteger",
+        "bigIncrements",
+        "unsignedBigInteger",
+        "id",
+        "ID",
+        "decimal",
+        "unsignedDecimal",
+        "float",
+        "unsignedFloat",
+        "double",
+        "unsignedDouble",
+        "boolean",
+        "enum",
+        "json",
+        "JSON",
+        "jsonb",
+        "JSONB",
+        "uuid",
+        "ipAddress",
+        "macAddress",
+        "year"
+      ],
+      "type": "string"
+    },
+    "YaoModel.Index": {
+      "additionalProperties": false,
+      "properties": {
+        "columns": {
+          "description": "列名",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "comment": {
+          "description": "备注",
+          "type": "string"
+        },
+        "name": {
+          "description": "名称",
+          "type": "string"
+        },
+        "type": {
+          "description": "类型 primary,unique,index,match",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "YaoModel.ModelDSL": {
+      "additionalProperties": false,
+      "description": "模型元数据",
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "columns": {
+          "description": "字段定义",
+          "items": {
+            "$ref": "#/definitions/YaoModel.Column"
+          },
+          "type": "array"
+        },
+        "connector": {
+          "description": "数据表定义",
+          "type": "string"
+        },
+        "indexes": {
+          "description": "索引定义",
+          "items": {
+            "$ref": "#/definitions/YaoModel.Index"
+          },
+          "type": "array"
+        },
+        "name": {
+          "description": "模型中文名称",
+          "type": "string"
+        },
+        "option": {
+          "$ref": "#/definitions/YaoModel.Option",
+          "description": "配置选型"
+        },
+        "relations": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/YaoModel.Relation"
+              },
+              {
+                "not": {}
+              }
+            ]
+          },
+          "description": "映射关系定义",
+          "type": "object"
+        },
+        "table": {
+          "$ref": "#/definitions/YaoModel.Table",
+          "description": "数据表选项"
+        },
+        "values": {
+          "description": "默认数据",
+          "items": {},
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "YaoModel.Option": {
+      "additionalProperties": false,
+      "properties": {
+        "constraints": {
+          "description": "约束定义",
+          "type": "boolean"
+        },
+        "logging": {
+          "description": "__logging_id 字段",
+          "type": "boolean"
+        },
+        "permission": {
+          "description": "__permission 字段",
+          "type": "boolean"
+        },
+        "read_only": {
+          "description": "Ignore the migrate operation",
+          "type": "boolean"
+        },
+        "soft_deletes": {
+          "description": "deleted_at 字段",
+          "type": "boolean"
+        },
+        "timestamps": {
+          "description": "created_at, updated_at 字段",
+          "type": "boolean"
+        },
+        "trackings": {
+          "description": "created_by, updated_by, deleted_by 字段",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "YaoModel.Relation": {
+      "additionalProperties": false,
+      "properties": {
+        "foreign": {
+          "description": "**当前数据模型** 字段的名称，用于关联映射 (关联数据模型.key = 当前数据模型.foreign)",
+          "type": "string"
+        },
+        "key": {
+          "description": "**关联数据模型** 字段的名称，用于关联映射 (关联数据模型.key = 当前数据模型.foreign)",
+          "type": "string"
+        },
+        "links": {
+          "items": {
+            "$ref": "#/definitions/YaoModel.Relation"
+          },
+          "type": "array"
+        },
+        "model": {
+          "description": "**关联数据模型** 名称",
+          "type": "string"
+        },
+        "query": {
+          "$ref": "#/definitions/YaoQueryParam.QueryParam",
+          "description": "**关联数据模型** 的查询条件，可以在查询时重载。 例: `{ \"select\": [\"id\", \"name\"] }`"
+        },
+        "type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/YaoModel.RelationEnum"
+            }
+          ],
+          "description": "与当前数据模型的关系类型. `hasOne` 一对一, `hasMany` 一对多。"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "YaoModel.RelationEnum": {
+      "enum": [
+        "hasOne",
+        "hasMany",
+        "hasOneThrough"
+      ],
+      "type": "string"
+    },
+    "YaoModel.Table": {
+      "additionalProperties": false,
+      "properties": {
+        "charset": {
+          "description": "(MySQL ONLY)",
+          "type": "string"
+        },
+        "collation": {
+          "description": "(MySQL ONLY)",
+          "type": "string"
+        },
+        "comment": {
+          "description": "数据表注释中文名",
+          "type": "string"
+        },
+        "engine": {
+          "description": "数据表引擎(MySQL ONLY) 许可值 `InnoDB`, `MyISAM`",
+          "type": "string"
+        },
+        "name": {
+          "description": "数据表名称，if not setthe default is generate from model name. eg name.space.user, table name is name_space_user",
+          "type": "string"
+        },
+        "prefix": {
+          "description": "表名前缀",
+          "type": "string"
+        },
+        "primaryKeys": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "YaoModel.Validation": {
+      "additionalProperties": false,
+      "properties": {
+        "args": {
+          "description": "校验方法参数，例如 `[20]`, `[\"^1[3-9]\\\\d{9}$\"]`",
+          "items": {},
+          "type": "array"
+        },
+        "message": {
+          "description": "如校验不通过，返回的错误提示。支持使用 `{{<name>}}` 引用字段信息, 如`{{label}}`将被替换为字段 `label`中定义的数值; `{{input}}` 被替换为用户输入数值。",
+          "type": "string"
+        },
+        "method": {
+          "description": "校验方法名称，可选值 `typeof`, `pattern`, `min`,`max`,`enum`,`minLength`,`maxLength`,  `email`,`mobile`\n\ntypeof    | `[<String>]` 许可值 `string`, `integer`, `float`, `number`, `datetime`, `timestamp`\n\nmin       | `[<Integer\\|Float>]`\n\nmax       | `[<Integer\\|Float>]`\n\nenum      | `[String...]`\n\npattern   | `[String]`\n\nminLength | `[<Integer>]`\n\nmaxLength | `[<Integer>]`\n\nemail     | `邮件地址格式username@domain`\n\nmobile    | `[<String>]` 电话",
+          "type": "string"
+        }
+      },
+      "required": [
+        "method"
+      ],
+      "type": "object"
+    },
+    "YaoQueryParam.QueryOrder": {
+      "additionalProperties": false,
+      "description": "QueryOrder Order 查询排序",
+      "properties": {
+        "column": {
+          "description": "字段名称",
+          "type": "string"
+        },
+        "option": {
+          "description": "排序方式， `desc`, `asc`, 默认为 `asc`",
+          "type": "string"
+        },
+        "rel": {
+          "description": "如按关联模型的字段排序，则填写关联模型名称",
+          "type": "string"
+        }
+      },
+      "required": [
+        "column"
+      ],
+      "type": "object"
+    },
+    "YaoQueryParam.QueryParam": {
+      "additionalProperties": false,
+      "description": "QueryParam 数据查询器参数",
+      "properties": {
+        "alias": {
+          "description": "别名",
+          "type": "string"
+        },
+        "export": {
+          "description": "导出数据时的前缀",
+          "type": "string"
+        },
+        "limit": {
+          "description": "Integer                          | 限制返回记录条目",
+          "type": "number"
+        },
+        "model": {
+          "description": "模型名称",
+          "type": "string"
+        },
+        "orders": {
+          "description": "| Array<Object Order\\>             | 排序条件",
+          "items": {
+            "$ref": "#/definitions/YaoQueryParam.QueryOrder"
+          },
+          "type": "array"
+        },
+        "page": {
+          "description": "Integer                          | 当前页码",
+          "type": "number"
+        },
+        "pagesize": {
+          "description": "Integer                          | 每页显示记录数量",
+          "type": "number"
+        },
+        "select": {
+          "description": "| Array<String\\>                   | 选择字段清单",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "table": {
+          "description": "表格名称",
+          "type": "string"
+        },
+        "wheres": {
+          "description": "| Array<Object Where\\>             | 查询条件",
+          "items": {
+            "$ref": "#/definitions/YaoQueryParam.QueryWhere"
+          },
+          "type": "array"
+        },
+        "withs": {
+          "additionalProperties": {
+            "$ref": "#/definitions/YaoQueryParam.QueryWith"
+          },
+          "description": "读取关联模型",
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "YaoQueryParam.QueryWhere": {
+      "additionalProperties": false,
+      "description": "QueryWhere Where 查询条件",
+      "properties": {
+        "column": {
+          "description": "字段名称",
+          "type": "string"
+        },
+        "method": {
+          "description": "查询方法 `where`,`orwhere`, `wherein`, `orwherein`... 默认为 `where`,\n\n| 查询方法 | 说明                                  | | -------- | ------------------------------------- | | where    | WHERE 字段 = 数值, WHERE 字段 >= 数值 | | orwhere  | ... OR WHERE 字段 = 数值              |",
+          "type": "string"
+        },
+        "op": {
+          "description": "匹配关系 `eq`,`like`,`in`,`gt` 等默认为 `eq`\n\n| 匹配关系 | 说明                             | | -------- | -------------------------------- | | eq       | 默认值 等于 WHERE 字段 = 数值    | | like     | 匹配 WHERE 字段 like 数值        | | match    | 匹配 WHERE 字段 全文检索 数值    | | gt       | 大于 WHERE 字段 > 数值           | | ge       | 大于等于 WHERE 字段 >= 数值      | | lt       | 小于 WHERE 字段 < 数值           | | le       | 小于等于 WHERE 字段 <= 数值      | | null     | 为空 WHERE 字段 IS NULL          | | notnull  | 不为空 WHERE 字段 IS NOT NULL    | | in       | 列表包含 WHERE 字段 IN (数值...) | | ne       | 不等于匹配值                     |",
+          "type": "string"
+        },
+        "rel": {
+          "description": "如按关联模型的字段查询，则填写关联模型名称",
+          "type": "string"
+        },
+        "value": {
+          "description": "匹配数值",
+          "type": "string"
+        },
+        "wheres": {
+          "description": "分组查询",
+          "items": {
+            "$ref": "#/definitions/YaoQueryParam.QueryWhere"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "YaoQueryParam.QueryWith": {
+      "additionalProperties": false,
+      "description": "With relations 关联查询",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "query": {
+          "$ref": "#/definitions/YaoQueryParam.QueryParam"
+        }
+      },
+      "required": [
+        "name",
+        "query"
+      ],
+      "type": "object"
+    }
+  }
+}

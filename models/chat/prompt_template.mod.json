@@ -1,0 +1,30 @@
+{
+  "name": "::Prompt Template",
+  "table": {
+    "name": "prompt_template",
+    "comment": "提示模板"
+  },
+  "columns": [
+    {
+      "name": "id",
+      "label": "ID",
+      "type": "ID"
+    },
+    {
+      "name": "title",
+      "label": "提示",
+      "type": "string",
+      "index": true,
+      "nullable": false
+    },
+    {
+      "name": "content",
+      "label": "模板内容",
+      "type": "text"
+    }
+  ],
+  "option": {
+    "timestamps": true,
+    "soft_deletes": false
+  }
+}

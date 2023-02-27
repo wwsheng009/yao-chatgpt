@@ -1,0 +1,106 @@
+{
+  "name": "::Prompt Template",
+  "action": { "bind": { "model": "chat.prompt_template" } },
+  "layout": {
+    "actions": [
+      {
+        "title": "返回",
+        "icon": "icon-arrow-left",
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          { "name": "CloseModal", "type": "Common.closeModal", "payload": {} }
+        ]
+      },
+      {
+        "title": "保存",
+        "icon": "icon-check",
+        "style": "primary",
+        "showWhenAdd": true,
+        "action": [
+          { "name": "Submit", "type": "Form.submit", "payload": {} },
+          { "name": "Back", "type": "Common.closeModal", "payload": {} }
+        ]
+      },
+      {
+        "action": [
+          {
+            "name": "Delete",
+            "payload": { "model": "ai.chatlog" },
+            "type": "Form.delete"
+          },
+          { "name": "Back", "type": "Common.closeModal", "payload": {} }
+        ],
+        "confirm": {
+          "desc": "请确认删除，删除后数据无法恢复",
+          "title": "确认"
+        },
+        "icon": "icon-trash-2",
+        "style": "danger",
+        "title": "Delete"
+      }
+    ],
+    "config": { "full": true },
+    "form": {
+      "sections": [
+        {
+          "columns": [
+            { "name": "ID", "width": 12 },
+            { "name": "提示", "width": 12 },
+            { "name": "模板内容", "width": 24 },
+            { "name": "创建时间", "width": 12 },
+            { "name": "更新时间", "width": 12 }
+          ]
+        }
+      ]
+    },
+
+    "primary": "id"
+  },
+  "fields": {
+    "form": {
+      "ID": {
+        "bind": "id",
+        "edit": {
+          "props": { "disabled": true, "placeholder": "请输入 ID" },
+          "type": "InputNumber"
+        }
+      },
+      "创建时间": {
+        "bind": "created_at",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 创建时间",
+            "showTime": { "format": "HH:mm:ss" }
+          },
+          "type": "DatePicker"
+        }
+      },
+      "提示": {
+        "bind": "title",
+        "edit": { "props": { "placeholder": "请输入 提示" }, "type": "Input" },
+        "view": { "props": {}, "type": "" }
+      },
+      "更新时间": {
+        "bind": "updated_at",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 更新时间",
+            "showTime": { "format": "HH:mm:ss" }
+          },
+          "type": "DatePicker"
+        }
+      },
+      "模板内容": {
+        "bind": "content",
+        "edit": {
+          "props": {
+            "autoSize": { "maxRows": 6, "minRows": 2 },
+            "placeholder": "请输入 模板内容"
+          },
+          "type": "TextArea"
+        }
+      }
+    }
+  }
+}

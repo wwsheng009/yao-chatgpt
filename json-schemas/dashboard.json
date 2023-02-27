@@ -1,0 +1,107 @@
+{
+  "$ref": "#/definitions/YaoDashboard.DashboardDSL",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "GlobalConfig": {
+      "properties": {
+        "full": {
+          "description": "是否满屏显示表格",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "full"
+      ],
+      "type": "object"
+    },
+    "YaoDashboard.ActionDSL": {
+      "additionalProperties": false,
+      "properties": {
+        "after:data": {
+          "$ref": "#/definitions/YaoHook.After"
+        },
+        "before:data": {
+          "$ref": "#/definitions/YaoHook.Before"
+        },
+        "data": {},
+        "setting": {}
+      },
+      "type": "object"
+    },
+    "YaoDashboard.DashboardDSL": {
+      "additionalProperties": false,
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "action": {
+          "$ref": "#/definitions/YaoDashboard.ActionDSL"
+        },
+        "config": {
+          "$ref": "#/definitions/GlobalConfig"
+        },
+        "fields": {
+          "$ref": "#/definitions/YaoDashboard.FieldsDSL"
+        },
+        "id": {
+          "description": "唯一标识",
+          "type": "string"
+        },
+        "layout": {
+          "$ref": "#/definitions/YaoDashboard.LayoutDSL"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "action",
+        "layout",
+        "fields"
+      ],
+      "type": "object"
+    },
+    "YaoDashboard.FieldsDSL": {
+      "additionalProperties": false,
+      "properties": {
+        "dashboard": {},
+        "filter": {}
+      },
+      "type": "object"
+    },
+    "YaoDashboard.FilterLayoutDSL": {
+      "additionalProperties": false,
+      "properties": {
+        "actions": {},
+        "columns": {}
+      },
+      "type": "object"
+    },
+    "YaoDashboard.LayoutDSL": {
+      "additionalProperties": false,
+      "properties": {
+        "actions": {},
+        "dashboard": {
+          "$ref": "#/definitions/YaoDashboard.ViewLayoutDSL"
+        },
+        "filter": {
+          "$ref": "#/definitions/YaoDashboard.FilterLayoutDSL"
+        }
+      },
+      "type": "object"
+    },
+    "YaoDashboard.ViewLayoutDSL": {
+      "additionalProperties": false,
+      "properties": {
+        "columns": {}
+      },
+      "type": "object"
+    },
+    "YaoHook.After": {
+      "type": "string"
+    },
+    "YaoHook.Before": {
+      "type": "string"
+    }
+  }
+}

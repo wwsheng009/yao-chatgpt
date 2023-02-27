@@ -1,0 +1,98 @@
+{
+  "name": "::Sensitive Word",
+  "action": { "bind": { "model": "chat.sensitive_word" } },
+  "layout": {
+    "actions": [
+      {
+        "title": "返回",
+        "icon": "icon-arrow-left",
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          { "name": "CloseModal", "type": "Common.closeModal", "payload": {} }
+        ]
+      },
+      {
+        "title": "保存",
+        "icon": "icon-check",
+        "style": "primary",
+        "showWhenAdd": true,
+        "action": [
+          { "name": "Submit", "type": "Form.submit", "payload": {} },
+          { "name": "Back", "type": "Common.closeModal", "payload": {} }
+        ]
+      },
+      {
+        "action": [
+          {
+            "name": "Delete",
+            "payload": { "model": "ai.chatlog" },
+            "type": "Form.delete"
+          },
+          { "name": "Back", "type": "Common.closeModal", "payload": {} }
+        ],
+        "confirm": {
+          "desc": "请确认删除，删除后数据无法恢复",
+          "title": "确认"
+        },
+        "icon": "icon-trash-2",
+        "style": "danger",
+        "title": "Delete"
+      }
+    ],
+    "config": { "full": true },
+    "form": {
+      "sections": [
+        {
+          "columns": [
+            { "name": "ID", "width": 12 },
+            { "name": "敏感词", "width": 12 },
+            { "name": "创建时间", "width": 12 },
+            { "name": "更新时间", "width": 12 }
+          ]
+        }
+      ]
+    },
+    "name": "敏感词",
+    "primary": "id"
+  },
+  "fields": {
+    "form": {
+      "ID": {
+        "bind": "id",
+        "edit": {
+          "props": { "disabled": true, "placeholder": "请输入 ID" },
+          "type": "InputNumber"
+        }
+      },
+      "创建时间": {
+        "bind": "created_at",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 创建时间",
+            "showTime": { "format": "HH:mm:ss" }
+          },
+          "type": "DatePicker"
+        }
+      },
+      "敏感词": {
+        "bind": "word",
+        "edit": {
+          "props": { "placeholder": "请输入 敏感词" },
+          "type": "Input"
+        },
+        "view": { "props": {}, "type": "" }
+      },
+      "更新时间": {
+        "bind": "updated_at",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 更新时间",
+            "showTime": { "format": "HH:mm:ss" }
+          },
+          "type": "DatePicker"
+        }
+      }
+    }
+  }
+}

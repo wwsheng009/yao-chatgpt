@@ -2,7 +2,7 @@
   "name": "::Sensitive Word",
   "table": {
     "name": "sensitive_word",
-    "label": "敏感词"
+    "comment": "敏感词"
   },
   "columns": [
     {

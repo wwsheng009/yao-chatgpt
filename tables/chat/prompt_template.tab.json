@@ -1,0 +1,144 @@
+{
+  "name": "::Prompt Template",
+  "action": {
+    "bind": {
+      "model": "chat.prompt_template",
+      "option": { "form": "chat.prompt_template", "withs": {} }
+    }
+  },
+  "config": { "full": true },
+  "layout": {
+    "header": { "actions": [], "preset": {} },
+    "primary": "id",
+    "filter": {
+      "actions": [
+        {
+          "action": [
+            {
+              "name": "HistoryPush",
+              "payload": { "pathname": "/x/Form/chat.prompt_template/0/edit" },
+              "type": "Common.historyPush"
+            }
+          ],
+          "icon": "icon-plus",
+          "title": "创建",
+          "width": 3
+        }
+      ],
+      "columns": [{ "name": "提示模板" }]
+    },
+    "table": {
+      "columns": [
+        { "name": "ID", "width": 100 },
+        { "name": "提示", "width": 160 },
+        { "name": "模板内容", "width": 160 },
+        { "name": "创建时间", "width": 160 },
+        { "name": "更新时间", "width": 160 }
+      ],
+      "operation": {
+        "actions": [
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "payload": {
+                  "Form": { "model": "chat.prompt_template", "type": "view" }
+                },
+                "type": "Common.openModal"
+              }
+            ],
+            "icon": "icon-eye",
+            "title": "查看"
+          },
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "payload": {
+                  "Form": { "model": "chat.prompt_template", "type": "edit" }
+                },
+                "type": "Common.openModal"
+              }
+            ],
+            "icon": "icon-edit-2",
+            "title": "编辑"
+          },
+          {
+            "action": [
+              {
+                "name": "Delete",
+                "payload": { "model": "chat.prompt_template" },
+                "type": "Table.delete"
+              }
+            ],
+            "confirm": {
+              "desc": "请确认删除，删除后数据无法恢复",
+              "title": "确认"
+            },
+            "icon": "icon-trash-2",
+            "style": "danger",
+            "title": "Delete"
+          }
+        ],
+        "width": 140
+      },
+      "props": { "scroll": { "x": "max-content" } }
+    }
+  },
+  "fields": {
+    "filter": {},
+    "table": {
+      "ID": {
+        "bind": "id",
+        "edit": {
+          "props": { "disabled": true, "placeholder": "请输入 ID" },
+          "type": "InputNumber"
+        },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "创建时间": {
+        "bind": "created_at",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 创建时间",
+            "showTime": { "format": "HH:mm:ss" }
+          },
+          "type": "DatePicker"
+        },
+        "view": { "props": { "format": "YYYY-MM-DD HH:mm:ss" }, "type": "Text" }
+      },
+      "提示": {
+        "bind": "title",
+        "edit": { "props": { "placeholder": "请输入 提示" }, "type": "Input" },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "更新时间": {
+        "bind": "updated_at",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 更新时间",
+            "showTime": { "format": "HH:mm:ss" }
+          },
+          "type": "DatePicker"
+        },
+        "view": { "props": { "format": "YYYY-MM-DD HH:mm:ss" }, "type": "Text" }
+      },
+      "模板内容": {
+        "bind": "content",
+        "edit": {
+          "props": {
+            "autoSize": { "maxRows": 6, "minRows": 2 },
+            "placeholder": "请输入 模板内容"
+          },
+
+          "type": "TextArea"
+        },
+        "view": {
+          "props": { "title": "模板内容" },
+          "type": "Tooltip",
+          "compute": "scripts.text.Cut"
+        }
+      }
+    }
+  }
+}

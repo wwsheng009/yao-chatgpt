@@ -1,0 +1,135 @@
+{
+  "name": "::Sensitive Word",
+  "action": {
+    "bind": {
+      "model": "chat.sensitive_word",
+      "option": { "form": "chat.sensitive_word", "withs": {} }
+    }
+  },
+  "config": { "full": true },
+  "layout": {
+    "filter": {
+      "actions": [
+        {
+          "action": [
+            {
+              "name": "HistoryPush",
+              "payload": { "pathname": "/x/Form/chat.sensitive_word/0/edit" },
+              "type": "Common.historyPush"
+            }
+          ],
+          "icon": "icon-plus",
+          "title": "创建",
+          "width": 3
+        }
+      ],
+      "columns": [{ "name": "敏感词" }]
+    },
+    "header": { "actions": [], "preset": {} },
+    "primary": "id",
+    "table": {
+      "columns": [
+        { "name": "ID", "width": 100 },
+        { "name": "敏感词", "width": 160 },
+        { "name": "创建时间", "width": 160 },
+        { "name": "更新时间", "width": 160 }
+      ],
+      "operation": {
+        "actions": [
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "payload": {
+                  "Form": { "model": "chat.sensitive_word", "type": "view" }
+                },
+                "type": "Common.openModal"
+              }
+            ],
+            "icon": "icon-eye",
+            "title": "查看"
+          },
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "payload": {
+                  "Form": { "model": "chat.sensitive_word", "type": "edit" }
+                },
+                "type": "Common.openModal"
+              }
+            ],
+            "icon": "icon-edit-2",
+            "title": "编辑"
+          },
+          {
+            "action": [
+              {
+                "name": "Delete",
+                "payload": { "model": "chat.sensitive_word" },
+                "type": "Table.delete"
+              }
+            ],
+            "confirm": {
+              "desc": "请确认删除，删除后数据无法恢复",
+              "title": "确认"
+            },
+            "icon": "icon-trash-2",
+            "style": "danger",
+            "title": "Delete"
+          }
+        ],
+        "width": 140
+      },
+      "props": { "scroll": { "x": "max-content" } }
+    }
+  },
+  "fields": {
+    "filter": {
+      "敏感词": {
+        "bind": "where.word.match",
+        "edit": { "props": { "placeholder": "请输入 敏感词" }, "type": "Input" }
+      }
+    },
+    "table": {
+      "ID": {
+        "bind": "id",
+        "edit": {
+          "props": { "disabled": true, "placeholder": "请输入 ID" },
+          "type": "InputNumber"
+        },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "创建时间": {
+        "bind": "created_at",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 创建时间",
+            "showTime": { "format": "HH:mm:ss" }
+          },
+          "type": "DatePicker"
+        },
+        "view": { "props": { "format": "YYYY-MM-DD HH:mm:ss" }, "type": "Text" }
+      },
+      "敏感词": {
+        "bind": "word",
+        "edit": {
+          "props": { "placeholder": "请输入 敏感词" },
+          "type": "Input"
+        },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "更新时间": {
+        "bind": "updated_at",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 更新时间",
+            "showTime": { "format": "HH:mm:ss" }
+          },
+          "type": "DatePicker"
+        },
+        "view": { "props": { "format": "YYYY-MM-DD HH:mm:ss" }, "type": "Text" }
+      }
+    }
+  }
+}
