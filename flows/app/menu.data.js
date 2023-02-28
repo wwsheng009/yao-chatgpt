@@ -23,9 +23,9 @@ function main() {
       id: 2,
       blocks: 0,
       icon: "icon-message-square",
-      name: "聊天记录",
+      name: "聊天会话",
       parent: null,
-      path: "/x/Table/ai.chatlog",
+      path: "/x/Table/chat.conversation_simple",
       visible_menu: 1,
       children: [
         {
@@ -34,7 +34,7 @@ function main() {
           icon: "message-circle",
           name: "会话",
           parent: null,
-          path: "/x/Table/chat.conversation",
+          path: "/x/Table/chat.conversation_simple",
           visible_menu: 1,
         },
         {
@@ -43,7 +43,7 @@ function main() {
           icon: "icon-coffee",
           name: "消息",
           parent: null,
-          path: "/x/Table/chat.message",
+          path: "/x/Table/chat.message_simple",
           visible_menu: 1,
         },
       ],

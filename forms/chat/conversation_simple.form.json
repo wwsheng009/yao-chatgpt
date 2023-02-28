@@ -44,14 +44,11 @@
       "sections": [
         {
           "columns": [
-            { "name": "ID", "width": 12 },
+            { "name": "ID", "width": 6 },
+            { "name": "创建时间", "width": 6 },
             { "name": "会话ID", "width": 12 },
-            { "name": "标题", "width": 12 },
-            { "name": "描述", "width": 12 },
-            { "name": "API设置", "width": 12 },
-            { "name": "创建时间", "width": 12 },
-            { "name": "更新时间", "width": 12 },
-            { "name": "会话列表", "width": 24 }
+            { "name": "标题", "width": 24 },
+            { "name": "消息列表", "width": 24 }
           ]
         }
       ]
@@ -60,13 +57,6 @@
   },
   "fields": {
     "form": {
-      "API设置": {
-        "bind": "api_setting",
-        "edit": {
-          "props": { "placeholder": "请输入 API设置" },
-          "type": "InputNumber"
-        }
-      },
       "ID": {
         "bind": "id",
         "edit": {
@@ -92,37 +82,25 @@
           "type": "DatePicker"
         }
       },
-      "描述": {
-        "bind": "description",
-        "edit": { "props": { "placeholder": "请输入 描述" }, "type": "Input" },
-        "view": { "props": {}, "type": "" }
-      },
-      "更新时间": {
-        "bind": "updated_at",
-        "edit": {
-          "props": {
-            "placeholder": "请选择 更新时间",
-            "showTime": { "format": "HH:mm:ss" }
-          },
-          "type": "DatePicker"
-        }
-      },
       "标题": {
         "bind": "title",
         "edit": { "props": { "placeholder": "请输入 标题" }, "type": "Input" },
         "view": { "props": {}, "type": "Text" }
       },
-      "会话列表": {
+      "消息列表": {
         "edit": {
           "props": {
-            "model": "chat.message",
+            "model": "chat.message_simple",
             "query": {
               "where.conversation_id.eq": "{{id}}"
             }
           },
           "type": "Table"
         },
-        "view": { "props": { "model": "chat.message" }, "type": "table" }
+        "view": {
+          "props": { "model": "chat.message_simple" },
+          "type": "table"
+        }
       }
     }
   },
