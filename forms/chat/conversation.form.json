@@ -1,0 +1,117 @@
+{
+  "name": "::AI Conversation",
+  "action": { "bind": { "model": "chat.conversation", "option": {} } },
+  "layout": {
+    "actions": [
+      {
+        "title": "返回",
+        "icon": "icon-arrow-left",
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          { "name": "CloseModal", "type": "Common.closeModal", "payload": {} }
+        ]
+      },
+      {
+        "title": "保存",
+        "icon": "icon-check",
+        "style": "primary",
+        "showWhenAdd": true,
+        "action": [
+          { "name": "Submit", "type": "Form.submit", "payload": {} },
+          { "name": "Back", "type": "Common.closeModal", "payload": {} }
+        ]
+      },
+      {
+        "action": [
+          {
+            "name": "Delete",
+            "payload": { "model": "ai.chatlog" },
+            "type": "Form.delete"
+          },
+          { "name": "Back", "type": "Common.closeModal", "payload": {} }
+        ],
+        "confirm": {
+          "desc": "请确认删除，删除后数据无法恢复",
+          "title": "确认"
+        },
+        "icon": "icon-trash-2",
+        "style": "danger",
+        "title": "Delete"
+      }
+    ],
+    "form": {
+      "sections": [
+        {
+          "columns": [
+            { "name": "ID", "width": 12 },
+            { "name": "会话ID", "width": 12 },
+            { "name": "标题", "width": 12 },
+            { "name": "描述", "width": 12 },
+            { "name": "API设置", "width": 12 },
+            { "name": "创建时间", "width": 12 },
+            { "name": "更新时间", "width": 12 }
+          ]
+        }
+      ]
+    },
+    "primary": "id"
+  },
+  "fields": {
+    "form": {
+      "API设置": {
+        "bind": "api_setting",
+        "edit": {
+          "props": { "placeholder": "请输入 API设置" },
+          "type": "InputNumber"
+        }
+      },
+      "ID": {
+        "bind": "id",
+        "edit": {
+          "props": { "disabled": true, "placeholder": "请输入 ID" },
+          "type": "InputNumber"
+        }
+      },
+      "会话ID": {
+        "bind": "uuid",
+        "edit": {
+          "props": { "placeholder": "请输入 会话ID" },
+          "type": "Input"
+        },
+        "view": { "props": {}, "type": "" }
+      },
+      "创建时间": {
+        "bind": "created_at",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 创建时间",
+            "showTime": { "format": "HH:mm:ss" }
+          },
+          "type": "DatePicker"
+        }
+      },
+      "描述": {
+        "bind": "description",
+        "edit": { "props": { "placeholder": "请输入 描述" }, "type": "Input" },
+        "view": { "props": {}, "type": "" }
+      },
+      "更新时间": {
+        "bind": "updated_at",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 更新时间",
+            "showTime": { "format": "HH:mm:ss" }
+          },
+          "type": "DatePicker"
+        }
+      },
+      "标题": {
+        "bind": "title",
+        "edit": { "props": { "placeholder": "请输入 标题" }, "type": "Input" },
+        "view": { "props": {}, "type": "" }
+      }
+    }
+  },
+  "config": { "full": true }
+}

@@ -16,7 +16,7 @@ function Callq(message) {
  * yao-debug run scripts.ai.chatgpt.Call '::{"prompt":"可以帮我找一下python学习资源吗","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
  * yao-debug run scripts.ai.chatgpt.Call '::{"prompt":"廖雪峰的Python教程","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
  *
- *  yao-debug run scripts.ai.conversation.FindConversationById "938d58a4-b976-46b8-a342-7644a2566476"
+ *  yao-debug run scripts.chat.conversation.FindConversationById "938d58a4-b976-46b8-a342-7644a2566476"
  */
 /**
  * 处理post请求，并调用chatgpt接口
@@ -42,7 +42,7 @@ function Call(message) {
   let newMessages = [];
   if (session_id !== undefined) {
     const data = Process(
-      "scripts.ai.conversation.FindConversationById",
+      "scripts.chat.conversation.FindConversationById",
       session_id
     );
     if (data) {
@@ -66,7 +66,7 @@ function Call(message) {
 
   if (conversationId < 0) {
     const { uuid, id } = Process(
-      "scripts.ai.conversation.NewConversation",
+      "scripts.chat.conversation.NewConversation",
       ask
     );
     session_id = uuid;
@@ -75,7 +75,7 @@ function Call(message) {
 
   //   return;
   // Process(
-  //   "scripts.ai.conversation.NewMessage",
+  //   "scripts.chat.conversation.NewMessage",
   //   conversationId,
   //   endUserName,
   //   ask
@@ -168,7 +168,7 @@ function Call(message) {
   answer = answer.replace(/^\s*\n/, "");
 
   let new_message = {
-    parent_id: conversationId,
+    conversation_id: conversationId,
     ai_user: aiUserName,
     end_user: endUserName,
     prompt: ask,
@@ -187,11 +187,14 @@ function Call(message) {
     object: reply.data.object,
   };
 
-  let newId = Process("scripts.ai.conversation.NewMessageObject", new_message);
+  let newId = Process(
+    "scripts.chat.conversation.NewMessageObject",
+    new_message
+  );
 
   // console.log("newId:" + newId);
   // Process(
-  //   "scripts.ai.conversation.NewMessage",
+  //   "scripts.chat.conversation.NewMessage",
   //   conversationId,
   //   chatGptName,
   //   answer

@@ -1,0 +1,190 @@
+{
+  "name": "::AI Conversation Message",
+  "action": { "bind": { "model": "chat.message", "option": {} } },
+  "layout": {
+    "actions": [
+      {
+        "title": "返回",
+        "icon": "icon-arrow-left",
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          { "name": "CloseModal", "type": "Common.closeModal", "payload": {} }
+        ]
+      },
+      {
+        "title": "保存",
+        "icon": "icon-check",
+        "style": "primary",
+        "showWhenAdd": true,
+        "action": [
+          { "name": "Submit", "type": "Form.submit", "payload": {} },
+          { "name": "Back", "type": "Common.closeModal", "payload": {} }
+        ]
+      },
+      {
+        "action": [
+          {
+            "name": "Delete",
+            "payload": { "model": "ai.chatlog" },
+            "type": "Form.delete"
+          },
+          { "name": "Back", "type": "Common.closeModal", "payload": {} }
+        ],
+        "confirm": {
+          "desc": "请确认删除，删除后数据无法恢复",
+          "title": "确认"
+        },
+        "icon": "icon-trash-2",
+        "style": "danger",
+        "title": "Delete"
+      }
+    ],
+    "form": {
+      "sections": [
+        {
+          "columns": [
+            { "name": "ID", "width": 12 },
+            { "name": "会话ID", "width": 12 },
+            { "name": "模型", "width": 12 },
+            { "name": "对象", "width": 12 },
+            { "name": "AI", "width": 12 },
+            { "name": "用户", "width": 12 },
+            { "name": "发送的消息", "width": 24 },
+            { "name": "回复的消息", "width": 24 },
+            { "name": "prompt消息长度", "width": 12 },
+            { "name": "completion消息长度", "width": 12 },
+            { "name": "回复Token数量", "width": 12 },
+            { "name": "提问Token数量", "width": 12 },
+            { "name": "总Token数量", "width": 12 },
+            { "name": "请求时间(秒)", "width": 12 },
+            { "name": "创建时间", "width": 12 },
+            { "name": "更新时间", "width": 12 }
+          ]
+        }
+      ]
+    },
+    "primary": "id"
+  },
+  "fields": {
+    "form": {
+      "AI": {
+        "bind": "ai_user",
+        "edit": { "props": { "placeholder": "请输入 AI" }, "type": "Input" },
+        "view": { "props": {}, "type": "" }
+      },
+      "ID": {
+        "bind": "id",
+        "edit": {
+          "props": { "disabled": true, "placeholder": "请输入 ID" },
+          "type": "InputNumber"
+        }
+      },
+      "completion消息长度": {
+        "bind": "completion_len",
+        "edit": {
+          "props": { "placeholder": "请输入 completion消息长度" },
+          "type": "InputNumber"
+        }
+      },
+      "prompt消息长度": {
+        "bind": "prompt_len",
+        "edit": {
+          "props": { "placeholder": "请输入 prompt消息长度" },
+          "type": "InputNumber"
+        }
+      },
+      "会话ID": {
+        "bind": "conversation_id",
+        "edit": {
+          "props": { "placeholder": "请输入 会话ID" },
+          "type": "InputNumber"
+        }
+      },
+      "创建时间": {
+        "bind": "created",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 创建时间",
+            "showTime": { "format": "HH:mm:ss" }
+          },
+          "type": "DatePicker"
+        }
+      },
+      "发送的消息": {
+        "bind": "prompt",
+        "edit": {
+          "props": {
+            "autoSize": { "maxRows": 6, "minRows": 2 },
+            "placeholder": "请输入 发送的消息"
+          },
+          "type": "TextArea"
+        }
+      },
+      "回复Token数量": {
+        "bind": "completion_tokens",
+        "edit": {
+          "props": { "placeholder": "请输入 回复Token数量" },
+          "type": "InputNumber"
+        }
+      },
+      "回复的消息": {
+        "bind": "completion",
+        "edit": {
+          "props": {
+            "autoSize": { "maxRows": 6, "minRows": 2 },
+            "placeholder": "请输入 回复的消息"
+          },
+          "type": "TextArea"
+        }
+      },
+      "对象": {
+        "bind": "object",
+        "edit": { "props": { "placeholder": "请输入 对象" }, "type": "Input" },
+        "view": { "props": {}, "type": "" }
+      },
+      "总Token数量": {
+        "bind": "total_tokens",
+        "edit": {
+          "props": { "placeholder": "请输入 总Token数量" },
+          "type": "InputNumber"
+        }
+      },
+      "提问Token数量": {
+        "bind": "prompt_tokens",
+        "edit": {
+          "props": { "placeholder": "请输入 提问Token数量" },
+          "type": "InputNumber"
+        }
+      },
+      "更新时间": {
+        "bind": "updated_at",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 更新时间",
+            "showTime": { "format": "HH:mm:ss" }
+          },
+          "type": "DatePicker"
+        }
+      },
+      "模型": {
+        "bind": "model",
+        "edit": { "props": { "placeholder": "请输入 模型" }, "type": "Input" },
+        "view": { "props": {}, "type": "" }
+      },
+      "用户": {
+        "bind": "end_user",
+        "edit": { "props": { "placeholder": "请输入 用户" }, "type": "Input" },
+        "view": { "props": {}, "type": "" }
+      },
+      "请求时间(秒)": {
+        "bind": "request_total_time",
+        "edit": {
+          "props": { "placeholder": "请输入 请求时间(秒)" },
+          "type": "InputNumber"
+        }
+      }
+    }
+  },
+  "config": { "full": true }
+}

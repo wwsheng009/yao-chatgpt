@@ -1,0 +1,53 @@
+{
+  "name": "::Chat Conversation",
+  "table": {
+    "name": "chat_conversation",
+    "comment": "AI 会话"
+  },
+  "columns": [
+    {
+      "name": "id",
+      "label": "ID",
+      "type": "ID"
+    },
+    {
+      "name": "uuid",
+      "label": "会话ID",
+      "type": "string",
+      "nullable": false
+    },
+    {
+      "name": "title",
+      "label": "标题",
+      "type": "string",
+      "index": true,
+      "nullable": false
+    },
+    {
+      "name": "description",
+      "label": "描述",
+      "type": "string"
+    },
+    {
+      "name": "api_setting",
+      "label": "API设置",
+      "type": "integer",
+      "nullable": false
+    }
+  ],
+  "relations": {
+    "messages": {
+      "type": "hasMany",
+      "model": "chat.message",
+      "key": "conversation_id",
+      "foreign": "id",
+      "query": {}
+    }
+  },
+  "values": [],
+  "indexes": [],
+  "option": {
+    "timestamps": true,
+    "soft_deletes": false
+  }
+}

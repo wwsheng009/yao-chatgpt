@@ -1,0 +1,160 @@
+{
+  "name": "::Chat Conversation",
+  "action": {
+    "bind": {
+      "model": "chat.conversation",
+      "option": { "form": "chat.conversation", "withs": {} }
+    }
+  },
+  "layout": {
+    "filter": {
+      "actions": [
+        {
+          "action": [
+            {
+              "name": "HistoryPush",
+              "payload": { "pathname": "/x/Form/chat.conversation/0/edit" },
+              "type": "Common.historyPush"
+            }
+          ],
+          "icon": "icon-plus",
+          "title": "创建",
+          "width": 3
+        }
+      ],
+      "columns": [{ "name": "标题" }]
+    },
+    "header": { "actions": [], "preset": {} },
+    "primary": "id",
+    "table": {
+      "columns": [
+        { "name": "ID", "width": 100 },
+        { "name": "会话ID", "width": 160 },
+        { "name": "标题", "width": 160 },
+        { "name": "描述", "width": 160 },
+        { "name": "API设置", "width": 100 },
+        { "name": "创建时间", "width": 160 },
+        { "name": "更新时间", "width": 160 }
+      ],
+      "operation": {
+        "actions": [
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "payload": {
+                  "Form": { "model": "chat.conversation", "type": "view" }
+                },
+                "type": "Common.openModal"
+              }
+            ],
+            "icon": "icon-eye",
+            "title": "查看"
+          },
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "payload": {
+                  "Form": { "model": "chat.conversation", "type": "edit" }
+                },
+                "type": "Common.openModal"
+              }
+            ],
+            "icon": "icon-edit-2",
+            "title": "编辑"
+          },
+          {
+            "action": [
+              {
+                "name": "Delete",
+                "payload": { "model": "chat.conversation" },
+                "type": "Table.delete"
+              }
+            ],
+            "confirm": {
+              "desc": "请确认删除，删除后数据无法恢复",
+              "title": "确认"
+            },
+            "icon": "icon-trash-2",
+            "style": "danger",
+            "title": "Delete"
+          }
+        ],
+        "width": 140
+      },
+      "props": { "scroll": { "x": "max-content" } }
+    }
+  },
+  "fields": {
+    "filter": {
+      "标题": {
+        "bind": "where.title.match",
+        "edit": {
+          "props": { "placeholder": "请输入 标题" },
+          "type": "Input",
+          "compute": "scripts.text.Cut"
+        }
+      }
+    },
+    "table": {
+      "API设置": {
+        "bind": "api_setting",
+        "edit": {
+          "props": { "placeholder": "请输入 API设置" },
+          "type": "InputNumber"
+        },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "ID": {
+        "bind": "id",
+        "edit": {
+          "props": { "disabled": true, "placeholder": "请输入 ID" },
+          "type": "InputNumber"
+        },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "会话ID": {
+        "bind": "uuid",
+        "edit": {
+          "props": { "placeholder": "请输入 会话ID" },
+          "type": "Input"
+        },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "创建时间": {
+        "bind": "created_at",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 创建时间",
+            "showTime": { "format": "HH:mm:ss" }
+          },
+          "type": "DatePicker"
+        },
+        "view": { "props": { "format": "YYYY-MM-DD HH:mm:ss" }, "type": "Text" }
+      },
+      "描述": {
+        "bind": "description",
+        "edit": { "props": { "placeholder": "请输入 描述" }, "type": "Input" },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "更新时间": {
+        "bind": "updated_at",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 更新时间",
+            "showTime": { "format": "HH:mm:ss" }
+          },
+          "type": "DatePicker"
+        },
+        "view": { "props": { "format": "YYYY-MM-DD HH:mm:ss" }, "type": "Text" }
+      },
+      "标题": {
+        "bind": "title",
+        "edit": { "props": { "placeholder": "请输入 标题" }, "type": "Input" },
+        "view": { "props": {}, "type": "Text" }
+      }
+    }
+  },
+  "config": { "full": true }
+}

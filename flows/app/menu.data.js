@@ -34,7 +34,7 @@ function main() {
           icon: "message-circle",
           name: "会话",
           parent: null,
-          path: "/x/Table/ai.conversation",
+          path: "/x/Table/chat.conversation",
           visible_menu: 1,
         },
         {
@@ -43,7 +43,7 @@ function main() {
           icon: "icon-coffee",
           name: "消息",
           parent: null,
-          path: "/x/Table/ai.message",
+          path: "/x/Table/chat.message",
           visible_menu: 1,
         },
       ],

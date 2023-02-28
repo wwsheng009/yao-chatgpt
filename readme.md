@@ -48,6 +48,7 @@ A123456p+
 ## 读取所有的 openai 的模型列表到本地
 
 非必要，
+
 ```
 yao run scripts.ai.model.UpdateModel
 
@@ -71,9 +72,13 @@ yao run models.ai.setting.Update 1 '::{"api_token":"sk-G0QPozV2IwYlBgNgIKjGT3Blb
 
 ```sh
 yao run scripts.ai.chatgpt.Call '::{"prompt":"你好"}'
-yao run models.ai.conversation.get '::{}'
-yao run models.ai.message.get '::{}'
+yao run models.chat.conversation.get '::{}'
+yao run models.chat.message.get '::{}'
 ```
+
+## 开发
+
+如果使用 vscode 编写 json 配置文件,支持字段提示与格式检查
 
 ## 贡献者
 

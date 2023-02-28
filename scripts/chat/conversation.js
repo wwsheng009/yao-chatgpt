@@ -27,7 +27,7 @@ function generateUUID() {
 }
 
 /**
- * yao-debug run scripts.ai.conversation.testDummyMessage
+ * yao-debug run scripts.chat.conversation.testDummyMessage
  */
 
 function testDummyMessage() {
@@ -47,15 +47,15 @@ function testDummyMessage() {
   }
 }
 /**
- * yao-debug migrate -n ai.conversation --reset
- * yao-debug run scripts.ai.conversation.NewConversation
- * yao-debug run models.ai.conversation.Get '::{}'
+ * yao-debug migrate -n chat.conversation --reset
+ * yao-debug run scripts.chat.conversation.NewConversation
+ * yao-debug run models.chat.conversation.Get '::{}'
  *
  */
 
 function NewConversation(title, description) {
   let uuid = generateUUID();
-  let newID = Process("models.ai.conversation.Create", {
+  let newID = Process("models.chat.conversation.Create", {
     uuid: uuid,
     api_setting: 1,
     title: title || "new conversation",
@@ -66,10 +66,10 @@ function NewConversation(title, description) {
 
 /**
  * 创建新的消息
- * yao-debug migrate -n ai.message --reset
- * yao-debug run scripts.ai.conversation.NewMessage 0ae38ad4-8b2d-45e3-b1a0-0c7454ca25a7 user "hello world"
- * yao-debug run scripts.ai.conversation.NewMessage 0ae38ad4-8b2d-45e3-b1a0-0c7454ca25a7 AI "hello world"
- * yao-debug run models.ai.message.Get '::{}'
+ * yao-debug migrate -n chat.message --reset
+ * yao-debug run scripts.chat.conversation.NewMessage 0ae38ad4-8b2d-45e3-b1a0-0c7454ca25a7 user "hello world"
+ * yao-debug run scripts.chat.conversation.NewMessage 0ae38ad4-8b2d-45e3-b1a0-0c7454ca25a7 AI "hello world"
+ * yao-debug run models.chat.message.Get '::{}'
  *
  */
 /**
@@ -86,8 +86,8 @@ function NewMessage(conversation_id, user, message) {
   }
   CheckConversationId(conversation_id);
 
-  let newid = Process("models.ai.message.create", {
-    parent_id: conversation_id,
+  let newid = Process("models.chat.message.create", {
+    conversation_id: conversation_id,
     message: message,
     user: user,
     length: message.length,
@@ -100,20 +100,20 @@ function NewMessageObject(message) {
   if (message.length == 0) {
     return;
   }
-  CheckConversationId(message.parent_id);
+  CheckConversationId(message.conversation_id);
 
-  let newid = Process("models.ai.message.create", message);
+  let newid = Process("models.chat.message.create", message);
   return newid;
 }
 /**
  *
  * @returns Array
  *
- * yao-debug run scripts.ai.conversation.FindConversation
+ * yao-debug run scripts.chat.conversation.FindConversation
  */
 function FindConversation() {
   //   CheckConversationId(uuid);
-  return Process("models.ai.conversation.Get", {
+  return Process("models.chat.conversation.Get", {
     select: ["uuid", "title"],
     withs: {
       messages: {
@@ -130,11 +130,11 @@ function FindConversation() {
  * @param {*} uuid
  * @returns
  *
- * yao-debug run scripts.ai.conversation.FindConversationById d9a78a11-6890-46db-87e3-874ca25bdf93
+ * yao-debug run scripts.chat.conversation.FindConversationById d9a78a11-6890-46db-87e3-874ca25bdf93
  */
 function FindConversationById(uuid) {
   //   CheckConversationId(uuid);
-  let list = Process("models.ai.conversation.Get", {
+  let list = Process("models.chat.conversation.Get", {
     select: ["id", "uuid", "title"],
     withs: {
       messages: {
@@ -164,11 +164,11 @@ function FindConversationById(uuid) {
  * @returns
  *
  *
- * yao-debug run scripts.ai.conversation.FindMessage d9a78a11-6890-46db-87e3-874ca25bdf93
+ * yao-debug run scripts.chat.conversation.FindMessage d9a78a11-6890-46db-87e3-874ca25bdf93
  */
 function FindMessage(uuid) {
   CheckConversationId(uuid);
-  let conversation = Process("models.ai.conversation.Get", {
+  let conversation = Process("models.chat.conversation.Get", {
     select: ["uuid"],
     withs: {
       messages: {
@@ -191,7 +191,7 @@ function FindMessage(uuid) {
     return list;
   }
 
-  //   let messages = Process("models.ai.message.Get", {
+  //   let messages = Process("models.chat.message.Get", {
   //     wheres: [
   //       {
   //         Column: "uuid",
@@ -208,11 +208,11 @@ function FindMessage(uuid) {
  * @returns
  *
  * test
- * yao-debug run scripts.ai.conversation.CheckConversationId da472c6c-d2a7-48a2-b4b2-71591660b44f
- * yao-debug run scripts.ai.conversation.CheckConversationId
+ * yao-debug run scripts.chat.conversation.CheckConversationId da472c6c-d2a7-48a2-b4b2-71591660b44f
+ * yao-debug run scripts.chat.conversation.CheckConversationId
  */
 function CheckConversationId(id) {
-  let conversation = Process("models.ai.conversation.Get", {
+  let conversation = Process("models.chat.conversation.Get", {
     wheres: [
       {
         column: "id",
