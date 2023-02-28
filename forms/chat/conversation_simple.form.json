@@ -1,6 +1,11 @@
 {
   "name": "::Chat Conversation",
-  "action": { "bind": { "model": "chat.conversation", "option": {} } },
+  "action": {
+    "bind": {
+      "model": "chat.conversation",
+      "option": { "withs": "chat.message" }
+    }
+  },
   "layout": {
     "actions": [
       {
@@ -92,14 +97,11 @@
           "props": {
             "model": "chat.message_simple",
             "query": {
+              "select": "id,prompt,completion,request_total_time",
               "where.conversation_id.eq": "{{id}}"
             }
           },
           "type": "Table"
-        },
-        "view": {
-          "props": { "model": "chat.message_simple" },
-          "type": "table"
         }
       }
     }

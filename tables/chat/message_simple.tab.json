@@ -22,16 +22,16 @@
           "width": 3
         }
       ],
-      "columns": [{ "name": "模型" }, { "name": "对象" }]
+      "columns": [{ "name": "发送的消息" }]
     },
     "header": { "actions": [], "preset": {} },
     "primary": "id",
     "table": {
       "columns": [
-        { "name": "ID", "width": 100 },
+        { "name": "ID", "width": 50 },
         { "name": "发送的消息", "width": 160 },
-        { "name": "回复的消息", "width": 160 },
-        { "name": "请求时间(秒)", "width": 100 }
+        { "name": "回复的消息", "width": 260 },
+        { "name": "请求时间(秒)", "width": 50 }
       ],
       "operation": {
         "actions": [
@@ -85,150 +85,38 @@
   },
   "fields": {
     "filter": {
-      "对象": {
-        "bind": "where.object.match",
-        "edit": { "props": { "placeholder": "请输入 对象" }, "type": "Input" }
-      },
-      "模型": {
-        "bind": "where.model.match",
-        "edit": { "props": { "placeholder": "请输入 模型" }, "type": "Input" }
+      "发送的消息": {
+        "bind": "where.prompt.match",
+        "edit": {
+          "props": { "placeholder": "请输入 发送的消息" },
+          "type": "Input"
+        }
       }
     },
     "table": {
-      "AI": {
-        "bind": "ai_user",
-        "edit": { "props": { "placeholder": "请输入 AI" }, "type": "Input" },
-        "view": { "props": {}, "type": "Text" }
-      },
       "ID": {
         "bind": "id",
-        "edit": {
-          "props": { "disabled": true, "placeholder": "请输入 ID" },
-          "type": "InputNumber"
-        },
         "view": { "props": {}, "type": "Text" }
-      },
-      "completion消息长度": {
-        "bind": "completion_len",
-        "edit": {
-          "props": { "placeholder": "请输入 completion消息长度" },
-          "type": "InputNumber"
-        },
-        "view": { "props": {}, "type": "Text" }
-      },
-      "prompt消息长度": {
-        "bind": "prompt_len",
-        "edit": {
-          "props": { "placeholder": "请输入 prompt消息长度" },
-          "type": "InputNumber"
-        },
-        "view": { "props": {}, "type": "Text" }
-      },
-      "会话ID": {
-        "bind": "conversation_id",
-        "edit": {
-          "props": { "placeholder": "请输入 会话ID" },
-          "type": "InputNumber"
-        },
-        "view": { "props": {}, "type": "Text" }
-      },
-      "创建时间": {
-        "bind": "created_at",
-        "edit": {
-          "props": {
-            "placeholder": "请选择 创建时间",
-            "showTime": { "format": "HH:mm:ss" }
-          },
-          "type": "DatePicker"
-        },
-        "view": { "props": { "format": "YYYY-MM-DD HH:mm:ss" }, "type": "Text" }
       },
       "发送的消息": {
         "bind": "prompt",
-        "edit": {
-          "props": {
-            "autoSize": { "maxRows": 6, "minRows": 2 },
-            "placeholder": "请输入 发送的消息"
-          },
-          "type": "TextArea"
-        },
         "view": {
           "props": { "title": "发送的消息" },
-          "type": "Tooltip",
+          "type": "Text",
           "compute": "scripts.text.Cut"
         }
-      },
-      "回复Token数量": {
-        "bind": "completion_tokens",
-        "edit": {
-          "props": { "placeholder": "请输入 回复Token数量" },
-          "type": "InputNumber"
-        },
-        "view": { "props": {}, "type": "Text" }
       },
       "回复的消息": {
         "bind": "completion",
-        "edit": {
-          "props": {
-            "autoSize": { "maxRows": 6, "minRows": 2 },
-            "placeholder": "请输入 回复的消息"
-          },
-          "type": "TextArea"
-        },
         "view": {
           "props": { "title": "回复的消息" },
-          "type": "Tooltip",
+          "type": "Text",
           "compute": "scripts.text.Cut"
         }
       },
-      "对象": {
-        "bind": "object",
-        "edit": { "props": { "placeholder": "请输入 对象" }, "type": "Input" },
-        "view": { "props": {}, "type": "Text" }
-      },
-      "总Token数量": {
-        "bind": "total_tokens",
-        "edit": {
-          "props": { "placeholder": "请输入 总Token数量" },
-          "type": "InputNumber"
-        },
-        "view": { "props": {}, "type": "Text" }
-      },
-      "提问Token数量": {
-        "bind": "prompt_tokens",
-        "edit": {
-          "props": { "placeholder": "请输入 提问Token数量" },
-          "type": "InputNumber"
-        },
-        "view": { "props": {}, "type": "Text" }
-      },
-      "更新时间": {
-        "bind": "updated_at",
-        "edit": {
-          "props": {
-            "placeholder": "请选择 更新时间",
-            "showTime": { "format": "HH:mm:ss" }
-          },
-          "type": "DatePicker"
-        },
-        "view": { "props": { "format": "YYYY-MM-DD HH:mm:ss" }, "type": "Text" }
-      },
-      "模型": {
-        "bind": "model",
-        "edit": { "props": { "placeholder": "请输入 模型" }, "type": "Input" },
-        "view": { "props": {}, "type": "Text" }
-      },
-      "用户": {
-        "bind": "end_user",
-        "edit": { "props": { "placeholder": "请输入 用户" }, "type": "Input" },
-        "view": { "props": {}, "type": "Text" }
-      },
+
       "请求时间(秒)": {
         "bind": "request_total_time",
-        "edit": {
-          "props": { "placeholder": "请输入 请求时间(秒)" },
-          "type": "InputNumber"
-        },
         "view": { "props": {}, "type": "Text" }
       }
     }
