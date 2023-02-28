@@ -43,14 +43,7 @@
     "form": {
       "sections": [
         {
-          "columns": [
-            { "name": "ID", "width": 6 },
-            { "name": "会话ID", "width": 6 },
-            { "name": "创建时间", "width": 6 },
-            { "name": "请求时间(秒)", "width": 6 },
-            { "name": "发送的消息", "width": 24 },
-            { "name": "回复的消息", "width": 24 }
-          ]
+          "columns": [{ "name": "回复的消息", "width": 24 }]
         }
       ]
     },
