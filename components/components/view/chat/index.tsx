@@ -17,18 +17,34 @@ interface Content {
 
 const Index = (props: IProps) => {
   const { __value } = props;
-  const [text, setText] = useState(undefined);
   const [prompt, setPrompt] = useState("");
   const [session_id, setSessionId] = useState(undefined);
   const [content, setContent] = useState<Content[]>([]);
 
+  react.useEffect(() => {
+    if (
+      content &&
+      content[content.length - 1] &&
+      content[content.length - 1].right == true
+    ) {
+      setPrompt("");
+      call();
+    }
+  }, [content]);
+
+  async function call() {
+    let data = await ask(prompt);
+    // data = data.replace(/^\s*\n/, "");
+    console.log(data);
+    setContent([...content, { content: data.message, right: false }]);
+    setSessionId(data.session_id);
+  }
   async function handleClick() {
     // Do something with the event
-    setContent([...content, { content: prompt }]);
-    await ask(prompt);
+    setContent([...content, { content: prompt, right: true }]);
   }
 
-  async function ask(q: string): Promise<string> {
+  async function ask(q: string): Promise<{ [key: string]: any }> {
     //对数据进行缓存
     const response = await fetch(`/api/ai/ask`, {
       method: "POST",
@@ -39,12 +55,7 @@ const Index = (props: IProps) => {
       headers: { "Content-Type": "application/json" },
     });
 
-    let data = await response.json();
-    // data = data.replace(/^\s*\n/, "");
-    console.log(data);
-    setContent([...content, { content: data.message }]);
-    setSessionId(data.session_id);
-    return data.message;
+    return await response.json();
   }
   let handleChange = (event: {
     target: { value: react.SetStateAction<string> };
@@ -65,25 +76,34 @@ const Index = (props: IProps) => {
                 height: "calc(100vh - 262px)",
               }}
             >
-              <>
+              <div
+                style={{ flex: 1, display: "flex", flexDirection: "column" }}
+              >
                 {content?.map((item: Content) => {
-                  return (
-                    <>
-                      <div>{item.content}</div>
-                      <br />
-                    </>
-                  );
+                  if (item.right) {
+                    return (
+                      <div
+                        style={{ display: "flex", justifyContent: "flex-end" }}
+                      >
+                        {item.content}
+                      </div>
+                    );
+                  } else {
+                    return (
+                      <div style={{ display: "flex" }}>{item.content}</div>
+                    );
+                  }
                 })}
+              </div>
 
-                <div style={{ display: "flex" }}>
-                  <textarea
-                    style={{ flex: 1 }}
-                    onChange={handleChange}
-                    value={prompt}
-                  ></textarea>
-                  <button onClick={handleClick}>提问</button>
-                </div>
-              </>
+              <div style={{ display: "flex" }}>
+                <textarea
+                  style={{ flex: 1 }}
+                  onChange={handleChange}
+                  value={prompt}
+                ></textarea>
+                <button onClick={handleClick}>提问</button>
+              </div>
             </div>
           </div>
         </div>

@@ -1,11 +1,10 @@
 System.register(['react/jsx-runtime', 'react'], (function (exports) {
   'use strict';
-  var jsx, jsxs, Fragment, react;
+  var jsx, jsxs, react;
   return {
     setters: [function (module) {
       jsx = module.jsx;
       jsxs = module.jsxs;
-      Fragment = module.Fragment;
     }, function (module) {
       react = module.default;
     }],
@@ -13,19 +12,39 @@ System.register(['react/jsx-runtime', 'react'], (function (exports) {
 
       const { useState  } = react;
       const Index = exports('default', (props)=>{
-          useState(undefined);
           const [prompt, setPrompt] = useState("");
           const [session_id, setSessionId] = useState(undefined);
           const [content, setContent] = useState([]);
+          react.useEffect(()=>{
+              if (content && content[content.length - 1] && content[content.length - 1].right == true) {
+                  setPrompt("");
+                  call();
+              }
+          }, [
+              content
+          ]);
+          async function call() {
+              let data = await ask(prompt);
+              // data = data.replace(/^\s*\n/, "");
+              console.log(data);
+              setContent([
+                  ...content,
+                  {
+                      content: data.message,
+                      right: false
+                  }
+              ]);
+              setSessionId(data.session_id);
+          }
           async function handleClick() {
               // Do something with the event
               setContent([
                   ...content,
                   {
-                      content: prompt
+                      content: prompt,
+                      right: true
                   }
               ]);
-              await ask(prompt);
           }
           async function ask(q) {
               //对数据进行缓存
@@ -39,17 +58,7 @@ System.register(['react/jsx-runtime', 'react'], (function (exports) {
                       "Content-Type": "application/json"
                   }
               });
-              let data = await response.json();
-              // data = data.replace(/^\s*\n/, "");
-              console.log(data);
-              setContent([
-                  ...content,
-                  {
-                      content: data.message
-                  }
-              ]);
-              setSessionId(data.session_id);
-              return data.message;
+              return await response.json();
           }
           let handleChange = (event)=>{
               setPrompt(event.target.value);
@@ -67,44 +76,57 @@ System.register(['react/jsx-runtime', 'react'], (function (exports) {
                           className: "xgen-col xgen-form-item-control",
                           children: /*#__PURE__*/ jsx("div", {
                               className: "xgen-form-item-control-input",
-                              children: /*#__PURE__*/ jsx("div", {
+                              children: /*#__PURE__*/ jsxs("div", {
                                   style: {
                                       display: "flex",
                                       flexDirection: "column",
                                       height: "calc(100vh - 262px)"
                                   },
-                                  children: /*#__PURE__*/ jsxs(Fragment, {
-                                      children: [
-                                          content?.map((item)=>{
-                                              return /*#__PURE__*/ jsxs(Fragment, {
-                                                  children: [
-                                                      /*#__PURE__*/ jsx("div", {
-                                                          children: item.content
-                                                      }),
-                                                      /*#__PURE__*/ jsx("br", {})
-                                                  ]
-                                              });
-                                          }),
-                                          /*#__PURE__*/ jsxs("div", {
-                                              style: {
-                                                  display: "flex"
-                                              },
-                                              children: [
-                                                  /*#__PURE__*/ jsx("textarea", {
+                                  children: [
+                                      /*#__PURE__*/ jsx("div", {
+                                          style: {
+                                              flex: 1,
+                                              display: "flex",
+                                              flexDirection: "column"
+                                          },
+                                          children: content?.map((item)=>{
+                                              if (item.right) {
+                                                  return /*#__PURE__*/ jsx("div", {
                                                       style: {
-                                                          flex: 1
+                                                          display: "flex",
+                                                          justifyContent: "flex-end"
                                                       },
-                                                      onChange: handleChange,
-                                                      value: prompt
-                                                  }),
-                                                  /*#__PURE__*/ jsx("button", {
-                                                      onClick: handleClick,
-                                                      children: "提问"
-                                                  })
-                                              ]
+                                                      children: item.content
+                                                  });
+                                              } else {
+                                                  return /*#__PURE__*/ jsx("div", {
+                                                      style: {
+                                                          display: "flex"
+                                                      },
+                                                      children: item.content
+                                                  });
+                                              }
                                           })
-                                      ]
-                                  })
+                                      }),
+                                      /*#__PURE__*/ jsxs("div", {
+                                          style: {
+                                              display: "flex"
+                                          },
+                                          children: [
+                                              /*#__PURE__*/ jsx("textarea", {
+                                                  style: {
+                                                      flex: 1
+                                                  },
+                                                  onChange: handleChange,
+                                                  value: prompt
+                                              }),
+                                              /*#__PURE__*/ jsx("button", {
+                                                  onClick: handleClick,
+                                                  children: "提问"
+                                              })
+                                          ]
+                                      })
+                                  ]
                               })
                           })
                       })
