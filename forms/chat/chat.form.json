@@ -1,5 +1,5 @@
 {
-  "name": "test",
+  "name": "::Chat Wit AI",
   "action": {
     "bind": {}
   },
@@ -10,8 +10,16 @@
         {
           "columns": [
             {
-              "name": "chat",
+              "name": "name",
               "width": 24
+            },
+            {
+              "name": "chat",
+              "width": 12
+            },
+            {
+              "name": "chat",
+              "width": 12
             }
           ]
         }
@@ -23,6 +31,11 @@
       "chat": {
         "edit": {
           "type": "public/view/chat"
+        }
+      },
+      "name": {
+        "edit": {
+          "type": "Input"
         }
       }
     }

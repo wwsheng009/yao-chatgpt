@@ -19,7 +19,10 @@ const Index = (props: IProps) => {
   const { __value } = props;
   const [prompt, setPrompt] = useState("");
   const [session_id, setSessionId] = useState(undefined);
-  const [content, setContent] = useState<Content[]>([]);
+  const [content, setContent] = useState<Content[]>([
+    { content: "你好，AI。", right: true },
+    { content: "你好，人类，有什么可以帮到您。", right: false },
+  ]);
 
   react.useEffect(() => {
     if (
@@ -74,23 +77,47 @@ const Index = (props: IProps) => {
                 display: "flex",
                 flexDirection: "column",
                 height: "calc(100vh - 262px)",
+                width: "100%",
               }}
             >
               <div
-                style={{ flex: 1, display: "flex", flexDirection: "column" }}
+                style={{
+                  flex: 1,
+                  display: "flex",
+                  width: "100%",
+                  flexDirection: "column",
+                  fontSize: "1.5rem",
+                  overflow: "auto",
+                }}
               >
                 {content?.map((item: Content) => {
                   if (item.right) {
                     return (
                       <div
-                        style={{ display: "flex", justifyContent: "flex-end" }}
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          margin: "10px",
+
+                          padding: "10px",
+                        }}
                       >
-                        {item.content}
+                        <div style={{ maxWidth: "80%" }}>{item.content}</div>
                       </div>
                     );
                   } else {
                     return (
-                      <div style={{ display: "flex" }}>{item.content}</div>
+                      <div
+                        style={{
+                          display: "flex",
+                          margin: "10px",
+                          border: "solid 1px gray",
+                          borderRadius: "10px",
+                          padding: "10px",
+                        }}
+                      >
+                        <div style={{ maxWidth: "80%" }}>{item.content}</div>
+                      </div>
                     );
                   }
                 })}

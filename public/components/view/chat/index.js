@@ -14,7 +14,16 @@ System.register(['react/jsx-runtime', 'react'], (function (exports) {
       const Index = exports('default', (props)=>{
           const [prompt, setPrompt] = useState("");
           const [session_id, setSessionId] = useState(undefined);
-          const [content, setContent] = useState([]);
+          const [content, setContent] = useState([
+              {
+                  content: "你好，AI。",
+                  right: true
+              },
+              {
+                  content: "你好，人类，有什么可以帮到您。",
+                  right: false
+              }
+          ]);
           react.useEffect(()=>{
               if (content && content[content.length - 1] && content[content.length - 1].right == true) {
                   setPrompt("");
@@ -80,30 +89,50 @@ System.register(['react/jsx-runtime', 'react'], (function (exports) {
                                   style: {
                                       display: "flex",
                                       flexDirection: "column",
-                                      height: "calc(100vh - 262px)"
+                                      height: "calc(100vh - 262px)",
+                                      width: "100%"
                                   },
                                   children: [
                                       /*#__PURE__*/ jsx("div", {
                                           style: {
                                               flex: 1,
                                               display: "flex",
-                                              flexDirection: "column"
+                                              width: "100%",
+                                              flexDirection: "column",
+                                              fontSize: "1.5rem",
+                                              overflow: "auto"
                                           },
                                           children: content?.map((item)=>{
                                               if (item.right) {
                                                   return /*#__PURE__*/ jsx("div", {
                                                       style: {
                                                           display: "flex",
-                                                          justifyContent: "flex-end"
+                                                          justifyContent: "flex-end",
+                                                          margin: "10px",
+                                                          padding: "10px"
                                                       },
-                                                      children: item.content
+                                                      children: /*#__PURE__*/ jsx("div", {
+                                                          style: {
+                                                              maxWidth: "80%"
+                                                          },
+                                                          children: item.content
+                                                      })
                                                   });
                                               } else {
                                                   return /*#__PURE__*/ jsx("div", {
                                                       style: {
-                                                          display: "flex"
+                                                          display: "flex",
+                                                          margin: "10px",
+                                                          border: "solid 1px gray",
+                                                          borderRadius: "10px",
+                                                          padding: "10px"
                                                       },
-                                                      children: item.content
+                                                      children: /*#__PURE__*/ jsx("div", {
+                                                          style: {
+                                                              maxWidth: "80%"
+                                                          },
+                                                          children: item.content
+                                                      })
                                                   });
                                               }
                                           })
