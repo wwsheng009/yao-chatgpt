@@ -160,31 +160,31 @@ function testTrimWord() {
 //  * @param {Object} setting 设置
 //  * @returns string
 //  */
-// function GetStopWord(setting) {
-//   let stop_word = setting.stop;
-//   let stopwords = []; //=  setting.stop || "<|endoftext|>";
-//   if (typeof stop_word === "string" || stop_word instanceof String) {
-//     try {
-//       stop_word = JSON.parse(stop_word);
-//     } catch (error) {}
-//   }
-//   if (Array.isArray(stop_word)) {
-//     stopwords = stop_word;
-//   } else if (stop_word) {
-//     stopwords.push(stop_word);
-//   }
-//   setting.ai_nickname &&
-//     !stopwords.includes(setting.ai_nickname) &&
-//     stopwords.push(" " + setting.ai_nickname + ":");
-//   setting.user_nickname &&
-//     !stopwords.includes(setting.user_nickname) &&
-//     stopwords.push(" " + setting.user_nickname + ":");
+function GetStopWord(setting) {
+  let stop_word = setting.stop;
+  let stopwords = []; //=  setting.stop || "<|endoftext|>";
+  if (typeof stop_word === "string" || stop_word instanceof String) {
+    try {
+      stop_word = JSON.parse(stop_word);
+    } catch (error) {}
+  }
+  if (Array.isArray(stop_word)) {
+    stopwords = stop_word;
+  } else if (stop_word) {
+    stopwords.push(stop_word);
+  }
+  setting.ai_nickname &&
+    !stopwords.includes(setting.ai_nickname) &&
+    stopwords.push(" " + setting.ai_nickname + ":");
+  setting.user_nickname &&
+    !stopwords.includes(setting.user_nickname) &&
+    stopwords.push(" " + setting.user_nickname + ":");
 
-//   // stopwords.push("\n\n");
-//   let stop = JSON.stringify(stopwords);
+  // stopwords.push("\n\n");
+  let stop = JSON.stringify(stopwords);
 
-//   return stop;
-// }
+  return stop;
+}
 // function test_stopWord() {
 //   // const setting = {
 //   //   stop: '["endofword","endofword2"]',

@@ -2,8 +2,8 @@
   "name": "::Prompt Template",
   "action": {
     "bind": {
-      "model": "chat.prompt_template",
-      "option": { "form": "chat.prompt_template", "withs": {} }
+      "model": "chat.prompttemplate",
+      "option": { "form": "chat.prompttemplate", "withs": {} }
     }
   },
   "config": { "full": true },
@@ -16,7 +16,7 @@
           "action": [
             {
               "name": "HistoryPush",
-              "payload": { "pathname": "/x/Form/chat.prompt_template/0/edit" },
+              "payload": { "pathname": "/x/Form/chat.prompttemplate/0/edit" },
               "type": "Common.historyPush"
             }
           ],
@@ -29,9 +29,10 @@
     },
     "table": {
       "columns": [
-        { "name": "ID", "width": 100 },
+        { "name": "ID", "width": 50 },
         { "name": "提示", "width": 160 },
-        { "name": "模板内容", "width": 160 },
+        { "name": "模板内容", "width": 260 },
+        { "name": "状态", "width": 80 },
         { "name": "创建时间", "width": 160 },
         { "name": "更新时间", "width": 160 }
       ],
@@ -42,7 +43,7 @@
               {
                 "name": "OpenModal",
                 "payload": {
-                  "Form": { "model": "chat.prompt_template", "type": "view" }
+                  "Form": { "model": "chat.prompttemplate", "type": "view" }
                 },
                 "type": "Common.openModal"
               }
@@ -55,7 +56,7 @@
               {
                 "name": "OpenModal",
                 "payload": {
-                  "Form": { "model": "chat.prompt_template", "type": "edit" }
+                  "Form": { "model": "chat.prompttemplate", "type": "edit" }
                 },
                 "type": "Common.openModal"
               }
@@ -67,7 +68,7 @@
             "action": [
               {
                 "name": "Delete",
-                "payload": { "model": "chat.prompt_template" },
+                "payload": { "model": "chat.prompttemplate" },
                 "type": "Table.delete"
               }
             ],
@@ -95,52 +96,25 @@
     "table": {
       "ID": {
         "bind": "id",
-        "edit": {
-          "props": { "disabled": true, "placeholder": "请输入 ID" },
-          "type": "InputNumber"
-        },
         "view": { "props": {}, "type": "Text" }
       },
       "创建时间": {
         "bind": "created_at",
-        "edit": {
-          "props": {
-            "placeholder": "请选择 创建时间",
-            "showTime": { "format": "HH:mm:ss" }
-          },
-          "type": "DatePicker"
-        },
         "view": { "props": { "format": "YYYY-MM-DD HH:mm:ss" }, "type": "Text" }
       },
       "提示": {
         "bind": "title",
-        "edit": { "props": { "placeholder": "请输入 提示" }, "type": "Input" },
         "view": { "props": {}, "type": "Text" }
       },
       "更新时间": {
         "bind": "updated_at",
-        "edit": {
-          "props": {
-            "placeholder": "请选择 更新时间",
-            "showTime": { "format": "HH:mm:ss" }
-          },
-          "type": "DatePicker"
-        },
         "view": { "props": { "format": "YYYY-MM-DD HH:mm:ss" }, "type": "Text" }
       },
       "模板内容": {
         "bind": "content",
-        "edit": {
-          "props": {
-            "autoSize": { "maxRows": 6, "minRows": 2 },
-            "placeholder": "请输入 模板内容"
-          },
-
-          "type": "TextArea"
-        },
         "view": {
           "props": { "title": "模板内容" },
-          "type": "Tooltip",
+          "type": "Text",
           "compute": "scripts.text.Cut"
         }
       }

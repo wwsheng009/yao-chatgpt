@@ -95,7 +95,7 @@ function main() {
       icon: "icon-rss",
       name: "提示模板",
       parent: null,
-      path: "/x/Table/chat.prompt_template",
+      path: "/x/Table/chat.prompttemplate",
       visible_menu: 1,
       children: [
         {
@@ -104,7 +104,7 @@ function main() {
           icon: "icon-book",
           name: "提示模板",
           parent: null,
-          path: "/x/Table/chat.prompt_template",
+          path: "/x/Table/chat.prompttemplate",
           visible_menu: 1,
         },
         {

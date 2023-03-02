@@ -1,0 +1,20 @@
+{
+  "label": "提示模板",
+  "nodes": [
+    {
+      "name": "template",
+      "engine": "xiang",
+      "query": {
+        "select": ["id as value", "title as label"],
+        "wheres": [
+          {
+            ":status": "状态",
+            "=": "enabled"
+          }
+        ],
+        "from": "$chat.prompttemplate"
+      }
+    }
+  ],
+  "output": "{{$res.template}}"
+}

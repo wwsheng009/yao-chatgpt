@@ -1,6 +1,6 @@
 {
   "name": "::Prompt Template",
-  "action": { "bind": { "model": "chat.prompt_template" } },
+  "action": { "bind": { "model": "chat.prompttemplate" } },
   "layout": {
     "actions": [
       {
@@ -45,11 +45,9 @@
       "sections": [
         {
           "columns": [
-            { "name": "ID", "width": 12 },
             { "name": "提示", "width": 12 },
-            { "name": "模板内容", "width": 24 },
-            { "name": "创建时间", "width": 12 },
-            { "name": "更新时间", "width": 12 }
+            { "name": "状态", "width": 12 },
+            { "name": "模板内容", "width": 24 }
           ]
         }
       ]
@@ -66,36 +64,16 @@
           "type": "InputNumber"
         }
       },
-      "创建时间": {
-        "bind": "created_at",
-        "edit": {
-          "props": {
-            "placeholder": "请选择 创建时间",
-            "showTime": { "format": "HH:mm:ss" }
-          },
-          "type": "DatePicker"
-        }
-      },
       "提示": {
         "bind": "title",
         "edit": { "props": { "placeholder": "请输入 提示" }, "type": "Input" },
         "view": { "props": {}, "type": "" }
       },
-      "更新时间": {
-        "bind": "updated_at",
-        "edit": {
-          "props": {
-            "placeholder": "请选择 更新时间",
-            "showTime": { "format": "HH:mm:ss" }
-          },
-          "type": "DatePicker"
-        }
-      },
       "模板内容": {
         "bind": "content",
         "edit": {
           "props": {
-            "autoSize": { "maxRows": 6, "minRows": 2 },
+            "autoSize": { "minRows": 6 },
             "placeholder": "请输入 模板内容"
           },
           "type": "TextArea"

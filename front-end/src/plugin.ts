@@ -19,7 +19,7 @@ import {
   // Menu,
   // Popconfirm,
   // Row,
-  // Select,
+  Select,
   // Space,
   // Spin,
   // Table as AntdTable,
@@ -40,12 +40,12 @@ export function setupComponents(app: App<Element>) {
     // .use(Divider)
     // .use(Dropdown)
     // .use(Form)
-    .use(Input);
-  // .use(Layout)
-  // .use(Menu)
-  // .use(Popconfirm)
-  // .use(Row)
-  // .use(Select);
+    .use(Input)
+    // .use(Layout)
+    // .use(Menu)
+    // .use(Popconfirm)
+    // .use(Row)
+    .use(Select);
   // .use(Space)
   // .use(Spin)
   // .use(AntdTable);

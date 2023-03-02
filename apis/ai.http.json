@@ -48,6 +48,29 @@
         "status": 200,
         "type": "application/json"
       }
+    },
+    {
+      "path": "/templates",
+      "method": "GET",
+      "guard": "-",
+      "process": "flows.chat.prompt_template",
+      "in": [""],
+      "out": {
+        "status": 200,
+        "type": "application/json"
+      }
+    },
+    {
+      "path": "/template/:id",
+      "method": "GET",
+      "guard": "-",
+      "process": "models.chat.prompttemplate.find",
+      "in": ["$param.id", ""],
+      "out": {
+        "status": 200,
+        "type": "application/json",
+        "body": "{{content}}"
+      }
     }
   ]
 }

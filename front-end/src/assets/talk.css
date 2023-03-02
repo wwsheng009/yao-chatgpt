@@ -194,7 +194,23 @@
     font-weight: bold;
 }
 
+.talk-role {
+    width: 200px;
+}
 
+.dark-theme .talk-role {
+    background-color: #949494;
+    color: #DCE1E6;
+}
+
+.dark-theme .ant-select-selector {
+    background-color: #949494 !important;
+    color: #DCE1E6 !important;
+}
+
+.talk-role-title {
+    margin-right: 14px;
+}
 
 .talk-header-icon {
     display: flex;

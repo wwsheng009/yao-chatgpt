@@ -2,6 +2,14 @@
   <div class="talk" v-show="flag">
     <div class="talk-header">
       <div class="talk-message-title">智能AI对话</div>
+      <div class="talk-role-title">选择AI角色:</div>
+      <a-select
+        class="talk-role"
+        dropdownClassName="talk-role"
+        v-model:value="template_id"
+        :options="template"
+        @change="fetchTemplate"
+      ></a-select>
       <div class="talk-message-clear">
         <a-switch
           checked-children="暗"
@@ -99,6 +107,10 @@ interface Conversation {
   u?: String;
   ai?: String;
 }
+interface Option {
+  label: string;
+  value: string;
+}
 export default {
   components: {},
 
@@ -112,9 +124,11 @@ export default {
       flag: true,
       closeChat: this.close,
       sessionId: "",
+      template: [] as Option[],
+      template_id: "",
     };
   },
-  created() {
+  async created() {
     let dark_theme = localStorage.getItem("dark_theme");
     this.isDarkTheme = dark_theme == "dark" ? true : false;
 
@@ -127,6 +141,16 @@ export default {
         this.contentDiv = JSON.parse(message);
       }
     }
+
+    this.scrollToBottom();
+
+    const response = await fetch(`/api/ai/templates`, {
+      method: "GET",
+
+      headers: { "Content-Type": "application/json" },
+    });
+    this.template = await response.json();
+    this.template_id = this.template[0].value;
   },
   watch: {
     isDarkTheme: {
@@ -153,13 +177,21 @@ export default {
     },
   },
 
-  mounted() {
-    this.scrollToBottom();
-  },
+  async mounted() {},
   updated() {
     this.scrollToBottom();
   },
   methods: {
+    async fetchTemplate() {
+      console.log(this.template_id);
+
+      const response = await fetch(`/api/ai/template/${this.template_id}`, {
+        method: "GET",
+
+        headers: { "Content-Type": "application/json" },
+      });
+      this.textarea = await response.json();
+    },
     scrollToBottom() {
       this.$nextTick(() => {
         let box = this.$el.querySelector(".talk-content");

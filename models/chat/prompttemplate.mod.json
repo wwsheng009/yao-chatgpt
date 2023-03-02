@@ -1,0 +1,50 @@
+{
+  "name": "::Prompt Template",
+  "table": {
+    "name": "prompt_template",
+    "comment": "提示模板"
+  },
+  "columns": [
+    {
+      "name": "id",
+      "label": "ID",
+      "type": "ID"
+    },
+    {
+      "name": "title",
+      "label": "提示",
+      "type": "string",
+      "index": true,
+      "nullable": false
+    },
+    {
+      "name": "content",
+      "label": "模板内容",
+      "type": "text"
+    },
+    {
+      "label": "状态",
+      "comment": "Status",
+      "name": "status",
+      "type": "enum",
+      "default": "enabled",
+      "option": ["enabled", "disabled"],
+      "validations": [
+        {
+          "method": "typeof",
+          "args": ["string"],
+          "message": "::{{input}} Error, {{label}} should be string"
+        },
+        {
+          "method": "enum",
+          "args": ["enabled", "disabled"],
+          "message": "::{{input}} Error, {{label}} should be enabled/disabled"
+        }
+      ]
+    }
+  ],
+  "option": {
+    "timestamps": true,
+    "soft_deletes": false
+  }
+}
