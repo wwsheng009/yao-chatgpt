@@ -1,8 +1,7 @@
 <template>
   <div class="talk" v-show="flag">
     <div class="talk-header">
-      <div class="talk-message-title">智能AI对话</div>
-      <div class="talk-role-title">选择AI角色:</div>
+      <div class="talk-message-title">AI对话</div>
       <a-select
         class="talk-role"
         dropdownClassName="talk-role"

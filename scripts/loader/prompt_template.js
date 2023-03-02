@@ -53,7 +53,7 @@ function Run() {
     }
   });
   rc = Process(
-    "Models.chat.prompt_template.Insert",
+    "Models.chat.prompttemplate.Insert",
     ["title", "content"],
     newData
   );
