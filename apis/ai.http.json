@@ -1,61 +1,53 @@
 {
-    "name": "AI Chat API",
-    "version": "1.0.0",
-    "description": "User API",
-    "group": "ai",
-    "guard": "-",
-    "paths": [
-        {
-            "path": "/ask",
-            "method": "GET",
-            "guard": "-",
-            "process": "scripts.ai.chatgpt.Callq",
-            "in": [
-                "$query.q"
-            ],
-            "out": {
-                "status": 200,
-                "type": "application/json"
-            }
-        },
-        {
-            "path": "/ask",
-            "method": "POST",
-            "guard": "-",
-            "process": "scripts.ai.chatgpt.Call",
-            "in": [
-                ":payload"
-            ],
-            "out": {
-                "status": 200,
-                "type": "application/json"
-            }
-        },
-        {
-            "path": "/ask2",
-            "method": "POST",
-            "guard": "-",
-            "process": "scripts.ai.chatgpt2.Call",
-            "in": [
-                ":payload"
-            ],
-            "out": {
-                "status": 200,
-                "type": "application/json"
-            }
-        },
-        {
-            "path": "/context",
-            "method": "GET",
-            "guard": "-",
-            "process": "scripts.utils.test.test",
-            "in": [
-                ":context"
-            ],
-            "out": {
-                "status": 200,
-                "type": "application/json"
-            }
-        }
-    ]
+  "name": "AI Chat API",
+  "version": "1.0.0",
+  "description": "User API",
+  "group": "ai",
+  "guard": "-",
+  "paths": [
+    {
+      "path": "/ask",
+      "method": "GET",
+      "guard": "-",
+      "process": "scripts.ai.chatgpt.Callq",
+      "in": ["$query.q"],
+      "out": {
+        "status": 200,
+        "type": "application/json"
+      }
+    },
+    {
+      "path": "/ask",
+      "method": "POST",
+      "guard": "-",
+      "process": "scripts.ai.chatgpt.Call",
+      "in": [":payload"],
+      "out": {
+        "status": 200,
+        "type": "application/json"
+      }
+    },
+    {
+      "path": "/ask2",
+      "method": "POST",
+      "guard": "-",
+      "process": "scripts.ai.chatgpt2.Call",
+      "in": [":payload"],
+      "out": {
+        "status": 200,
+        "type": "application/json"
+      }
+    },
+    {
+      "path": "/context",
+      "method": "GET",
+      "guard": "-",
+      "process": "scripts.utils.test.test",
+      "in": [":context"],
+      "out": {
+        "status": 200,
+        "type": "application/json"
+      }
+    }
+  ]
 }

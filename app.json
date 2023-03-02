@@ -1,5 +1,4 @@
 {
-  
   "xgen": "1.0",
   "name": "::AI Chat Application",
   "short": "::Demo",
@@ -9,12 +8,11 @@
   "setup": "",
   "menu": {
     "process": "flows.app.menu",
-    "args": [
-      "demo"
-    ]
+    "args": ["demo"]
   },
   "optional": {
     "hideNotification": true,
-    "hideSetting": false
+    "hideSetting": false,
+    "remoteCache": false
   }
 }
