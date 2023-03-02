@@ -76,19 +76,22 @@ function Call(message, setting) {
       messages.push({ role: "assistant", content: line.completion });
     }
   });
+  let stopword = GetStopWord(setting);
 
   const startDate = new Date();
   let RequestBody = {
     //prompt: prompt,
     messages: messages,
     model: setting.model,
-    // max_tokens: setting.max_tokens,
-    // top_p: setting.top_p,
-    // // stop: stopword,
-    // temperature: setting.temperature,
-    // presence_penalty: setting.presence_penalty,
-    // frequency_penalty: setting.frequency_penalty,
+    max_tokens: setting.max_tokens,
+    top_p: setting.top_p,
+    temperature: setting.temperature,
+    presence_penalty: setting.presence_penalty,
+    frequency_penalty: setting.frequency_penalty,
   };
+  if (stopword) {
+    RequestBody.stop = stopword;
+  }
 
   let url = "https://api.openai.com/v1/chat/completions";
 

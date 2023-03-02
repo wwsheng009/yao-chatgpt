@@ -30,8 +30,8 @@
     "primary": "id",
     "table": {
       "columns": [
-        { "name": "ID", "width": 100 },
-        { "name": "会话ID", "width": 160 },
+        { "name": "ID", "width": 50 },
+
         { "name": "标题", "width": 160 },
         { "name": "创建时间", "width": 160 }
       ],
@@ -105,10 +105,6 @@
     "table": {
       "API设置": {
         "bind": "api_setting",
-        "edit": {
-          "props": { "placeholder": "请输入 API设置" },
-          "type": "InputNumber"
-        },
         "view": { "props": {}, "type": "Text" }
       },
       "ID": {

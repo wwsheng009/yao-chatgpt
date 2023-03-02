@@ -25,7 +25,7 @@
           "width": 3
         }
       ],
-      "columns": [{ "name": "提示模板" }]
+      "columns": [{ "name": "提示" }]
     },
     "table": {
       "columns": [
@@ -86,7 +86,12 @@
     }
   },
   "fields": {
-    "filter": {},
+    "filter": {
+      "提示": {
+        "bind": "where.title.match",
+        "edit": { "props": { "placeholder": "请输入 提示" }, "type": "Input" }
+      }
+    },
     "table": {
       "ID": {
         "bind": "id",

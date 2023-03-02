@@ -224,13 +224,6 @@
       },
       "ID": {
         "bind": "id",
-        "edit": {
-          "props": {
-            "disabled": true,
-            "placeholder": "请输入 ID"
-          },
-          "type": "InputNumber"
-        },
         "view": {
           "props": {},
           "type": "Text"
@@ -251,15 +244,6 @@
       },
       "创建时间": {
         "bind": "created_at",
-        "edit": {
-          "props": {
-            "placeholder": "请选择 创建时间",
-            "showTime": {
-              "format": "HH:mm:ss"
-            }
-          },
-          "type": "DatePicker"
-        },
         "view": {
           "props": {
             "format": "YYYY-MM-DD HH:mm:ss"
@@ -295,15 +279,6 @@
       },
       "更新时间": {
         "bind": "updated_at",
-        "edit": {
-          "props": {
-            "placeholder": "请选择 更新时间",
-            "showTime": {
-              "format": "HH:mm:ss"
-            }
-          },
-          "type": "DatePicker"
-        },
         "view": {
           "props": {
             "format": "YYYY-MM-DD HH:mm:ss"
@@ -358,7 +333,7 @@
                   ],
                   "orders": [
                     {
-                      "column": "idx",
+                      "column": "created",
                       "option": "desc"
                     }
                   ]
@@ -386,7 +361,7 @@
                   ],
                   "orders": [
                     {
-                      "column": "idx",
+                      "column": "created",
                       "option": "desc"
                     }
                   ]
@@ -425,12 +400,6 @@
       },
       "调用计数": {
         "bind": "access_count",
-        "edit": {
-          "props": {
-            "placeholder": "请输入 调用计数"
-          },
-          "type": "InputNumber"
-        },
         "view": {
           "props": {},
           "type": "Text"

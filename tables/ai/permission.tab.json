@@ -3,12 +3,202 @@
   "action": {
     "bind": {
       "model": "ai.permission",
-      "option": {
-        "form": "ai.permission",
-        "withs": {
-          "model": {}
+      "option": { "form": "ai.permission", "withs": {} }
+    }
+  },
+  "layout": {
+    "filter": {
+      "actions": [],
+      "columns": [{ "name": "模型标识" }]
+    },
+    "header": { "actions": [], "preset": {} },
+    "primary": "id",
+    "table": {
+      "columns": [
+        { "name": "模型标识", "width": 200 },
+        { "name": "allow_create_engine", "width": 160 },
+        { "name": "allow_fine_tuning", "width": 160 },
+        { "name": "allow_sampling", "width": 160 },
+        { "name": "allow_search_indices", "width": 160 },
+        { "name": "is_blocking", "width": 160 },
+        { "name": "allow_logprobs", "width": 160 },
+        { "name": "allow_view", "width": 160 },
+        { "name": "created", "width": 160 }
+      ],
+      "operation": {
+        "actions": [
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "payload": {
+                  "Form": { "model": "ai.permission", "type": "view" }
+                },
+                "type": "Common.openModal"
+              }
+            ],
+            "icon": "icon-eye",
+            "title": "查看"
+          },
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "payload": {
+                  "Form": { "model": "ai.permission", "type": "edit" }
+                },
+                "type": "Common.openModal"
+              }
+            ],
+            "icon": "icon-edit-2",
+            "title": "编辑"
+          },
+          {
+            "action": [
+              {
+                "name": "Delete",
+                "payload": { "model": "ai.permission" },
+                "type": "Table.delete"
+              }
+            ],
+            "confirm": {
+              "desc": "请确认删除，删除后数据无法恢复",
+              "title": "确认"
+            },
+            "icon": "icon-trash-2",
+            "style": "danger",
+            "title": "Delete"
+          }
+        ],
+        "width": 140
+      },
+      "props": { "scroll": { "x": "max-content" } }
+    }
+  },
+  "fields": {
+    "filter": {
+      "模型标识": {
+        "bind": "where.model_id.match",
+        "edit": {
+          "props": { "placeholder": "请输入 模型标识" },
+          "type": "Input"
         }
       }
+    },
+    "table": {
+      "ID": {
+        "bind": "id",
+        "view": { "props": {}, "type": "Text" }
+      },
+      "allow_create_engine": {
+        "bind": "allow_create_engine",
+        "view": {
+          "props": {
+            "checkedChildren": "开启",
+            "checkedValue": true,
+            "unCheckedChildren": "关闭",
+            "unCheckedValue": false
+          },
+          "type": "Switch"
+        }
+      },
+      "allow_fine_tuning": {
+        "bind": "allow_fine_tuning",
+        "view": {
+          "props": {
+            "checkedChildren": "开启",
+            "checkedValue": true,
+            "unCheckedChildren": "关闭",
+            "unCheckedValue": false
+          },
+          "type": "Switch"
+        }
+      },
+      "allow_logprobs": {
+        "bind": "allow_logprobs",
+        "view": {
+          "props": {
+            "checkedChildren": "开启",
+            "checkedValue": true,
+            "unCheckedChildren": "关闭",
+            "unCheckedValue": false
+          },
+          "type": "Switch"
+        }
+      },
+      "allow_sampling": {
+        "bind": "allow_sampling",
+        "view": {
+          "props": {
+            "checkedChildren": "开启",
+            "checkedValue": true,
+            "unCheckedChildren": "关闭",
+            "unCheckedValue": false
+          },
+          "type": "Switch"
+        }
+      },
+      "allow_search_indices": {
+        "bind": "allow_search_indices",
+        "view": {
+          "props": {
+            "checkedChildren": "开启",
+            "checkedValue": true,
+            "unCheckedChildren": "关闭",
+            "unCheckedValue": false
+          },
+          "type": "Switch"
+        }
+      },
+      "allow_view": {
+        "bind": "allow_view",
+        "view": {
+          "props": {
+            "checkedChildren": "开启",
+            "checkedValue": true,
+            "unCheckedChildren": "关闭",
+            "unCheckedValue": false
+          },
+          "type": "Switch"
+        }
+      },
+      "created": {
+        "bind": "created",
+        "view": { "props": { "format": "YYYY-MM-DD HH:mm:ss" }, "type": "Text" }
+      },
+      "is_blocking": {
+        "bind": "is_blocking",
+        "view": {
+          "props": {
+            "checkedChildren": "开启",
+            "checkedValue": true,
+            "unCheckedChildren": "关闭",
+            "unCheckedValue": false
+          },
+          "type": "Switch"
+        }
+      },
+      "对象": {
+        "bind": "object",
+        "view": { "props": {}, "type": "Text" }
+      },
+      "权限ID": {
+        "bind": "idx",
+        "view": { "props": {}, "type": "Text" }
+      },
+      "模型标识": {
+        "bind": "model_id",
+        "view": { "props": {}, "type": "Text" }
+      },
+      "组": {
+        "bind": "group",
+        "view": { "props": {}, "type": "Text" }
+      },
+      "组织": {
+        "bind": "organization",
+        "view": { "props": {}, "type": "Text" }
+      }
     }
-  }
+  },
+  "config": { "full": true }
 }

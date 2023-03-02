@@ -1,103 +1,102 @@
 {
-    "name": "::AI Model Permission",
-    "table": {
-        "name": "ai_permission",
-        "label": "AI模型权限列表"
+  "name": "::AI Model Permission",
+  "table": {
+    "name": "ai_permission",
+    "comment": "AI模型权限列表"
+  },
+  "columns": [
+    {
+      "name": "id",
+      "label": "ID",
+      "type": "ID"
     },
-    "columns": [
-        {
-            "name": "id",
-            "label": "ID",
-            "type": "ID"
-        },
-        {
-            "name": "idx",
-            "label": "权限ID",
-            "index": true,
-            "type": "string"
-        },
-        {
-            "name": "model_id",
-            "label": "模型标识",
-            "type": "integer",
-            "index": true
-        },
-        {
-            "name": "organization",
-            "label": "组织",
-            "type": "string"
-        },
-        {
-            "name": "object",
-            "label": "对象",
-            "type": "string"
-        },
-        {
-            "name": "group",
-            "label": "组",
-            "type": "string"
-        },
-        {
-            "name": "allow_create_engine",
-            "label": "allow_create_engine",
-            "type": "boolean",
-            "default": false
-        },
-        {
-            "name": "allow_fine_tuning",
-            "label": "allow_fine_tuning",
-            "type": "boolean",
-            "default": false
-        },
-        {
-            "name": "allow_sampling",
-            "label": "allow_sampling",
-            "type": "boolean",
-            "default": false
-        },
-        {
-            "name": "allow_search_indices",
-            "label": "allow_search_indices",
-            "type": "boolean",
-            "default": false
-        },
-        {
-            "name": "is_blocking",
-            "label": "is_blocking",
-            "type": "boolean",
-            "default": false
-        },
-        {
-            "name": "allow_logprobs",
-            "label": "allow_logprobs",
-            "type": "boolean",
-            "default": false
-        },
-        {
-            "name": "allow_view",
-            "label": "allow_view",
-            "type": "boolean",
-            "default": false
-        },
-        {
-            "name": "created",
-            "label": "created",
-            "type": "datetime"
-        }
-    ],
-    "relations": {
-        "model": {
-            "type": "hasOne",
-            "model": "ai.model",
-            "key": "idx",
-            "foreign": "model_id",
-            "query": {}
-        }
+    {
+      "name": "idx",
+      "label": "权限ID",
+      "type": "string"
     },
-    "values": [],
-    "indexes": [],
-    "option": {
-        "timestamps": false,
-        "soft_deletes": false
+    {
+      "name": "model_id",
+      "label": "模型标识",
+      "type": "string",
+      "index": true
+    },
+    {
+      "name": "organization",
+      "label": "组织",
+      "type": "string"
+    },
+    {
+      "name": "object",
+      "label": "对象",
+      "type": "string"
+    },
+    {
+      "name": "group",
+      "label": "组",
+      "type": "string"
+    },
+    {
+      "name": "allow_create_engine",
+      "label": "allow_create_engine",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "allow_fine_tuning",
+      "label": "allow_fine_tuning",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "allow_sampling",
+      "label": "allow_sampling",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "allow_search_indices",
+      "label": "allow_search_indices",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "is_blocking",
+      "label": "is_blocking",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "allow_logprobs",
+      "label": "allow_logprobs",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "allow_view",
+      "label": "allow_view",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "created",
+      "label": "created",
+      "type": "datetime"
     }
+  ],
+  "relations": {
+    "model": {
+      "type": "hasOne",
+      "model": "ai.model",
+      "key": "idx",
+      "foreign": "model_id",
+      "query": {}
+    }
+  },
+  "values": [],
+  "indexes": [],
+  "option": {
+    "timestamps": false,
+    "soft_deletes": false
+  }
 }

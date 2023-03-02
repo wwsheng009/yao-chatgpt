@@ -3,12 +3,169 @@
   "action": {
     "bind": {
       "model": "ai.model",
-      "option": {
-        "form": "ai.model",
-        "withs": {
-          "permissions": {}
+      "option": { "form": "ai.model", "withs": {} }
+    }
+  },
+  "layout": {
+    "filter": {
+      "actions": [],
+      "columns": [{ "name": "模型标识" }, { "name": "状态" }]
+    },
+    "header": { "actions": [], "preset": {} },
+    "primary": "id",
+    "table": {
+      "columns": [
+        { "name": "ID", "width": 50 },
+        { "name": "模型标识", "width": 200 },
+        { "name": "备注", "width": 160 },
+        { "name": "评分", "width": 80 },
+        { "name": "类型", "width": 160 },
+        { "name": "状态", "width": 160 },
+        { "name": "拥有者", "width": 160 },
+        { "name": "创建时间", "width": 160 },
+        { "name": "根节点", "width": 160 }
+      ],
+      "operation": {
+        "actions": [
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "payload": { "Form": { "model": "ai.model", "type": "view" } },
+                "type": "Common.openModal"
+              }
+            ],
+            "icon": "icon-eye",
+            "title": "查看"
+          },
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "payload": { "Form": { "model": "ai.model", "type": "edit" } },
+                "type": "Common.openModal"
+              }
+            ],
+            "icon": "icon-edit-2",
+            "title": "编辑"
+          },
+          {
+            "action": [
+              {
+                "name": "Delete",
+                "payload": { "model": "ai.model" },
+                "type": "Table.delete"
+              }
+            ],
+            "confirm": {
+              "desc": "请确认删除，删除后数据无法恢复",
+              "title": "确认"
+            },
+            "icon": "icon-trash-2",
+            "style": "danger",
+            "title": "Delete"
+          }
+        ],
+        "width": 140
+      },
+      "props": { "scroll": { "x": "max-content" } }
+    }
+  },
+  "fields": {
+    "filter": {
+      "模型标识": {
+        "bind": "where.idx.match",
+        "edit": {
+          "props": { "placeholder": "请输入 模型标识" },
+          "type": "Input"
+        }
+      },
+      "状态": {
+        "bind": "where.status.eq",
+        "edit": {
+          "props": {
+            "options": [
+              { "label": "开启", "value": "enabled" },
+              { "label": "关闭", "value": "disabled" }
+            ],
+            "placeholder": "请选择 状态"
+          },
+          "type": "Select"
         }
       }
+    },
+    "table": {
+      "ID": {
+        "bind": "id",
+        "view": { "props": {}, "type": "Text" }
+      },
+      "上级": {
+        "bind": "parent",
+        "view": { "props": {}, "type": "Text" }
+      },
+      "创建时间": {
+        "bind": "created",
+        "view": { "props": { "format": "YYYY-MM-DD HH:mm:ss" }, "type": "Text" }
+      },
+      "备注": {
+        "bind": "Remark",
+        "edit": { "props": { "placeholder": "请输入 备注" }, "type": "Input" },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "拥有者": {
+        "bind": "owned_by",
+        "view": { "props": {}, "type": "Text" }
+      },
+      "标题": {
+        "bind": "title",
+        "edit": { "props": { "placeholder": "请输入 标题" }, "type": "Input" },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "根节点": {
+        "bind": "root",
+        "view": { "props": {}, "type": "Text" }
+      },
+      "模型标识": {
+        "bind": "idx",
+        "view": { "props": {}, "type": "Text" }
+      },
+      "状态": {
+        "bind": "status",
+        "edit": {
+          "props": {
+            "options": [
+              { "label": "开启", "value": "enabled" },
+              { "label": "关闭", "value": "disabled" }
+            ],
+            "placeholder": "请选择 状态"
+          },
+          "type": "Select"
+        },
+        "view": {
+          "props": {
+            "options": [
+              { "label": "开启", "value": "enabled" },
+              { "label": "关闭", "value": "disabled" }
+            ],
+            "placeholder": "请选择 状态"
+          },
+          "type": "Tag"
+        }
+      },
+      "类型": {
+        "bind": "object",
+        "edit": { "props": { "placeholder": "请输入 类型" }, "type": "Input" },
+        "view": { "props": {}, "type": "Text" }
+      },
+      "评分": {
+        "bind": "score",
+        "edit": {
+          "props": { "placeholder": "请输入 评分" },
+          "type": "InputNumber"
+        },
+        "view": { "props": {}, "type": "Text" }
+      }
     }
-  }
+  },
+  "config": { "full": true }
 }

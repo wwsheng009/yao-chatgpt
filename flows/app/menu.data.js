@@ -61,12 +61,6 @@ function main() {
       path: "/x/Form/chat.chat/0/edit",
     },
     {
-      id: 5,
-      icon: "icon-tool",
-      name: "chat",
-      path: "/x/Form/chat.message_simple1/0/edit",
-    },
-    {
       id: 3,
       blocks: 0,
       icon: "icon-list",

@@ -96,7 +96,6 @@ function Call(message, setting) {
     model: setting.model,
     max_tokens: setting.max_tokens,
     top_p: setting.top_p,
-    // stop: stopword,
     temperature: setting.temperature,
     presence_penalty: setting.presence_penalty,
     frequency_penalty: setting.frequency_penalty,
