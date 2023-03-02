@@ -26,9 +26,22 @@ yao migrate
 yao start
 ```
 
+## 加载提问模板
+
+这一步测试使用脚本自动下载更新会失败。
+所以需要手动下载一个模板文件。
+
+```sh
+wget https://raw.githubusercontent.com/PlexPt/awesome-chatgpt-prompts-zh/main/README.md -O data/中文调教指南.md.txt
+
+#执行加载脚本
+run scripts.loader.prompt_template.Run
+
+```
+
 ## 使用说明
 
-前端
+前端，打开就是一个对话的界面
 http://127.0.0.1:5199
 
 管理端
@@ -39,7 +52,11 @@ xiang@iqka.com
 密码:
 A123456p+
 
-登录管理系统端后，需要在设置菜单界面输入您的 open ai 的调用 api key。
+登录管理系统端后，需要在设置菜单界面输入您的 open ai 的调用 api key。或是执行以下脚本更新
+
+```sh
+yao run models.ai.setting.Update 1 '::{"api_token":"你的open ai key"}'
+```
 
 ## 如何获取 openai api key.
 
@@ -47,9 +64,9 @@ A123456p+
 
 ## 读取所有的 openai 的模型列表到本地
 
-非必要，
+自动下载并更新本地 ai 模型列表，需要先更新 opnen ai 的 key
 
-```
+```sh
 yao run scripts.ai.model.UpdateModel
 
 ```
@@ -60,12 +77,6 @@ yao run scripts.ai.model.UpdateModel
 
 ```sh
 yao run scripts.utils.user.ResetAdmin 18012341234 xxx@qq.com Abcd1234+
-```
-
-## 更新 api token
-
-```sh
-yao run models.ai.setting.Update 1 '::{"api_token":"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"}'
 ```
 
 ## 测试 api 接口

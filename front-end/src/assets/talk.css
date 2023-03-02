@@ -171,11 +171,6 @@
     margin: 0 auto;
 }
 
-@media only screen and (max-width: 980px) {
-    .talk {
-        width: 100%;
-    }
-}
 
 .talk-header {
     width: 100%;
@@ -197,6 +192,7 @@
 .talk-role {
     width: 200px;
 }
+
 
 .dark-theme .talk-role {
     background-color: #949494;
@@ -285,4 +281,28 @@
 
 .talk-message-clear button:hover {
     background-color: #ebe70c;
+}
+
+
+@media only screen and (max-width: 980px) {
+    .talk {
+        width: 100%;
+    }
+
+}
+
+@media only screen and (max-width: 980px) {
+    .talk-role {
+        flex: 1;
+    }
+
+    .talk-message-clear button {
+        width: 60px;
+        padding: 1px;
+        font-size: small;
+    }
+
+    .talk-message-title {
+        display: none
+    }
 }
