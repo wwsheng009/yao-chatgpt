@@ -71,6 +71,17 @@
         "type": "application/json",
         "body": "{{content}}"
       }
+    },
+    {
+      "path": "/setting",
+      "method": "GET",
+      "guard": "scripts.security.CheckAccessKey",
+      "process": "scripts.ai.chatgpt.GetSetting",
+      "in": [],
+      "out": {
+        "status": 200,
+        "type": "application/json"
+      }
     }
   ]
 }

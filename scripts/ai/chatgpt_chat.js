@@ -103,7 +103,7 @@ function Call(message, setting) {
   const seconds = (endDate.getTime() - startDate.getTime()) / 1000;
   if (reply.code != 200) {
     return {
-      message: reply.data.error.message,
+      message: reply.message,
       session_id,
     };
   }
