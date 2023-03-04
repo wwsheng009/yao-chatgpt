@@ -185,37 +185,6 @@ function GetStopWord(setting) {
 
   return stop;
 }
-// function test_stopWord() {
-//   // const setting = {
-//   //   stop: '["endofword","endofword2"]',
-//   //   user_nickname: "Human",
-//   //   ai_nickname: "AI",
-//   // };
-//   // GetStopWord(setting);
-
-//   const setting2 = {
-//     access_count: 39,
-//     ai_nickname: "AI智能助理",
-//     api_token: "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",
-//     created_at: "2023-02-15 21:14:10",
-//     default: true,
-//     deleted_at: null,
-//     description: "目前最强大的模型",
-//     frequency_penalty: 0,
-//     id: 1,
-//     max_send_lines: 10,
-//     max_tokens: 1024,
-//     model: "text-davinci-003",
-//     presence_penalty: 1,
-//     stop: "\u003c|endoftext|\u003e",
-//     temperature: 0.5,
-//     top_p: 1,
-//     updated_at: "2023-02-16 23:58:47",
-//     user_nickname: "用户",
-//   };
-//   GetStopWord(setting2);
-// }
-// test_stopWord();
 
 /**
  * 检查会话是否超过限制，如果超过，从开始端删除内容
@@ -259,46 +228,3 @@ function test_checkLenAndDelete() {
   );
 }
 // test_checkLenAndDelete();
-
-function CurrentTime() {
-  var date = new Date();
-  // utc时间整时区
-
-  date.setHours(date.getHours() + 8);
-  // console.log(date.toISOString().slice(0, 19) + "Z08:00");
-  return date.toISOString().slice(0, 19) + "Z08:00"; //北京时区
-  // return newDate.toISOString().slice(0, 19).replace("T", " ");
-  // return dateObj.toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " ");
-}
-// CurrentTime();
-
-function testTime() {
-  var newDate = new Date();
-  var timeoffset = -480; //newDate.getTimezoneOffset();
-
-  var offset = timeoffset / 60;
-  var hours = newDate.getHours();
-  newDate.setHours(hours - offset);
-  console.log(newDate.toISOString());
-  console.log(newDate.toUTCString());
-  console.log(newDate.toLocaleDateString());
-  console.log(newDate.toISOString().slice(0, 19) + "Z08:00"); //北京时区
-}
-// testTime();
-/**
- * 更新访问统计
- * @param {object} setting
- * @returns
- */
-function SaveLog2(setting) {
-  return Process("models.ai.setting.Update", setting.id, {
-    access_count: setting.access_count + 1,
-  });
-}
-function SaveLog(question, answer) {
-  return Process(
-    "models.ai.chatlog.Insert",
-    ["question", "answer"],
-    [[question, answer]]
-  );
-}

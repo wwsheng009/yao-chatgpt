@@ -88,5 +88,3 @@ function convertUTCDateToLocalDate(unixTimestamp) {
   newDate.setHours(hours - offset);
   return newDate.toISOString().slice(0, 19).replace("T", " ");
 }
-
-// convertUTCDateToLocalDate(1676642163);

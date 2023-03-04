@@ -4,7 +4,8 @@
     "bind": {
       "model": "chat.conversation",
       "option": { "form": "chat.conversation", "withs": {} }
-    }
+    },
+    "before:delete": "scripts.chat.conversation.DeleteMessage"
   },
   "layout": {
     "filter": {

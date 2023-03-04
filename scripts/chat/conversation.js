@@ -27,26 +27,6 @@ function generateUUID() {
 }
 
 /**
- * yao-debug run scripts.chat.conversation.testDummyMessage
- */
-
-function testDummyMessage() {
-  let { id } = NewConversation();
-
-  let isUser = true;
-  for (let index = 0; index < 100; index++) {
-    var d = new Date();
-    if (isUser) {
-      // return newDate.toISOString().slice(0, 19) + "Z08:00"; //北京时区
-      NewMessage(id, "user", d.toISOString().slice(0, 19).replace("T", " "));
-      isUser = false;
-    } else {
-      NewMessage(id, "AI", d.toISOString().slice(0, 19).replace("T", " "));
-      isUser = true;
-    }
-  }
-}
-/**
  * yao-debug migrate -n chat.conversation --reset
  * yao-debug run scripts.chat.conversation.NewConversation
  * yao-debug run models.chat.conversation.Get '::{}'
@@ -71,37 +51,7 @@ function NewConversation(title, description) {
 }
 
 /**
- * 创建新的消息
- * yao-debug migrate -n chat.message --reset
- * yao-debug run scripts.chat.conversation.NewMessage 0ae38ad4-8b2d-45e3-b1a0-0c7454ca25a7 user "hello world"
- * yao-debug run scripts.chat.conversation.NewMessage 0ae38ad4-8b2d-45e3-b1a0-0c7454ca25a7 AI "hello world"
- * yao-debug run models.chat.message.Get '::{}'
- *
- */
-/**
- * 创建新消息
- * @param {integer} conversation_id 会话ID
- * @param {*} user 用户
- * @param {*} message 消息
- * @returns
- */
-function NewMessage(conversation_id, user, message) {
-  //   console.log();
-  if (message.length == 0) {
-    return;
-  }
-  CheckConversationId(conversation_id);
-
-  let newid = Process("models.chat.message.create", {
-    conversation_id: conversation_id,
-    message: message,
-    user: user,
-    length: message.length,
-  });
-  return newid;
-}
-/**
- * New Message API
+ * New Message insert API
  * @param {map} param0 new message object
  */
 function NewMessageApi({
@@ -111,15 +61,8 @@ function NewMessageApi({
   replydata,
   aiUserName,
   endUserName,
+  seconds,
 }) {
-  console.log({
-    conversationId,
-    prompt,
-    answer,
-    replydata,
-    aiUserName,
-    endUserName,
-  });
   try {
     let new_message = {
       conversation_id: conversationId,
@@ -129,13 +72,13 @@ function NewMessageApi({
       completion: answer,
       prompt_len: prompt.length,
       completion_len: answer.length,
+      request_total_time: seconds,
     };
 
     if (replydata) {
       new_message.completion_tokens = replydata.usage.completion_tokens;
       new_message.prompt_tokens = replydata.usage.prompt_tokens;
       new_message.total_tokens = replydata.usage.total_tokens;
-      new_message.request_total_time = seconds;
       new_message.created = Process(
         "scripts.ai.model.convertUTCDateToLocalDate",
         replydata.created
@@ -143,10 +86,12 @@ function NewMessageApi({
       new_message.model = replydata.model;
       new_message.object = replydata.object;
     }
-
+    if (!new_message.created) {
+      new_message.created = Process("utils.now.DateTime");
+    }
     NewMessageObject(new_message);
   } catch (error) {
-    console.log("更新消息失败");
+    // console.log("更新消息失败");
     throw error;
   }
 }
@@ -285,4 +230,38 @@ function CheckConversationId(id) {
     throw Exception(`找不到对应的会话ID:${id}`);
   }
   return true;
+}
+/**
+ * 关联表删除
+ * delete the message related with conversation
+ * @param {number} id conversation id
+ */
+function DeleteMessage(id) {
+  // console.log("delete conversation with id:", id);
+  let rows = Process("models.chat.message.DeleteWhere", {
+    wheres: [{ column: "conversation_id", value: id }],
+  });
+
+  // console.log(`${rows} rows deleted`);
+  //remembe to return the id in array format
+  return [id];
+}
+
+/**
+ * 关联表批量删除
+ * delete the message related with conversation
+ * @param {array} param0 conversation object
+ */
+function DeleteMessageIn({ wheres }) {
+  // console.log("delete conversation with id:", id);
+  console.log("delete batch");
+  console.log(wheres[0].value);
+  let array = wheres[0].value;
+  array.forEach((element) => {
+    DeleteMessage(element);
+  });
+
+  // console.log(`${rows} rows deleted`);
+  //remembe to return the id in array format
+  return array;
 }

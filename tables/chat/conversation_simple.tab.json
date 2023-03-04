@@ -4,7 +4,9 @@
     "bind": {
       "model": "chat.conversation",
       "option": { "form": "chat.conversation_simple", "withs": {} }
-    }
+    },
+    "before:delete": "scripts.chat.conversation.DeleteMessage",
+    "before:delete-in": "scripts.chat.conversation.DeleteMessageIn"
   },
   "layout": {
     "filter": {
@@ -26,7 +28,18 @@
       ],
       "columns": [{ "name": "标题" }]
     },
-    "header": { "actions": [], "preset": {} },
+    "header": {
+      "actions": [],
+      "preset": {
+        "batch": {
+          "columns": [
+            { "name": "ID", "width": 100 },
+            { "name": "标题", "width": 160 }
+          ],
+          "deletable": true
+        }
+      }
+    },
     "primary": "id",
     "table": {
       "columns": [
