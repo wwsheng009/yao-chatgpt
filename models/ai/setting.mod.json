@@ -84,16 +84,12 @@
       "validations": [
         {
           "method": "min",
-          "args": [
-            0
-          ],
+          "args": [0],
           "message": "{{label}}应大于等于0"
         },
         {
           "method": "max",
-          "args": [
-            1
-          ],
+          "args": [1],
           "message": "{{label}}应小于等于1"
         }
       ]
@@ -106,9 +102,7 @@
       "validations": [
         {
           "method": "min",
-          "args": [
-            0
-          ],
+          "args": [0],
           "message": "{{label}}应大于等于0"
         }
       ]
@@ -121,16 +115,12 @@
       "validations": [
         {
           "method": "min",
-          "args": [
-            -2.0
-          ],
+          "args": [-2.0],
           "message": "{{label}}应大于等于-2.0"
         },
         {
           "method": "max",
-          "args": [
-            2.0
-          ],
+          "args": [2.0],
           "message": "{{label}}应小于等于2"
         }
       ]
@@ -143,17 +133,27 @@
       "validations": [
         {
           "method": "min",
-          "args": [
-            -2.0
-          ],
+          "args": [-2.0],
           "message": "{{label}}应大于等于-2.0"
         },
         {
           "method": "max",
-          "args": [
-            2.0
-          ],
+          "args": [2.0],
           "message": "{{label}}应小于等于2"
+        }
+      ]
+    },
+    {
+      "name": "n",
+      "label": "回答数量",
+      "comment": "How many completions to generate for each prompt.",
+      "type": "integer",
+      "default": 1,
+      "validations": [
+        {
+          "method": "min",
+          "args": [1],
+          "message": "{{label}}应大于等于1"
         }
       ]
     },
@@ -167,16 +167,17 @@
   "relations": {},
   "values": [
     {
-      "description": "ai辅助",
+      "description": "AI辅助",
       "default": true,
       "ai_nickname": "AI智能助理",
       "user_nickname": "用户",
       "api_token": "sk-",
-      "model": "text-davinci-003",
+      "model": "gpt-3.5-turbo",
       "max_tokens": 2048,
       "stop": "",
       "temperature": 0.5,
-      "access_count": 0
+      "access_count": 0,
+      "n": 1
     }
   ],
   "indexes": [],

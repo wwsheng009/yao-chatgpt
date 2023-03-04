@@ -1,0 +1,20 @@
+{
+  "name": "代理yao的请求",
+  "version": "1.0.0",
+  "description": "调试本地yao js脚本",
+  "group": "",
+  "guard": "scripts.security.CheckAccessKey",
+  "paths": [
+    {
+      "guard": "-",
+      "path": "/call",
+      "method": "POST",
+      "process": "scripts.jsproxy.Server",
+      "in": [":payload"],
+      "out": {
+        "status": 200,
+        "type": "application/json"
+      }
+    }
+  ]
+}

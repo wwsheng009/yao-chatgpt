@@ -53,6 +53,12 @@ function testDummyMessage() {
  *
  */
 
+/**
+ * 创建一个新的会话
+ * @param {string} title 新会话标题
+ * @param {string} description 描述
+ * @returns {id:string,uuid:uuid}
+ */
 function NewConversation(title, description) {
   let uuid = generateUUID();
   let newID = Process("models.chat.conversation.Create", {
@@ -93,6 +99,56 @@ function NewMessage(conversation_id, user, message) {
     length: message.length,
   });
   return newid;
+}
+/**
+ * New Message API
+ * @param {map} param0 new message object
+ */
+function NewMessageApi({
+  conversationId,
+  prompt,
+  answer,
+  replydata,
+  aiUserName,
+  endUserName,
+}) {
+  console.log({
+    conversationId,
+    prompt,
+    answer,
+    replydata,
+    aiUserName,
+    endUserName,
+  });
+  try {
+    let new_message = {
+      conversation_id: conversationId,
+      ai_user: aiUserName,
+      end_user: endUserName,
+      prompt: prompt,
+      completion: answer,
+      prompt_len: prompt.length,
+      completion_len: answer.length,
+    };
+
+    if (replydata) {
+      new_message.completion_tokens = replydata.usage.completion_tokens;
+      new_message.prompt_tokens = replydata.usage.prompt_tokens;
+      new_message.total_tokens = replydata.usage.total_tokens;
+      new_message.request_total_time = seconds;
+      new_message.created = Process(
+        "scripts.ai.model.convertUTCDateToLocalDate",
+        replydata.created
+      );
+      new_message.model = replydata.model;
+      new_message.object = replydata.object;
+    }
+
+    NewMessageObject(new_message);
+  } catch (error) {
+    console.log("更新消息失败");
+    throw error;
+  }
 }
 
 function NewMessageObject(message) {
@@ -141,7 +197,7 @@ function FindConversationById(uuid) {
         query: {
           select: [],
           orders: [{ column: "id", option: "desc" }],
-          limit: 10,
+          limit: 2,
         },
       },
     },
@@ -152,8 +208,12 @@ function FindConversationById(uuid) {
       },
     ],
   });
-  if (list.length && list[0].messages) {
-    list[0].messages = list[0].messages.reverse();
+
+  if (list && list.length) {
+    if (list[0].messages) {
+      //上面是倒序查找，现在再反过来
+      list[0].messages = list[0].messages.reverse();
+    }
     return list[0];
   }
 }
