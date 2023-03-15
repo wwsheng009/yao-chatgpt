@@ -63,11 +63,6 @@
                 "name": "Delete",
                 "payload": { "model": "ai.model" },
                 "type": "Table.delete"
-              },
-              {
-                "name": "Back",
-                "type": "Common.closeModal",
-                "payload": {}
               }
             ],
             "icon": "icon-trash-2",

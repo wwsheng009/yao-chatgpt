@@ -87,11 +87,6 @@
                 "name": "Delete",
                 "payload": { "model": "chat.message" },
                 "type": "Table.delete"
-              },
-              {
-                "name": "Back",
-                "type": "Common.closeModal",
-                "payload": {}
               }
             ],
             "icon": "icon-trash-2",

@@ -126,11 +126,6 @@
                   "model": "yao.user"
                 },
                 "type": "Table.delete"
-              },
-              {
-                "name": "Back",
-                "type": "Common.closeModal",
-                "payload": {}
               }
             ],
             "icon": "icon-trash-2",

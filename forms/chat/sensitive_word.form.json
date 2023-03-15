@@ -44,7 +44,6 @@
         "title": "Delete"
       }
     ],
-    "config": { "full": true },
     "form": {
       "sections": [
         {
@@ -57,7 +56,6 @@
         }
       ]
     },
-    "name": "敏感词",
     "primary": "id"
   },
   "fields": {

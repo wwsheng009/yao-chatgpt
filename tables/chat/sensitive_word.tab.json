@@ -6,7 +6,6 @@
       "option": { "form": "chat.sensitive_word", "withs": {} }
     }
   },
-  "config": { "full": true },
   "layout": {
     "filter": {
       "actions": [
@@ -76,19 +75,13 @@
                 "name": "Delete",
                 "payload": { "model": "chat.sensitive_word" },
                 "type": "Table.delete"
-              },
-              {
-                "name": "Back",
-                "type": "Common.closeModal",
-                "payload": {}
               }
             ],
             "icon": "icon-trash-2",
             "style": "danger",
             "title": "Delete"
           }
-        ],
-        "width": 140
+        ]
       },
       "props": { "scroll": { "x": "max-content" } }
     }
