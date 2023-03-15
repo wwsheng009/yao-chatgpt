@@ -18,5 +18,8 @@ function getCount() {
   });
   //console.log(result[0].number)
 
-  return result[0].number;
+  if (result && result.length) {
+    return result[0].number;
+  }
+  return 0;
 }
