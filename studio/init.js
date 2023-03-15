@@ -139,6 +139,14 @@ function createFormSetting(form) {
     {
       action: [
         {
+          name: "Confirm",
+          type: "Common.confirm",
+          payload: {
+            title: "确认删除",
+            content: "删除后不可撤销！",
+          },
+        },
+        {
           name: "Delete",
           payload: {
             model: form,
@@ -151,10 +159,6 @@ function createFormSetting(form) {
           payload: {},
         },
       ],
-      confirm: {
-        desc: "请确认删除，删除后数据无法恢复",
-        title: "确认",
-      },
       icon: "icon-trash-2",
       style: "danger",
       title: "Delete",
