@@ -20,6 +20,11 @@ function main() {
       ],
     },
     {
+      name: "聊天",
+      path: "/iframe?src=/index.html",
+      icon: "icon-trello",
+    },
+    {
       id: 2,
       blocks: 0,
       icon: "icon-message-square",
