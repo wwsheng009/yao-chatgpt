@@ -87,6 +87,22 @@ yao run models.chat.conversation.get '::{}'
 yao run models.chat.message.get '::{}'
 ```
 
+## 使用代理
+
+如果你的网络不能直接连接`https://api.openai.com`,请设置代理环境变量
+
+```bash
+export HTTP_RROXY=http://127.0.0.1:10809
+export HTTPS_RROXY=http://127.0.0.1:10809
+```
+
+或是修改文件`.env`
+
+```sh
+HTTP_RROXY="http://127.0.0.1:10809"
+HTTPS_PROXY="http://127.0.0.1:10809"
+```
+
 ## 开发
 
 如果使用 vscode 编写 json 配置文件,支持字段提示与格式检查

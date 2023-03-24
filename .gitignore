@@ -5,3 +5,4 @@ temp.json
 node_modules
 data
 dist
+plugins/*.so

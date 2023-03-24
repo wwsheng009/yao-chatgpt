@@ -95,10 +95,15 @@ function Call(message, setting) {
 
   let url = "https://api.openai.com/v1/chat/completions";
 
-  const reply = http.Post(url, RequestBody, null, null, {
+  // const reply = http.Post(url, RequestBody, null, null, {
+  //   "Content-Type": "application/json",
+  //   Authorization: `Bearer ` + setting.api_token,
+  // });
+  const reply = Process("plugins.httpx.post", url, RequestBody, null, null, {
     "Content-Type": "application/json",
     Authorization: `Bearer ` + setting.api_token,
   });
+
   const endDate = new Date();
   const seconds = (endDate.getTime() - startDate.getTime()) / 1000;
   if (reply.code != 200) {
