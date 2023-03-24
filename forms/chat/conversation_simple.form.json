@@ -3,7 +3,11 @@
   "action": {
     "bind": {
       "model": "chat.conversation",
-      "option": { "withs": "chat.message" }
+      "option": {
+        "withs": {
+          "chat.message": {}
+        }
+      }
     }
   },
   "layout": {

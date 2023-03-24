@@ -2,9 +2,7 @@
   "name": "::Admin Login",
   "action": {
     "process": "yao.login.Admin",
-    "args": [
-      ":payload"
-    ]
+    "args": [":payload"]
   },
   "layout": {
     "entry": "/x/Dashboard/ai",
