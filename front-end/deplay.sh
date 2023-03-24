@@ -1,5 +1,7 @@
 # deplay the assets
 
+pnpm run build
+
 rm -rf ../public/assets
 rm -rf ../public/index.html
 
