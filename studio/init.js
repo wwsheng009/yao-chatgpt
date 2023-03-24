@@ -1,12 +1,61 @@
-// import { Exception } from "yao-node-client";
-// import { FS, Process } from "yao-node-client";
 //在form与table配置中，yao可以只配置简单的与模型的绑定关系就能带出所有的配置，
 //但是这些配置都是默认项，一般情况是够用了，如果需要更多的配置，就需要手动修改配置文件。
+function MakeDefaultTable(table) {
+  let filename = `tables/${table.split(".").join("/")}.tab.json`;
+  let fs = new FS("dsl");
+  let default1 = {
+    name: table,
+    action: {
+      bind: {
+        model: table,
+        option: {
+          withs: {},
+          form: table, //有form才会生成创建按钮
+        },
+      },
+    },
+  };
+  if (!fs.Exists(filename)) {
+    let paths = `tables/${table.split(".").join("/")}`.split("/");
+    paths.pop();
+    let folder = paths.join("/");
+    fs.MkdirAll(folder);
+    fs.WriteFile(filename, JSON.stringify(default1));
+  } else {
+    return;
+  }
+}
+function MakeDefaultForm(form) {
+  let filename = `forms/${form.split(".").join("/")}.form.json`;
+  let fs = new FS("dsl");
+  let default1 = {
+    name: form,
+    action: {
+      bind: {
+        model: form,
+        option: {
+          withs: {},
+        },
+      },
+    },
+  };
+  if (!fs.Exists(filename)) {
+    let paths = `tables/${form.split(".").join("/")}`.split("/");
+    paths.pop();
+    let folder = paths.join("/");
+    fs.MkdirAll(folder);
+    fs.WriteFile(filename, JSON.stringify(default1));
+  } else {
+    return;
+  }
+}
 /**
  * 初始化表格的配置文件。
  * @param table 表格名称
  */
-function createTableSetting(table) {
+function CreateTable(table) {
+  MakeDefaultTable(table);
+  //如果不存在，需要执行两次，要不然yao.table.Setting无法加载文件
   let filename = `tables/${table.split(".").join("/")}.tab.json`;
   // let table_file = `tables/${table.split(".").join("/")}.tab.json`;
   let setting = Process("yao.table.Setting", table);
@@ -38,17 +87,43 @@ function createTableSetting(table) {
     delete newTable.layout.config;
     delete newTable.layout.name;
   }
+  let createAction = {
+    action: [
+      {
+        type: "Common.historyPush",
+        payload: {
+          pathname: `/x/Form/${table}/0/edit`,
+        },
+        name: "HistoryPush",
+      },
+    ],
+    title: "创建",
+    width: 3,
+    icon: "icon-plus",
+  };
+  if (!newTable?.layout) {
+    newTable.layout = {};
+  }
+  if (!newTable?.layout?.filter) {
+    newTable.layout.filter = {};
+  }
+  if (!newTable?.layout?.filter?.actions) {
+    newTable.layout.filter.actions = [];
+  }
+  newTable.layout.filter.actions.push(createAction);
   deleteObjectKey(newTable, "id");
   let fs = new FS("dsl");
-  // if (fs.Exists(filename)) {
-  //   let template = JSON.parse(fs.ReadFile(filename));
-  //   //如果不存在配置，增加，不要直接替换
-  //   for (const key in template) {
-  //     if (!newTable[key]) {
-  //       newTable[key] = template[key];
-  //     }
-  //   }
-  // }
+  if (fs.Exists(filename)) {
+    let template = JSON.parse(fs.ReadFile(filename));
+    //如果不存在配置，增加，不要直接替换
+    newTable.action = template.action;
+    newTable.name = template.name;
+    // for (const key in template) {
+    //   if (!newTable[key]) {
+    //     newTable[key] = template[key];
+    //   }
+    // }
+  }
   //make sure the folder exist
   let folder = filename.split("/").slice(0, -1);
   if (!fs.Exists(folder.join("/"))) {
@@ -64,7 +139,9 @@ function createTableSetting(table) {
  * 创建表单的配置文件，适用于初始化表单配置
  * @param form 表单名称
  */
-function createFormSetting(form) {
+function CreateForm(form) {
+  MakeDefaultForm(form);
+  //如果不存在，需要执行两次，要不然yao.form.Setting无法加载文件
   let filename = `forms/${form.split(".").join("/")}.form.json`;
   let setting = Process("yao.form.Setting", form);
   // createSetting(setting, filename);
@@ -96,14 +173,16 @@ function createFormSetting(form) {
   deleteObjectKey(newForm, "id");
   // 合并原来的配置
   let fs = new FS("dsl");
-  // if (fs.Exists(filename)) {
-  //   let template = JSON.parse(fs.ReadFile(filename));
-  //   for (const key in template) {
-  //     if (!newForm[key]) {
-  //       newForm[key] = template[key];
-  //     }
-  //   }
-  // }
+  if (fs.Exists(filename)) {
+    let template = JSON.parse(fs.ReadFile(filename));
+    newForm.action = template.action;
+    newForm.name = template.name;
+    // for (const key in template) {
+    //   if (!newForm[key]) {
+    //     newForm[key] = template[key];
+    //   }
+    // }
+  }
   let actions = [
     {
       title: "返回",
@@ -137,6 +216,9 @@ function createFormSetting(form) {
       ],
     },
     {
+      icon: "icon-trash-2",
+      style: "danger",
+      title: "Delete",
       action: [
         {
           name: "Confirm",
@@ -159,9 +241,6 @@ function createFormSetting(form) {
           payload: {},
         },
       ],
-      icon: "icon-trash-2",
-      style: "danger",
-      title: "Delete",
     },
   ];
   newForm.layout.actions = actions;
@@ -221,33 +300,16 @@ function test_delete_object_key() {
  * create default table and table config json file
  * @param model yao model name
  */
-function createTableAndForm(model) {
-  createTableSetting(model);
-  createFormSetting(model);
+function CreateTableAndForm(model) {
+  CreateTable(model);
+  CreateForm(model);
 }
-//按以下格式创建默认的table的配置，再调用函数生成默认table配置。
-// {
-//   "name": "::Chat Message",
-//   "action": {
-//     "bind": {
-//       "model": "chat.message",
-//       "option": { "form": "chat.message", "withs": {} }
-//     }
-//   }
-//}
-//按以下格式创建默认的form配置，再调用函数生成默认form配置
-// {
-//   "name": "::AI Conversation Message",
-//   "action": {
-//     "bind": {
-//       "model": "chat.message",
-//     }
-//   }
-// }
-// createTableSetting("chat.prompt_template1");
-// createFormSetting("chat.prompt_template");
-// createTableAndForm("chat.prompt_template");
-// createTableAndForm("chat.conversation");
-// createTableAndForm("chat.message");
-// createTableAndForm("ai.model");
-// createTableAndForm("chat.conversation");
+//如果不存在，需要执行两次，要不然yao无法加载文件
+//直接ts执行
+// CreateTable("chat.prompt_template1");
+// CreateForm("chat.prompt_template");
+// CreateTableAndForm("chat.prompt_template");
+// 使用命令行
+// yao studio run init.CreateTable supplier
+// yao studio run init.CreateForm supplier
+// yao studio run init.CreateTableAndForm supplier

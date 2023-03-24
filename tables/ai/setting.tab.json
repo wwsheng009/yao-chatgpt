@@ -39,7 +39,6 @@
       "actions": [],
       "preset": {}
     },
-    "name": "系统设置",
     "primary": "id",
     "table": {
       "columns": [
@@ -70,6 +69,10 @@
         {
           "name": "API Token",
           "width": 240
+        },
+        {
+          "name": "使用插件",
+          "width": 120
         },
         {
           "name": "最大允许的对话数量",
@@ -374,6 +377,18 @@
             }
           },
           "type": "Tag"
+        }
+      },
+      "使用插件": {
+        "bind": "use_plugin",
+        "view": {
+          "type": "Switch",
+          "props": {
+            "checkedValue": true,
+            "unCheckedChildren": "关闭",
+            "unCheckedValue": false,
+            "checkedChildren": "开启"
+          }
         }
       },
       "热度": {

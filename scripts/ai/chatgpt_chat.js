@@ -95,14 +95,18 @@ function Call(message, setting) {
 
   let url = "https://api.openai.com/v1/chat/completions";
 
-  // const reply = http.Post(url, RequestBody, null, null, {
-  //   "Content-Type": "application/json",
-  //   Authorization: `Bearer ` + setting.api_token,
-  // });
-  const reply = Process("plugins.httpx.post", url, RequestBody, null, null, {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ` + setting.api_token,
-  });
+  let reply = { code: 200, message: "调用接口出错" };
+  if (setting.use_plugin) {
+    reply = Process("plugins.httpx.post", url, RequestBody, null, null, {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ` + setting.api_token,
+    });
+  } else {
+    reply = http.Post(url, RequestBody, null, null, {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ` + setting.api_token,
+    });
+  }
 
   const endDate = new Date();
   const seconds = (endDate.getTime() - startDate.getTime()) / 1000;

@@ -162,6 +162,12 @@
       "label": "调用计数",
       "type": "integer",
       "default": 0
+    },
+    {
+      "name": "use_plugin",
+      "label": "使用插件",
+      "type": "boolean",
+      "default": false
     }
   ],
   "relations": {},
