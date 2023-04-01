@@ -21,8 +21,10 @@ function MakeDefaultTable(table) {
     let folder = paths.join("/");
     fs.MkdirAll(folder);
     fs.WriteFile(filename, JSON.stringify(default1));
+    console.log("已生成最小化配置Table:", filename);
+    return false;
   } else {
-    return;
+    return true;
   }
 }
 function MakeDefaultForm(form) {
@@ -45,8 +47,10 @@ function MakeDefaultForm(form) {
     let folder = paths.join("/");
     fs.MkdirAll(folder);
     fs.WriteFile(filename, JSON.stringify(default1));
+    console.log("已生成最小化配置Form:", filename);
+    return false;
   } else {
-    return;
+    return true;
   }
 }
 /**
@@ -54,7 +58,11 @@ function MakeDefaultForm(form) {
  * @param table 表格名称
  */
 function CreateTable(table) {
-  MakeDefaultTable(table);
+  const exist = MakeDefaultTable(table);
+  if (exist == false) {
+    console.log("需要生成全配置Table,请再执行一次命令");
+    return;
+  }
   //如果不存在，需要执行两次，要不然yao.table.Setting无法加载文件
   let filename = `tables/${table.split(".").join("/")}.tab.json`;
   // let table_file = `tables/${table.split(".").join("/")}.tab.json`;
@@ -110,7 +118,9 @@ function CreateTable(table) {
   if (!newTable?.layout?.filter?.actions) {
     newTable.layout.filter.actions = [];
   }
-  newTable.layout.filter.actions.push(createAction);
+  if (newTable.layout.filter.actions.length == 0) {
+    newTable.layout.filter.actions.push(createAction);
+  }
   deleteObjectKey(newTable, "id");
   let fs = new FS("dsl");
   if (fs.Exists(filename)) {
@@ -140,7 +150,11 @@ function CreateTable(table) {
  * @param form 表单名称
  */
 function CreateForm(form) {
-  MakeDefaultForm(form);
+  const exist = MakeDefaultForm(form);
+  if (exist == false) {
+    console.log("需要生成全配置Form,请再执行一次");
+    return;
+  }
   //如果不存在，需要执行两次，要不然yao.form.Setting无法加载文件
   let filename = `forms/${form.split(".").join("/")}.form.json`;
   let setting = Process("yao.form.Setting", form);

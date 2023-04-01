@@ -42,9 +42,9 @@ yao start
 
 ## 网络插件 httpx
 
-部分人的网络可能不太好，可以启用插件 httpx 的代替 yao 本身的`http.Post`方法。
+如果你的网络可能不好，没办法直接访问 openai 接口，可以启用插件 httpx 的代替 yao 本身的`http.Post`方法。
 
-[httpx 插件编译](plugins/httpx/readme.md)
+[httpx 插件](plugins/httpx/readme.md)
 
 ## 加载提问模板
 
@@ -91,9 +91,9 @@ yao run scripts.ai.model.UpdateModel
 
 ```
 
-## 重置管理员
+## 管理员
 
-删除重置系统用户
+删除重置系统用户,或是登录管理页面`http://127.0.0.1:5199/admin/x/Table/yao.user`进行配置
 
 ```sh
 yao run scripts.utils.user.ResetAdmin 18012341234 xxx@qq.com Abcd1234+
@@ -107,28 +107,12 @@ yao run models.chat.conversation.get '::{}'
 yao run models.chat.message.get '::{}'
 ```
 
-## 使用代理
-
-如果你的网络不能直接连接`https://api.openai.com`,请设置代理环境变量
-
-```bash
-export HTTP_RROXY=http://127.0.0.1:10809
-export HTTPS_RROXY=http://127.0.0.1:10809
-```
-
-或是修改文件`.env`
-
-```sh
-HTTP_RROXY="http://127.0.0.1:10809"
-HTTPS_PROXY="http://127.0.0.1:10809"
-```
+如果网络不通，请使用代理。[httpx 插件](plugins/httpx/readme.md)
 
 ## 开发
 
-如果使用 vscode 编写 json 配置文件,支持字段提示与格式检查
-
-## 贡献者
+如果使用编辑器 vscode 编写 json 配置文件,已支持字段[提示与格式检查](https://wwsheng009.github.io/yao-docs/Studio/%E7%BC%96%E8%BE%91%E5%99%A8vscode%E6%99%BA%E8%83%BD%E6%8F%90%E7%A4%BA.html#%E7%BC%96%E8%BE%91%E5%99%A8vscode%E6%99%BA%E8%83%BD%E6%8F%90%E7%A4%BA)
 
 ## 许可证
 
-本项目使用 Apache License 2.0 许可证，详情请参阅 [LICENSE.txt](LICENSE.txt)
+本项目使用 Apache License 2.0 许可证，详情请参阅 [LICENSE.txt](LICENSE)
