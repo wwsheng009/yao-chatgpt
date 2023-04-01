@@ -3,12 +3,12 @@ package httpx
 import (
 	"fmt"
 
-	"github.com/yaoapp/gou"
 	"github.com/yaoapp/gou/cast"
+	"github.com/yaoapp/gou/process"
 )
 
 func Register() {
-	gou.RegisterProcessHandler("httpx.client.post", processHTTPPost)
+	process.Register("httpx.client.post", processHTTPPost)
 }
 
 // http.Post
@@ -17,7 +17,7 @@ func Register() {
 // args[2] Files   <Optional> {"foo":"/path/root/file"}
 // args[3] Query Params <Optional> {"k1":"v1", "k2":"v2"}, ["k1=v1","k1"="v11","k2"="v2"], [{"k1":"v1"},{"k1":"v11"},{"k2":"v2"}], k1=v1&k1=v11&k2=k2
 // args[4] Headers <Optional> {"K1":"V1","K2":"V2"}  [{"K1":"V1"},{"K1":"V11"},{"K2":"V2"}]
-func processHTTPPost(process *gou.Process) interface{} {
+func processHTTPPost(process *process.Process) interface{} {
 
 	process.ValidateArgNums(1)
 	req, err := processHTTPNew(process, 3)
@@ -84,7 +84,7 @@ func processHTTPPost(process *gou.Process) interface{} {
 }
 
 // make a *http.Request
-func processHTTPNew(process *gou.Process, from int) (*Request, *Response) {
+func processHTTPNew(process *process.Process, from int) (*Request, *Response) {
 
 	req := New(process.ArgsString(0))
 

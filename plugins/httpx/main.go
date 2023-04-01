@@ -13,7 +13,7 @@ import (
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/joho/godotenv"
-	"github.com/yaoapp/gou"
+	"github.com/yaoapp/gou/process"
 	"github.com/yaoapp/kun/grpc"
 )
 
@@ -56,7 +56,7 @@ func (demo *DemoPlugin) Exec(name string, args ...interface{}) (*grpc.Response, 
 			out = httpx.Response{Status: 400, Message: "参数不足，需要一个参数"}
 			break
 		}
-		var process = gou.NewProcess("httpx.client.post", args...)
+		var process = process.New("httpx.client.post", args...)
 		res, err := process.Exec()
 		if err != nil {
 			out = httpx.Response{Status: 400, Message: err.Error()}

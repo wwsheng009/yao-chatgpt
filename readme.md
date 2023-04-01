@@ -6,11 +6,25 @@
 
 本项目基于 yao engine 开发的一个 ai 聊天接口应用。它的主要功能是接收用户的提问，并调用 openai chat gpt 的提供的 api 接口。可以为用户提供一个简单的聊天应用。
 
+## AI 对话
+
+![ai conversation](docs/ai-convesation.png)
+
+## XGEN NEO
+
+![neo](docs/yao-xgen-neo-assistant.png)
+
 ## 功能
 
-- 演示调用 chat gpt api 接口
+- 调用 chat gpt api 接口,提示会话上下文
+- 支持 gpt3.5 接口
+- 支持会话模板
+- 后台保存会话历史
 - 提供外部用户调用的 post/get 接口
+- 插件 httpx 支持使用代理,可以配置里使用`use_plugin`启用插件访问 openai
 - 提供后台系统配置，日志查看功能
+- 最新版本的 xgen，可使用 neo 聊天助手
+- 自定义 AI 聊天控件
 
 ## 安装
 
@@ -25,6 +39,12 @@ cd yao-chatgpt
 yao migrate
 yao start
 ```
+
+## 网络插件 httpx
+
+部分人的网络可能不太好，可以启用插件 httpx 的代替 yao 本身的`http.Post`方法。
+
+[httpx 插件编译](plugins/httpx/readme.md)
 
 ## 加载提问模板
 
