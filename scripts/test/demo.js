@@ -20,3 +20,4 @@ function GetSetting() {
   return setting[0];
 }
 // Main();
+

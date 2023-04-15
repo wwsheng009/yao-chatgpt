@@ -14,3 +14,4 @@ function chat(args) {
   const resp = Process("scripts.ai.chatgpt.Call", { prompt: args.text });
   return { text: resp.message };
 }
+

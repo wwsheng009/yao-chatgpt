@@ -28,6 +28,18 @@
       }
     },
     {
+      "path": "/ask-stream",
+      "method": "POST",
+      "guard": "-",
+      "process": "scripts.ai.stream.Call",
+      "in": [":payload"],
+      "out": {
+        "stream": true,
+        "status": 200,
+        "type": "application/json"
+      }
+    },
+    {
       "path": "/ask2",
       "method": "POST",
       "guard": "-",

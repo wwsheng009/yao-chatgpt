@@ -7,7 +7,7 @@
   "adminRoot": "admin",
   "setup": "",
   "menu": {
-    "process": "flows.app.menu",
+    "process": "scripts.menu.menu.main",
     "args": ["demo"]
   },
   "optional": {

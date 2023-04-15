@@ -3,7 +3,7 @@
   "nodes": [
     {
       "name": "template",
-      "engine": "xiang",
+      "engine": "default",
       "query": {
         "select": ["id as value", "title as label"],
         "wheres": [

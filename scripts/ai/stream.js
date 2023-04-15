@@ -1,16 +1,105 @@
+let g_message = "";
+let reply = null;
+// function ssEvent(message, content) {
+//   console.log(`message:${message},${content}`);
+// }
+function collect(content) {
+  ssEvent("messages", content);
+  // console.log(`content:${content}`);
+}
+
 /**
- * yao-debug run scripts.ai.chatgpt.Call '::{"prompt":"你好"}'
- * yao-debug run scripts.ai.chatgpt.Call '::{"prompt":"可以帮我找一下python学习资源吗","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
- * yao-debug run scripts.ai.chatgpt.Call '::{"prompt":"廖雪峰的Python教程","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
- *
- *  yao-debug run scripts.chat.conversation.FindConversationById "938d58a4-b976-46b8-a342-7644a2566476"
+ * 回调函数
+ * @param {object} payload 数据
+ * @returns
  */
+function handler(payload) {
+  const lines = payload.split("\n\n");
+  for (const line of lines) {
+    if (line === "") {
+      continue;
+    }
+    if (line === "data: [DONE]") {
+      return 0;
+    } else if (line.startsWith("data:")) {
+      const myString = line.substring(5);
+      try {
+        let message = JSON.parse(myString);
+        if (message) {
+          reply = message;
+          let content = message.choices[0]?.delta?.content;
+          // console.log(`content:${content}`);
+
+          if (content) {
+            g_message += content;
+            collect(content);
+          }
+        }
+      } catch (error) {
+        ssEvent("errors", error.Error());
+        return -1;
+      }
+    } else {
+      console.log("unexpected", line);
+    }
+  }
+  //异常，返回-1
+  //正常返回1，默认
+  //中断返回0
+  return 1;
+}
+/**
+ * yao run scripts.ai.stream.Call '::{"prompt":"你好"}'
+ * yao run scripts.ai.stream.Call '::{"prompt":"可以帮我找一下python学习资源吗","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
+ * yao run scripts.ai.stream.Call '::{"prompt":"廖雪峰的Python教程","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
+ *
+ *  yao run scripts.chat.conversation.FindConversationById "938d58a4-b976-46b8-a342-7644a2566476"
+ */
+function Call(message) {
+  // console.log("message", message);
+  const setting = GetSetting();
+  if (!setting || !setting.api_token) {
+    return "请在管理界面维护AI连接设置值";
+  }
+  if (!message || !message.prompt || !message.prompt.length) {
+    return "请填写您的问题";
+  }
+  const ask = message.prompt;
+  if (ask.length < 2) {
+    return "请填写详细的问题";
+  }
+
+  setting.user_nickname = setting.user_nickname || "用户";
+  setting.ai_nickname = setting.ai_nickname || "AI智能助理";
+
+  if (!setting.model.startsWith("gpt-3.5-turbo")) {
+    return Process("scripts.ai.chatgpt_complete.Call", message, setting);
+  } else {
+    return CallGpt(message, setting);
+  }
+}
+function GetSetting() {
+  const setting = Process("models.ai.setting.Get", {
+    wheres: [
+      {
+        Column: "default",
+        Value: true,
+      },
+      {
+        Column: "deleted_at",
+        Value: null,
+      },
+    ],
+  });
+  return setting[0];
+}
+
 /**
  * 处理post请求，并调用chatgpt接口
  * @param {object} message 消息文本
  * @returns
  */
-function Call(message, setting) {
+function CallGpt(message, setting) {
   const ask = message.prompt;
   //新会话
   let session_id = message.session_id;
@@ -63,72 +152,65 @@ function Call(message, setting) {
   }
 
   let conversation = checkLenAndDelete(newMessages, setting.max_tokens);
-  let prompt = "";
-  if (newSessionInitMessage && newSessionInitMessage.length) {
-    prompt = newSessionInitMessage;
-  }
+  // let prompt = "";
+  // if (newSessionInitMessage && newSessionInitMessage.length) {
+  //   prompt = newSessionInitMessage;
+  // }
+
+  let messages = [];
   //模拟对话上下文
   conversation.map((line) => {
     if (line.prompt) {
       if (endUserName && endUserName.length) {
-        prompt += endUserName + ": ";
+        messages.push({ role: "user", content: line.prompt });
       }
-      prompt += line.prompt + "\n\n";
     }
 
     if (line.completion) {
       if (aiUserName && aiUserName.length) {
-        prompt += aiUserName + ": ";
+        messages.push({ role: "assistant", content: line.prompt });
       }
-      prompt += line.completion + "\n\n"; //+ stopword;
     }
   });
-  if (aiUserName && aiUserName.length) {
-    prompt += aiUserName + ": ";
-  }
+  // if (aiUserName && aiUserName.length) {
+  //   prompt += aiUserName + ": ";
+  // }
 
   const startDate = new Date();
-
+  // console.log("messages", messages);
   let RequestBody = {
-    prompt: prompt,
+    // prompt: prompt,
+    messages,
     model: setting.model,
     max_tokens: setting.max_tokens,
     top_p: setting.top_p,
     temperature: setting.temperature,
     presence_penalty: setting.presence_penalty,
     frequency_penalty: setting.frequency_penalty,
+    stream: true,
   };
   if (stopword) {
     RequestBody.stop = stopword;
   }
-  let url = "https://api.openai.com/v1/completions";
-  console.log(setting.model);
-  if (setting.model == "gpt-3.5-turbo-0301") {
-    url = "https://api.openai.com/v1/chat/completions";
-  }
+  //   let url = "https://api.openai.com/v1/completions";
+  let url = "https://api.openai.com/v1/chat/completions";
+
+  // console.log(setting.model);
+  // if (setting.model == "gpt-3.5-turbo-0301") {
+  //   url = "https://api.openai.com/v1/chat/completions";
+  // }
   // console.log(setting.api_token);
-  const reply = http.Post(url, RequestBody, null, null, {
+  ssEvent("session_id", session_id);
+  http.Stream("POST", url, handler, RequestBody, null, {
+    Accept: "text/event-stream; charset=utf-8",
     "Content-Type": "application/json",
-    // 'Authorization': `Bearer ${$ENV.AI_API_KEY}`,
     Authorization: `Bearer ` + setting.api_token,
   });
+
+  // console.log("stream replay", reply);
   const endDate = new Date();
   const seconds = (endDate.getTime() - startDate.getTime()) / 1000;
-  if (reply.code != 200) {
-    return {
-      message: reply.data.error.message,
-      session_id,
-    };
-  }
-
-  // will delete the '\n\n'
-  let answer = reply.data.choices[0].text.trim();
-  //删除第一个空行
-
-  console.log(reply.data);
-
-  answer = answer.replace(/^\s*\n/, "");
-
+  let answer = g_message;
   let new_message = {
     conversation_id: conversationId,
     ai_user: aiUserName,
@@ -137,26 +219,16 @@ function Call(message, setting) {
     completion: answer,
     prompt_len: ask.length,
     completion_len: answer.length,
-    completion_tokens: reply.data.usage.completion_tokens,
-    prompt_tokens: reply.data.usage.prompt_tokens,
-    total_tokens: reply.data.usage.total_tokens,
     request_total_time: seconds,
     created: Process(
       "scripts.ai.model.convertUTCDateToLocalDate",
-      reply.data.created
+      reply.created
     ),
-    model: reply.data.model,
-    object: reply.data.object,
+    model: reply.model,
+    object: reply.object,
   };
 
-  let newId = Process(
-    "scripts.chat.conversation.NewMessageObject",
-    new_message
-  );
-  return {
-    message: answer,
-    session_id,
-  };
+  Process("scripts.chat.conversation.NewMessageObject", new_message);
 }
 
 /**
@@ -256,4 +328,3 @@ function test_checkLenAndDelete() {
   );
 }
 // test_checkLenAndDelete();
-

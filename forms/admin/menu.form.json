@@ -1,0 +1,279 @@
+{
+  "name": "admin.menu",
+  "action": {
+    "bind": {
+      "model": "admin.menu",
+      "option": {
+        "withs": {}
+      }
+    }
+  },
+  "layout": {
+    "primary": "id",
+    "actions": [
+      {
+        "title": "返回",
+        "icon": "icon-arrow-left",
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          {
+            "name": "CloseModal",
+            "type": "Common.closeModal",
+            "payload": {}
+          }
+        ]
+      },
+      {
+        "title": "保存",
+        "icon": "icon-check",
+        "style": "primary",
+        "showWhenAdd": true,
+        "action": [
+          {
+            "name": "Submit",
+            "type": "Form.submit",
+            "payload": {}
+          },
+          {
+            "name": "Back",
+            "type": "Common.closeModal",
+            "payload": {}
+          }
+        ]
+      },
+      {
+        "icon": "icon-trash-2",
+        "style": "danger",
+        "title": "Delete",
+        "action": [
+          {
+            "name": "Confirm",
+            "type": "Common.confirm",
+            "payload": {
+              "title": "确认删除",
+              "content": "删除后不可撤销！"
+            }
+          },
+          {
+            "name": "Delete",
+            "payload": {
+              "model": "admin.menu"
+            },
+            "type": "Form.delete"
+          },
+          {
+            "name": "Back",
+            "type": "Common.closeModal",
+            "payload": {}
+          }
+        ]
+      }
+    ],
+    "form": {
+      "sections": [
+        {
+          "columns": [
+            {
+              "width": 12,
+              "name": "ID"
+            },
+            {
+              "name": "父节点",
+              "width": 12
+            },
+            {
+              "width": 12,
+              "name": "名称"
+            },
+            {
+              "width": 12,
+              "name": "图标"
+            },
+            {
+              "name": "block布局",
+              "width": 12
+            },
+            {
+              "name": "显示",
+              "width": 12
+            },
+            {
+              "name": "路由",
+              "width": 12
+            },
+            {
+              "name": "排列",
+              "width": 12
+            },
+            {
+              "name": "状态",
+              "width": 12
+            },
+            {
+              "name": "Created At",
+              "width": 12
+            },
+            {
+              "name": "Updated At",
+              "width": 12
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "fields": {
+    "form": {
+      "Created At": {
+        "bind": "created_at",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 Created At",
+            "showTime": {
+              "format": "HH:mm:ss"
+            }
+          },
+          "type": "DatePicker"
+        }
+      },
+      "路由": {
+        "view": {
+          "type": "",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 路由"
+          }
+        },
+        "bind": "path"
+      },
+      "Updated At": {
+        "bind": "updated_at",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 Updated At",
+            "showTime": {
+              "format": "HH:mm:ss"
+            }
+          },
+          "type": "DatePicker"
+        }
+      },
+      "排列": {
+        "bind": "rank",
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "placeholder": "请输入 排列"
+          }
+        }
+      },
+      "父节点": {
+        "bind": "parent",
+        "edit": {
+          "props": {
+            "placeholder": "请输入 父节点"
+          },
+          "type": "InputNumber"
+        }
+      },
+      "block布局": {
+        "bind": "blocks",
+        "edit": {
+          "type": "RadioGroup",
+          "props": {
+            "options": [
+              {
+                "label": "开启",
+                "value": true
+              },
+              {
+                "label": "关闭",
+                "value": false
+              }
+            ]
+          }
+        }
+      },
+      "显示": {
+        "bind": "visible_menu",
+        "edit": {
+          "type": "RadioGroup",
+          "props": {
+            "options": [
+              {
+                "label": "开启",
+                "value": true
+              },
+              {
+                "label": "关闭",
+                "value": false
+              }
+            ]
+          }
+        }
+      },
+      "状态": {
+        "bind": "status",
+        "edit": {
+          "props": {
+            "placeholder": "请选择 状态",
+            "options": [
+              {
+                "label": "开启",
+                "value": "enabled"
+              },
+              {
+                "label": "关闭",
+                "value": "disabled"
+              }
+            ]
+          },
+          "type": "Select"
+        }
+      },
+      "ID": {
+        "bind": "id",
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "placeholder": "请输入 ID",
+            "disabled": true
+          }
+        }
+      },
+      "名称": {
+        "view": {
+          "type": "",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 名称"
+          }
+        },
+        "bind": "name"
+      },
+      "图标": {
+        "bind": "icon",
+        "view": {
+          "type": "",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 图标"
+          }
+        }
+      }
+    }
+  },
+  "config": {
+    "full": true
+  }
+}

@@ -6,7 +6,7 @@
  * @returns
  */
 function Run() {
-  var qb = new Query("xiang");
+  var qb = new Query();
   let rc = qb.Get({
     sql: {
       stmt: "delete from prompt_template",
@@ -53,7 +53,7 @@ function Run() {
     }
   });
   rc = Process(
-    "Models.chat.prompttemplate.Insert",
+    "models.chat.prompttemplate.Insert",
     ["title", "content"],
     newData
   );

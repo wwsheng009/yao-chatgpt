@@ -26,6 +26,16 @@
 - 最新版本的 xgen，可使用 neo 聊天助手
 - 自定义 AI 聊天控件
 
+## 0.10.3-dev 版本
+
+使用 yao 0.10.3-dev 版本可以使用打字机效果了。
+
+```sh
+git checkout v0.10.3-dev
+
+yao start
+```
+
 ## 安装
 
 本项目依赖于 yao 引擎的开发版本 0.10.3，请先下载 yao 应用，下载地址：
@@ -55,7 +65,7 @@ yao start
 wget https://raw.githubusercontent.com/PlexPt/awesome-chatgpt-prompts-zh/main/README.md -O data/中文调教指南.md.txt
 
 #执行加载脚本
-run scripts.loader.prompt_template.Run
+yao run scripts.loader.prompt_template.Run
 
 ```
 

@@ -7,24 +7,20 @@
  * @param {map} headers request headers
  */
 function CheckAccessKey(path, params, queries, payload, headers) {
-  var token;
+  let token = null;
   let auth = headers["Authorization"];
   if (auth) {
     token = auth[0].replace("Bearer ", "");
   }
   token = token || (queries["token"] && queries["token"][0]);
   if (!token) {
-    error();
+    throw new Exception("Debug Proxy Call token Not set", 403);
   }
-  let access_key = Process("yao.env.get", "ACCESS_KEY");
+  const access_key = Process("yao.env.get", "YAO_API_ACCESS_KEY");
   if (!access_key) {
-    throw new Exception("ACCESS_KEY Not set", 403);
+    throw new Exception("YAO_API_ACCESS_KEY Not set", 403);
   }
   if (access_key !== token) {
-    error();
+    throw new Exception("YAO_API_ACCESS_KEY not equal token", 403);
   }
-}
-
-function error() {
-  throw new Exception("Not Authorized", 403);
 }

@@ -327,3 +327,4 @@ function CreateTableAndForm(model) {
 // yao studio run init.CreateTable supplier
 // yao studio run init.CreateForm supplier
 // yao studio run init.CreateTableAndForm supplier
+

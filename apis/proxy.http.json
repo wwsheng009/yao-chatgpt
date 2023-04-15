@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "调试本地yao js脚本",
   "group": "",
-  "guard": "scripts.security.CheckAccessKey",
+  "guard": "-",
   "paths": [
     {
-      "guard": "-",
+      "guard": "scripts.security.CheckAccessKey",
       "path": "/call",
       "method": "POST",
       "process": "scripts.jsproxy.Server",

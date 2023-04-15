@@ -7,14 +7,14 @@
  * @returns newuser 新用户
  */
 function ResetAdmin(mobile, email, password) {
-  var qb = new Query("xiang");
+  var qb = new Query();
   rc = qb.Get({
     sql: {
       stmt: "delete from xiang_user",
     },
   });
 
-  Process("models.xiang.user.create", {
+  Process("models.admin.user.create", {
     name: "Admin",
     type: "admin",
     mobile: mobile,
@@ -23,7 +23,7 @@ function ResetAdmin(mobile, email, password) {
     status: "enabled",
   });
 
-  const newuser = Process("models.xiang.user.get", {});
+  const newuser = Process("models.admin.user.get", {});
   //   console.log(newuser);
   return newuser;
 }

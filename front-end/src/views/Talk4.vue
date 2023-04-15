@@ -92,13 +92,12 @@
 </template>
 
 <script lang="ts">
-import { post } from "../chatpgt";
 import "../assets/talk.css";
 // import { marked } from "marked";
 interface Content {
   name: String;
   url: String;
-  content: string;
+  content: String;
   showAvartar: Boolean;
   right: boolean;
   time: String;
@@ -165,6 +164,8 @@ export default {
           document.body.classList.remove("light-theme");
           document.body.classList.add("dark-theme");
         } else {
+          //  document.documentElement.style.setProperty("--bg-color", "#ffffff");
+          //  document.documentElement.style.setProperty("--text-color", "#000000");
           document.body.classList.remove("dark-theme");
           document.body.classList.add("light-theme");
         }
@@ -230,7 +231,7 @@ export default {
       };
       this.contentDiv.push(c);
       this.save();
-      let data = ""; //await this.ask(prompt);
+      let data = await this.ask(prompt);
       // console.log(data);
       let d = {
         name: "AI",
@@ -242,15 +243,6 @@ export default {
       };
 
       this.contentDiv.push(d);
-      let body = {
-        prompt: prompt,
-        session_id: this.sessionId,
-      };
-      await post({
-        url: `/api/ai/ask-stream`,
-        data: body,
-        onDownloadProgress: this.callback,
-      });
       this.save();
     },
     save() {
@@ -258,14 +250,26 @@ export default {
         localStorage.setItem(this.sessionId, JSON.stringify(this.contentDiv));
       }
     },
-    callback(data: { message?: string; sesseion_id?: string }) {
-      if (data.sesseion_id) {
-        this.sessionId = data.sesseion_id;
-      } else if (data.message) {
-        let prev = this.contentDiv[this.contentDiv.length - 1].content;
-        this.contentDiv[this.contentDiv.length - 1].content =
-          prev + data.message;
+
+    async ask(q: string): Promise<string> {
+      //对数据进行缓存
+      const response = await fetch(`/api/ai/ask`, {
+        method: "POST",
+        body: JSON.stringify({
+          prompt: q,
+          session_id: this.sessionId,
+        }),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      let data = await response.json();
+      // data = data.replace(/^\s*\n/, "");
+      if (data.session_id && (!this.sessionId || !this.sessionId.length)) {
+        this.sessionId = data.session_id;
+        this.saveSession(this.sessionId);
       }
+
+      return data.message;
     },
     saveSession(data: string) {
       localStorage.setItem("session_id", data);

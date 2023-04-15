@@ -1,0 +1,471 @@
+{
+  "name": "admin.user",
+  "action": {
+    "bind": {
+      "model": "admin.user",
+      "option": {
+        "withs": {},
+        "form": "admin.user"
+      }
+    }
+  },
+  "layout": {
+    "filter": {
+      "actions": [
+        {
+          "action": [
+            {
+              "name": "HistoryPush",
+              "type": "Common.historyPush",
+              "payload": {
+                "pathname": "/x/Form/admin.user/0/edit"
+              }
+            }
+          ],
+          "title": "创建",
+          "width": 3,
+          "icon": "icon-plus"
+        }
+      ],
+      "columns": [
+        {
+          "name": "类型"
+        },
+        {
+          "name": "邮箱"
+        }
+      ]
+    },
+    "table": {
+      "columns": [
+        {
+          "name": "ID",
+          "width": 100
+        },
+        {
+          "width": 160,
+          "name": "类型"
+        },
+        {
+          "width": 160,
+          "name": "邮箱"
+        },
+        {
+          "name": "手机号",
+          "width": 160
+        },
+        {
+          "name": "登录密码",
+          "width": 160
+        },
+        {
+          "name": "操作密码",
+          "width": 160
+        },
+        {
+          "name": "姓名",
+          "width": 160
+        },
+        {
+          "name": "身份证号码",
+          "width": 160
+        },
+        {
+          "name": "API Key",
+          "width": 160
+        },
+        {
+          "width": 160,
+          "name": "API 密钥"
+        },
+        {
+          "name": "扩展信息",
+          "width": 160
+        },
+        {
+          "name": "状态",
+          "width": 160
+        },
+        {
+          "width": 160,
+          "name": "Created At"
+        },
+        {
+          "width": 160,
+          "name": "Updated At"
+        }
+      ],
+      "operation": {
+        "width": 140,
+        "actions": [
+          {
+            "title": "查看",
+            "icon": "icon-eye",
+            "action": [
+              {
+                "payload": {
+                  "Form": {
+                    "type": "view",
+                    "model": "admin.user"
+                  }
+                },
+                "name": "OpenModal",
+                "type": "Common.openModal"
+              }
+            ]
+          },
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "type": "Common.openModal",
+                "payload": {
+                  "Form": {
+                    "type": "edit",
+                    "model": "admin.user"
+                  }
+                }
+              }
+            ],
+            "title": "编辑",
+            "icon": "icon-edit-2"
+          },
+          {
+            "title": "Delete",
+            "icon": "icon-trash-2",
+            "style": "danger",
+            "confirm": {
+              "title": "确认",
+              "desc": "请确认删除，删除后数据无法恢复"
+            },
+            "action": [
+              {
+                "name": "Delete",
+                "type": "Table.delete",
+                "payload": {
+                  "model": "admin.user"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "props": {
+        "scroll": {
+          "x": "max-content"
+        }
+      }
+    },
+    "primary": "id",
+    "header": {
+      "preset": {},
+      "actions": []
+    }
+  },
+  "fields": {
+    "table": {
+      "操作密码": {
+        "bind": "password2nd",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 操作密码",
+            "type": "password"
+          }
+        }
+      },
+      "ID": {
+        "view": {
+          "props": {},
+          "type": "Text"
+        },
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "placeholder": "请输入 ID",
+            "disabled": true
+          }
+        },
+        "bind": "id"
+      },
+      "登录密码": {
+        "bind": "password",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "props": {
+            "placeholder": "请输入 登录密码",
+            "type": "password"
+          },
+          "type": "Input"
+        }
+      },
+      "扩展信息": {
+        "view": {
+          "type": "Tooltip",
+          "props": {
+            "title": "扩展信息"
+          }
+        },
+        "edit": {
+          "props": {
+            "placeholder": "请输入 扩展信息",
+            "autoSize": {
+              "minRows": 2,
+              "maxRows": 6
+            }
+          },
+          "type": "TextArea"
+        },
+        "bind": "extra"
+      },
+      "身份证号码": {
+        "bind": "idcard",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 身份证号码"
+          }
+        }
+      },
+      "状态": {
+        "view": {
+          "type": "Tag",
+          "props": {
+            "options": [
+              {
+                "label": "开启",
+                "value": "enabled"
+              },
+              {
+                "label": "关闭",
+                "value": "disabled"
+              }
+            ],
+            "placeholder": "请选择 状态"
+          }
+        },
+        "edit": {
+          "type": "Select",
+          "props": {
+            "placeholder": "请选择 状态",
+            "options": [
+              {
+                "label": "开启",
+                "value": "enabled"
+              },
+              {
+                "label": "关闭",
+                "value": "disabled"
+              }
+            ]
+          }
+        },
+        "bind": "status"
+      },
+      "Created At": {
+        "view": {
+          "type": "Text",
+          "props": {
+            "format": "YYYY-MM-DD HH:mm:ss"
+          }
+        },
+        "edit": {
+          "type": "DatePicker",
+          "props": {
+            "placeholder": "请选择 Created At",
+            "showTime": {
+              "format": "HH:mm:ss"
+            }
+          }
+        },
+        "bind": "created_at"
+      },
+      "API 密钥": {
+        "bind": "secret",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 API 密钥"
+          }
+        }
+      },
+      "手机号": {
+        "bind": "mobile",
+        "view": {
+          "props": {},
+          "type": "Text"
+        },
+        "edit": {
+          "props": {
+            "placeholder": "请输入 手机号"
+          },
+          "type": "Input"
+        }
+      },
+      "姓名": {
+        "bind": "name",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "props": {
+            "placeholder": "请输入 姓名"
+          },
+          "type": "Input"
+        }
+      },
+      "API Key": {
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 API Key"
+          }
+        },
+        "bind": "key",
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "Updated At": {
+        "bind": "updated_at",
+        "view": {
+          "type": "Text",
+          "props": {
+            "format": "YYYY-MM-DD HH:mm:ss"
+          }
+        },
+        "edit": {
+          "type": "DatePicker",
+          "props": {
+            "placeholder": "请选择 Updated At",
+            "showTime": {
+              "format": "HH:mm:ss"
+            }
+          }
+        }
+      },
+      "类型": {
+        "edit": {
+          "type": "Select",
+          "props": {
+            "placeholder": "请选择 类型",
+            "options": [
+              {
+                "label": "admin",
+                "value": "admin"
+              },
+              {
+                "label": "staff",
+                "value": "staff"
+              },
+              {
+                "value": "user",
+                "label": "user"
+              },
+              {
+                "label": "robot",
+                "value": "robot"
+              }
+            ]
+          }
+        },
+        "bind": "type",
+        "view": {
+          "type": "Tag",
+          "props": {
+            "placeholder": "请选择 类型",
+            "options": [
+              {
+                "label": "admin",
+                "value": "admin"
+              },
+              {
+                "label": "staff",
+                "value": "staff"
+              },
+              {
+                "label": "user",
+                "value": "user"
+              },
+              {
+                "value": "robot",
+                "label": "robot"
+              }
+            ]
+          }
+        }
+      },
+      "邮箱": {
+        "bind": "email",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 邮箱"
+          }
+        }
+      }
+    },
+    "filter": {
+      "类型": {
+        "bind": "where.type.eq",
+        "edit": {
+          "type": "Select",
+          "props": {
+            "options": [
+              {
+                "label": "admin",
+                "value": "admin"
+              },
+              {
+                "label": "staff",
+                "value": "staff"
+              },
+              {
+                "value": "user",
+                "label": "user"
+              },
+              {
+                "label": "robot",
+                "value": "robot"
+              }
+            ],
+            "placeholder": "请选择 类型"
+          }
+        }
+      },
+      "邮箱": {
+        "bind": "where.email.match",
+        "edit": {
+          "props": {
+            "placeholder": "请输入 邮箱"
+          },
+          "type": "Input"
+        }
+      }
+    }
+  },
+  "config": {
+    "full": true
+  }
+}

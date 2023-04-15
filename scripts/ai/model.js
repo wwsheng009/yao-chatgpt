@@ -8,14 +8,14 @@
  */
 function UpdateModel() {
   //清除所有的数据
-  var qb = new Query("xiang");
+  var qb = new Query();
   let rc = qb.Get({
     sql: {
       stmt: "delete from ai_model",
     },
   });
 
-  var qb = new Query("xiang");
+  var qb = new Query();
   rc = qb.Get({
     sql: {
       stmt: "delete from ai_permission",

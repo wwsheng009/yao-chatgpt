@@ -2,3 +2,4 @@
 function Ping(...args) {
   return Process("scripts.jsproxy.RemoteProcess", "scripts.ping.Ping", ...args);
 }
+

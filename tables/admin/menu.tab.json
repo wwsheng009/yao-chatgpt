@@ -1,0 +1,354 @@
+{
+  "name": "admin.menu",
+  "action": {
+    "bind": {
+      "model": "admin.menu",
+      "option": {
+        "withs": {},
+        "form": "admin.menu"
+      }
+    }
+  },
+  "layout": {
+    "primary": "id",
+    "header": {
+      "preset": {},
+      "actions": []
+    },
+    "filter": {
+      "actions": [
+        {
+          "title": "创建",
+          "width": 3,
+          "icon": "icon-plus",
+          "action": [
+            {
+              "name": "HistoryPush",
+              "type": "Common.historyPush",
+              "payload": {
+                "pathname": "/x/Form/admin.menu/0/edit"
+              }
+            }
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "name": "父节点"
+        },
+        {
+          "name": "名称"
+        }
+      ]
+    },
+    "table": {
+      "props": {
+        "scroll": {
+          "x": "max-content"
+        }
+      },
+      "columns": [
+        {
+          "name": "ID",
+          "width": 100
+        },
+        {
+          "name": "父节点",
+          "width": 100
+        },
+        {
+          "name": "名称",
+          "width": 160
+        },
+        {
+          "name": "图标",
+          "width": 160
+        },
+        {
+          "name": "block布局",
+          "width": 160
+        },
+        {
+          "name": "显示",
+          "width": 160
+        },
+        {
+          "name": "路由",
+          "width": 160
+        },
+        {
+          "name": "排列",
+          "width": 100
+        },
+        {
+          "name": "状态",
+          "width": 160
+        },
+        {
+          "name": "Created At",
+          "width": 160
+        },
+        {
+          "name": "Updated At",
+          "width": 160
+        }
+      ],
+      "operation": {
+        "width": 140,
+        "actions": [
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "type": "Common.openModal",
+                "payload": {
+                  "Form": {
+                    "type": "view",
+                    "model": "admin.menu"
+                  }
+                }
+              }
+            ],
+            "title": "查看",
+            "icon": "icon-eye"
+          },
+          {
+            "title": "编辑",
+            "icon": "icon-edit-2",
+            "action": [
+              {
+                "type": "Common.openModal",
+                "payload": {
+                  "Form": {
+                    "type": "edit",
+                    "model": "admin.menu"
+                  }
+                },
+                "name": "OpenModal"
+              }
+            ]
+          },
+          {
+            "icon": "icon-trash-2",
+            "style": "danger",
+            "confirm": {
+              "title": "确认",
+              "desc": "请确认删除，删除后数据无法恢复"
+            },
+            "action": [
+              {
+                "payload": {
+                  "model": "admin.menu"
+                },
+                "name": "Delete",
+                "type": "Table.delete"
+              }
+            ],
+            "title": "Delete"
+          }
+        ]
+      }
+    }
+  },
+  "fields": {
+    "filter": {
+      "父节点": {
+        "bind": "where.parent.match",
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "placeholder": "请输入 父节点"
+          }
+        }
+      },
+      "名称": {
+        "bind": "where.name.match",
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 名称"
+          }
+        }
+      }
+    },
+    "table": {
+      "显示": {
+        "view": {
+          "props": {
+            "checkedValue": true,
+            "unCheckedValue": false,
+            "checkedChildren": "开启",
+            "unCheckedChildren": "关闭"
+          },
+          "type": "Switch"
+        },
+        "bind": "visible_menu"
+      },
+      "ID": {
+        "bind": "id",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "placeholder": "请输入 ID",
+            "disabled": true
+          }
+        }
+      },
+      "父节点": {
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "placeholder": "请输入 父节点"
+          }
+        },
+        "bind": "parent",
+        "view": {
+          "type": "Text",
+          "props": {}
+        }
+      },
+      "block布局": {
+        "bind": "blocks",
+        "view": {
+          "props": {
+            "unCheckedChildren": "关闭",
+            "checkedValue": true,
+            "unCheckedValue": false,
+            "checkedChildren": "开启"
+          },
+          "type": "Switch"
+        }
+      },
+      "名称": {
+        "bind": "name",
+        "view": {
+          "props": {},
+          "type": "Text"
+        },
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 名称"
+          }
+        }
+      },
+      "图标": {
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 图标"
+          }
+        },
+        "bind": "icon"
+      },
+      "排列": {
+        "bind": "rank",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "placeholder": "请输入 排列"
+          }
+        }
+      },
+      "Updated At": {
+        "edit": {
+          "type": "DatePicker",
+          "props": {
+            "placeholder": "请选择 Updated At",
+            "showTime": {
+              "format": "HH:mm:ss"
+            }
+          }
+        },
+        "bind": "updated_at",
+        "view": {
+          "type": "Text",
+          "props": {
+            "format": "YYYY-MM-DD HH:mm:ss"
+          }
+        }
+      },
+      "路由": {
+        "edit": {
+          "type": "Input",
+          "props": {
+            "placeholder": "请输入 路由"
+          }
+        },
+        "bind": "path",
+        "view": {
+          "type": "Text",
+          "props": {}
+        }
+      },
+      "状态": {
+        "bind": "status",
+        "view": {
+          "type": "Tag",
+          "props": {
+            "placeholder": "请选择 状态",
+            "options": [
+              {
+                "label": "开启",
+                "value": "enabled"
+              },
+              {
+                "label": "关闭",
+                "value": "disabled"
+              }
+            ]
+          }
+        },
+        "edit": {
+          "type": "Select",
+          "props": {
+            "placeholder": "请选择 状态",
+            "options": [
+              {
+                "label": "开启",
+                "value": "enabled"
+              },
+              {
+                "label": "关闭",
+                "value": "disabled"
+              }
+            ]
+          }
+        }
+      },
+      "Created At": {
+        "bind": "created_at",
+        "view": {
+          "type": "Text",
+          "props": {
+            "format": "YYYY-MM-DD HH:mm:ss"
+          }
+        },
+        "edit": {
+          "props": {
+            "showTime": {
+              "format": "HH:mm:ss"
+            },
+            "placeholder": "请选择 Created At"
+          },
+          "type": "DatePicker"
+        }
+      }
+    }
+  },
+  "config": {
+    "full": true
+  }
+}
