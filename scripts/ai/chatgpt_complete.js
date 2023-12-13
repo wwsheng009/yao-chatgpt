@@ -103,7 +103,7 @@ function Call(message, setting) {
   }
   let url = "https://api.openai.com/v1/completions";
   console.log(setting.model);
-  if (setting.model == "gpt-3.5-turbo-0301") {
+  if (setting.model.startsWith("gpt-3.5-turbo")) {
     url = "https://api.openai.com/v1/chat/completions";
   }
   // console.log(setting.api_token);
@@ -256,4 +256,3 @@ function test_checkLenAndDelete() {
   );
 }
 // test_checkLenAndDelete();
-

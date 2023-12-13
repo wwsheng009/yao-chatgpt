@@ -1,11 +1,6 @@
 // const { Process, http } = require("../remote/client");
 
 /**
- * yao-debug run scripts.ai.chatgpt.Call '::{"prompt":"你好"}'
- * yao-debug run scripts.ai.chatgpt.Call '::{"prompt":"可以帮我找一下python学习资源吗","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
- * yao-debug run scripts.ai.chatgpt.Call '::{"prompt":"廖雪峰的Python教程","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
- *
- *  yao-debug run scripts.chat.conversation.FindConversationById "938d58a4-b976-46b8-a342-7644a2566476"
  */
 /**
  * 处理post请求，并调用chatgpt接口
@@ -111,8 +106,9 @@ function Call(message, setting) {
   const endDate = new Date();
   const seconds = (endDate.getTime() - startDate.getTime()) / 1000;
   if (reply.code != 200) {
+    // console.log("reply:", reply);
     return {
-      message: reply.message,
+      message: "请求异常：" + reply.data.error.code + reply.data.error.message,
       session_id,
     };
   }
@@ -237,4 +233,3 @@ function test_checkLenAndDelete() {
   );
 }
 // test_checkLenAndDelete();
-

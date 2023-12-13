@@ -127,13 +127,20 @@
             type: "POST",
             url: "/api/ai/ask",
             contentType: "application/json;charset=utf-8",
-            data: JSON.stringify({ "prompt": $("#q").val() }),
-            success: function (message) {
-                console.log(message);
+            data: JSON.stringify({ "prompt": $("#q").val(), session_id: sessionStorage.getItem("gpt_session_id") }),
+            success: function (resp) {
+                // console.log(message);
                 // message = message.replace(/(?:(?:\r\n|\r|\n)\s*){2}/m, "");
                 // var text_only = Trim(message, '"');
+                let message = ""
+                if (typeof resp === 'object') {
+                    message = resp.message;
+                    resp.session_id && sessionStorage.setItem("gpt_session_id", resp.session_id)
+                } else {
+                    message = resp;
+                }
                 var escaped = $('<div class="response"/>').text(message).html();
-
+                escaped = escaped.replace(/\n/g, '<br/>')
                 $("#chat-list").append('<li class="ai-words words">' + escaped + '</li>');
                 enableInputBox();
             },

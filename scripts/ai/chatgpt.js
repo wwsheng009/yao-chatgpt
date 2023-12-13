@@ -9,8 +9,31 @@ function Callq(message) {
   return Call({ prompt: message });
 }
 
+/**
+ * 请求消息
+ * yao run scripts.ai.chatgpt.Call '::{"prompt":"你好"}'
+ * yao run scripts.ai.chatgpt.Call '::{"prompt":"可以帮我找一下python学习资源吗","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
+ * yao run scripts.ai.chatgpt.Call '::{"prompt":"廖雪峰的Python教程","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
+ *
+ *yao run scripts.chat.conversation.FindConversationById "938d58a4-b976-46b8-a342-7644a2566476"
+ * @param {object} message 请求消息
+ * @returns
+ */
 function Call(message) {
   const setting = GetSetting();
+  console.log("setting", setting);
+  if (setting?.api_token) {
+    if (setting.api_token == "sk-") {
+      setting.api_token = "";
+    }
+    if (!setting.api_token) {
+      const access_key = Process("yao.env.get", "OPEN_API_ACCESS_KEY");
+      if (access_key) {
+        setting.api_token = access_key;
+      }
+    }
+  }
+
   if (!setting || !setting.api_token) {
     return "请在管理界面维护AI连接设置值";
   }
@@ -32,7 +55,7 @@ function Call(message) {
   }
 }
 function GetSetting() {
-  const setting = Process("models.ai.setting.Get", {
+  return Process("models.ai.setting.Get", {
     wheres: [
       {
         Column: "default",
@@ -43,7 +66,5 @@ function GetSetting() {
         Value: null,
       },
     ],
-  });
-  return setting[0];
+  })[0];
 }
-

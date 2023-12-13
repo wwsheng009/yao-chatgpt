@@ -4,8 +4,10 @@ let reply = null;
 //   console.log(`message:${message},${content}`);
 // }
 function collect(content) {
-  ssEvent("messages", content);
-  // console.log(`content:${content}`);
+  console.log(`content:${content}`);
+  if (typeof ssEvent === "function") {
+    ssEvent("messages", content);
+  }
 }
 
 /**
@@ -14,6 +16,7 @@ function collect(content) {
  * @returns
  */
 function handler(payload) {
+  console.log("gpt_payload:", payload);
   const lines = payload.split("\n\n");
   for (const line of lines) {
     if (line === "") {
@@ -56,7 +59,7 @@ function handler(payload) {
  *  yao run scripts.chat.conversation.FindConversationById "938d58a4-b976-46b8-a342-7644a2566476"
  */
 function Call(message) {
-  // console.log("message", message);
+  // console.log("ai script message", message);
   const setting = GetSetting();
   if (!setting || !setting.api_token) {
     return "请在管理界面维护AI连接设置值";
@@ -79,7 +82,7 @@ function Call(message) {
   }
 }
 function GetSetting() {
-  const setting = Process("models.ai.setting.Get", {
+  let [setting] = Process("models.ai.setting.Get", {
     wheres: [
       {
         Column: "default",
@@ -91,7 +94,22 @@ function GetSetting() {
       },
     ],
   });
-  return setting[0];
+  setting = setting || {};
+
+  if (!setting.model) {
+    setting.model = "gpt-3.5-turbo";
+  }
+  if (setting.api_token && setting.api_token == "sk-") {
+    setting.api_token = "";
+  }
+  if (!setting.api_token) {
+    const access_key = Process("yao.env.get", "OPEN_API_ACCESS_KEY");
+    if (access_key) {
+      setting.api_token = access_key;
+    }
+  }
+
+  return setting;
 }
 
 /**
@@ -199,13 +217,21 @@ function CallGpt(message, setting) {
   // if (setting.model == "gpt-3.5-turbo-0301") {
   //   url = "https://api.openai.com/v1/chat/completions";
   // }
-  // console.log(setting.api_token);
-  ssEvent("session_id", session_id);
-  http.Stream("POST", url, handler, RequestBody, null, {
+  // console.log("setting.api_token", setting.api_token);
+  if (typeof ssEvent === "function") {
+    ssEvent("session_id", session_id);
+  } else {
+    console.log("session_id", session_id);
+  }
+  let err = http.Stream("POST", url, handler, RequestBody, null, {
     Accept: "text/event-stream; charset=utf-8",
     "Content-Type": "application/json",
     Authorization: `Bearer ` + setting.api_token,
   });
+  // console.log("err:,", err);
+  if (err.code != 200) {
+    throw new Exception(err.Message, err.code);
+  }
 
   // console.log("stream replay", reply);
   const endDate = new Date();
@@ -220,13 +246,15 @@ function CallGpt(message, setting) {
     prompt_len: ask.length,
     completion_len: answer.length,
     request_total_time: seconds,
-    created: Process(
+  };
+  if (reply != null) {
+    new_message.created = Process(
       "scripts.ai.model.convertUTCDateToLocalDate",
       reply.created
-    ),
-    model: reply.model,
-    object: reply.object,
-  };
+    );
+    new_message.model = reply.model;
+    new_message.object = reply.object;
+  }
 
   Process("scripts.chat.conversation.NewMessageObject", new_message);
 }
@@ -265,7 +293,7 @@ function test_stopWord() {
   const setting2 = {
     access_count: 39,
     ai_nickname: "AI智能助理",
-    api_token: "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",
+    api_token: "sk-",
     created_at: "2023-02-15 21:14:10",
     default: true,
     deleted_at: null,
