@@ -21,19 +21,6 @@ function Callq(message) {
  */
 function Call(message) {
   const setting = GetSetting();
-  console.log("setting", setting);
-  if (setting?.api_token) {
-    if (setting.api_token == "sk-") {
-      setting.api_token = "";
-    }
-    if (!setting.api_token) {
-      const access_key = Process("yao.env.get", "OPEN_API_ACCESS_KEY");
-      if (access_key) {
-        setting.api_token = access_key;
-      }
-    }
-  }
-
   if (!setting || !setting.api_token) {
     return "请在管理界面维护AI连接设置值";
   }
@@ -48,14 +35,17 @@ function Call(message) {
   setting.user_nickname = setting.user_nickname || "用户";
   setting.ai_nickname = setting.ai_nickname || "AI智能助理";
 
-  if (setting.model.startsWith("gpt-3.5-turbo")) {
+  if (
+    setting.model.startsWith("gpt-3.5") ||
+    setting.model.startsWith("gpt-4")
+  ) {
     return Process("scripts.ai.chatgpt_chat.Call", message, setting);
   } else {
     return Process("scripts.ai.chatgpt_complete.Call", message, setting);
   }
 }
 function GetSetting() {
-  return Process("models.ai.setting.Get", {
+  let [setting] = Process("models.ai.setting.Get", {
     wheres: [
       {
         Column: "default",
@@ -66,5 +56,18 @@ function GetSetting() {
         Value: null,
       },
     ],
-  })[0];
+  });
+  // console.log("setting", setting);
+  if (setting?.api_token) {
+    if (setting.api_token == "sk-") {
+      setting.api_token = "";
+    }
+    if (!setting.api_token) {
+      const access_key = Process("yao.env.get", "OPEN_API_ACCESS_KEY");
+      if (access_key) {
+        setting.api_token = access_key;
+      }
+    }
+  }
+  return setting;
 }

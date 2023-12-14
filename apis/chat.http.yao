@@ -1,0 +1,55 @@
+{
+  "name": "AI Chat API",
+  "version": "1.0.0",
+  "description": "User API",
+  "group": "chat",
+  "guard": "-",
+  "paths": [
+    {
+      "path": "/chat-process",
+      "method": "POST",
+      "guard": "scripts.security.CheckChatKey",
+      "process": "scripts.chatweb.process",
+      "in": [
+        ":payload"
+      ],
+      "out": {
+        "status": 200,
+        "type": "text/event-stream; charset=utf-8"
+      }
+    },
+    {
+      "path": "/session",
+      "method": "POST",
+      "guard": "-",
+      "process": "scripts.chatweb.session",
+      "in": [],
+      "out": {
+        "status": 200,
+        "type": "application/json"
+      }
+    },
+    {
+      "path": "/verify",
+      "method": "POST",
+      "guard": "scripts.security.CheckChatKey",
+      "process": "scripts.chatweb.verify",
+      "in": [],
+      "out": {
+        "status": 200,
+        "type": "application/json"
+      }
+    },
+    {
+      "path": "/config",
+      "method": "POST",
+      "guard": "scripts.security.CheckChatKey",
+      "process": "scripts.chatweb.config",
+      "in": [],
+      "out": {
+        "status": 200,
+        "type": "application/json"
+      }
+    }
+  ]
+}

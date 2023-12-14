@@ -4,7 +4,7 @@
 
 /**
  * 更新open ai 模型列表
- * 测试 yao-debug run scripts.ai.model.UpdateModel
+ * 测试 yao run scripts.ai.model.UpdateModel
  */
 function UpdateModel() {
   //清除所有的数据
@@ -37,13 +37,12 @@ function UpdateModel() {
   // let fs = new FS("system");
   // fs.WriteFile("openai_models.json", JSON.stringify(reply.data.data))
   // Process("fs.system.writefile", "openai_models.json", reply)
-
   let res = reply.data.data;
 
   let perms = [];
   res.forEach((line) => {
     //处理权限
-    line.permission.map((item) => {
+    line.permission?.map((item) => {
       item.model_id = line.id;
       item.idx = item.id; //xgen目前不支持非数字类型的主键
       item.created = convertUTCDateToLocalDate(item.created);
@@ -54,16 +53,17 @@ function UpdateModel() {
     line.created = convertUTCDateToLocalDate(line.created);
     line.title = line.idx; //更新标题
 
-    perms = perms.concat(line.permission);
+    if (line.permission) {
+      perms = perms.concat(line.permission);
+    }
 
     delete line.permission;
   });
-  let arrs = Process("utils.arr.Split", perms);
-  rc = Process("Models.ai.permission.Insert", arrs.columns, arrs.values);
+  let arrs = Process("utils.arr.Split", perms || []);
+  rc = Process("models.ai.permission.Insert", arrs.columns, arrs.values);
 
   arrs = Process("utils.arr.Split", res);
-  rc = Process("Models.ai.model.Insert", arrs.columns, arrs.values);
-  // console.log("rc4:", rc)
+  rc = Process("models.ai.model.Insert", arrs.columns, arrs.values);
 }
 
 /**

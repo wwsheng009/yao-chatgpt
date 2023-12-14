@@ -148,15 +148,19 @@ function main() {
       ],
     },
   ];
-  let info = Process("utils.app.Ping");
-  if (info.version == "0.10.3") {
-    return {
-      items,
-      setting,
-    };
-  } else {
-    let data = items.concat(setting);
-    // console.log(data);
-    return data;
-  }
+  // let info = Process("utils.app.Ping");
+  return {
+    items,
+    setting,
+  };
+  // if (info.version == "0.10.3") {
+  //   return {
+  //     items,
+  //     setting,
+  //   };
+  // } else {
+  //   let data = items.concat(setting);
+  //   // console.log(data);
+  //   return data;
+  // }
 }

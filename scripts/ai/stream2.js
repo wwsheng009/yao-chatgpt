@@ -5,9 +5,10 @@ let reply = null;
 // }
 function collect(content) {
   // console.log(`content:${content}`);
-  // console.log(`content:${content}`);
   if (typeof ssEvent === "function") {
-    ssEvent("messages", content);
+    ssEvent("message", content);
+  } else {
+    console.log("send message:", content);
   }
 }
 
@@ -34,13 +35,13 @@ function handler(payload) {
           let content = message.choices[0]?.delta?.content;
           // console.log(`content:${content}`);
 
-          if (content) {
+          if (content != null) {
             g_message += content;
             collect(content);
           }
         }
       } catch (error) {
-        ssEvent("errors", error.Error());
+        ssEvent("message", error.Error());
         return -1;
       }
     } else {
@@ -53,13 +54,13 @@ function handler(payload) {
   return 1;
 }
 /**
- * yao run scripts.ai.stream.Call '::{"prompt":"你好"}'
- * yao run scripts.ai.stream.Call '::{"prompt":"可以帮我找一下python学习资源吗","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
- * yao run scripts.ai.stream.Call '::{"prompt":"廖雪峰的Python教程","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
+ * yao run scripts.ai.stream2.Call '::{"prompt":"你好"}'
+ * yao run scripts.ai.stream2.Call '::{"prompt":"可以帮我找一下python学习资源吗","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
+ * yao run scripts.ai.stream2.Call '::{"prompt":"廖雪峰的Python教程","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
  *
  *  yao run scripts.chat.conversation.FindConversationById "938d58a4-b976-46b8-a342-7644a2566476"
  */
-function Call(message) {
+function ExCallGpt(message) {
   // console.log("ai script message", message);
   const setting = GetSetting();
   if (!setting || !setting.api_token) {
@@ -76,7 +77,10 @@ function Call(message) {
   setting.user_nickname = setting.user_nickname || "用户";
   setting.ai_nickname = setting.ai_nickname || "AI智能助理";
 
-  if (!setting.model.startsWith("gpt-3.5-turbo")) {
+  if (
+    !setting.model.startsWith("gpt-3.5-turbo") &&
+    !setting.model.startsWith("gpt-4")
+  ) {
     return Process("scripts.ai.chatgpt_complete.Call", message, setting);
   } else {
     return CallGpt(message, setting);
@@ -109,7 +113,6 @@ function GetSetting() {
       setting.api_token = access_key;
     }
   }
-
   return setting;
 }
 
@@ -142,7 +145,7 @@ function CallGpt(message, setting) {
   let endUserName = setting.user_nickname;
 
   //新对话
-  let newSessionInitMessage; //= "提示:你叫" + chatGptName + "。\n";
+  // let newSessionInitMessage; //= "提示:你叫" + chatGptName + "。\n";
 
   if (conversationId < 0) {
     const { uuid, id } = Process(
@@ -169,12 +172,7 @@ function CallGpt(message, setting) {
       setting.max_send_lines
     );
   }
-
   let conversation = checkLenAndDelete(newMessages, setting.max_tokens);
-  // let prompt = "";
-  // if (newSessionInitMessage && newSessionInitMessage.length) {
-  //   prompt = newSessionInitMessage;
-  // }
 
   let messages = [];
   //模拟对话上下文
@@ -211,30 +209,24 @@ function CallGpt(message, setting) {
   if (stopword) {
     RequestBody.stop = stopword;
   }
-  //   let url = "https://api.openai.com/v1/completions";
   let url = "https://api.openai.com/v1/chat/completions";
 
-  // console.log(setting.model);
-  // if (setting.model == "gpt-3.5-turbo-0301") {
-  //   url = "https://api.openai.com/v1/chat/completions";
-  // }
-  // console.log("setting.api_token", setting.api_token);
   if (typeof ssEvent === "function") {
-    ssEvent("session_id", session_id);
+    ssEvent("message", { conversationId: session_id });
   } else {
     console.log("session_id", session_id);
   }
+  // console.log("RequestBody", RequestBody);
   let err = http.Stream("POST", url, handler, RequestBody, null, {
     Accept: "text/event-stream; charset=utf-8",
     "Content-Type": "application/json",
     Authorization: `Bearer ` + setting.api_token,
   });
-  // console.log("err:,", err);
+  // console.log("error:", err);
   if (err.code != 200) {
     throw new Exception(err.Message, err.code);
   }
 
-  // console.log("stream replay", reply);
   const endDate = new Date();
   const seconds = (endDate.getTime() - startDate.getTime()) / 1000;
   let answer = g_message;
@@ -357,3 +349,6 @@ function test_checkLenAndDelete() {
   );
 }
 // test_checkLenAndDelete();
+module.exports = {
+  ExCallGpt,
+};
