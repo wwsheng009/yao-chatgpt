@@ -10,14 +10,14 @@ function session() {
   return {
     status: "Success",
     message: "",
-    data: { auth: hasAuth, model: "gpt-4" },
+    data: { auth: hasAuth, model: "ChatGPTAPI" },
   };
 }
 
 //chat process stream
 // yao run scripts.chatweb.process '::{"prompt":"测试"}'
 function process(payload) {
-  let sample = {
+  let request = {
     prompt: "",
     options: {
       conversationId: "",
@@ -27,12 +27,8 @@ function process(payload) {
     temperature: "",
     top_p: "",
   };
-  Object.assign(sample, payload);
-  // console.log("sample", sample);
-  ExCallGpt({
-    prompt: sample.prompt,
-    session_id: sample.options.conversationId,
-  });
+  Object.assign(request, payload);
+  ExCallGpt(request);
 }
 
 //config

@@ -25,6 +25,7 @@ function handler(payload) {
       continue;
     }
     if (line === "data: [DONE]") {
+      collect("[DONE]");
       return 0;
     } else if (line.startsWith("data:")) {
       const myString = line.substring(5);
@@ -60,18 +61,23 @@ function handler(payload) {
  *
  *  yao run scripts.chat.conversation.FindConversationById "938d58a4-b976-46b8-a342-7644a2566476"
  */
-function ExCallGpt(message) {
-  // console.log("ai script message", message);
-  const setting = GetSetting();
+function ExCallGpt(request) {
+  const setting = GetSetting() || {};
   if (!setting || !setting.api_token) {
     return "请在管理界面维护AI连接设置值";
   }
-  if (!message || !message.prompt || !message.prompt.length) {
+  if (!request || !request.prompt || !request.prompt.length) {
     return "请填写您的问题";
   }
-  const ask = message.prompt;
+  const ask = request.prompt;
   if (ask.length < 2) {
     return "请填写详细的问题";
+  }
+  if (request.temperature) {
+    setting.temperature = request.temperature;
+  }
+  if (request.top_p) {
+    setting.top_p = request.top_p;
   }
 
   setting.user_nickname = setting.user_nickname || "用户";
@@ -81,9 +87,9 @@ function ExCallGpt(message) {
     !setting.model.startsWith("gpt-3.5-turbo") &&
     !setting.model.startsWith("gpt-4")
   ) {
-    return Process("scripts.ai.chatgpt_complete.Call", message, setting);
+    return Process("scripts.ai.chatgpt_complete.Call", request, setting);
   } else {
-    return CallGpt(message, setting);
+    return CallGpt(request, setting);
   }
 }
 function GetSetting() {
@@ -118,13 +124,13 @@ function GetSetting() {
 
 /**
  * 处理post请求，并调用chatgpt接口
- * @param {object} message 消息文本
+ * @param {object} request 消息文本
  * @returns
  */
-function CallGpt(message, setting) {
-  const ask = message.prompt;
+function CallGpt(request, setting) {
+  const ask = request.prompt;
   //新会话
-  let session_id = message.session_id;
+  let session_id = request.options?.conversationId;
 
   let conversationId = -1;
   let newMessages = [];
@@ -175,6 +181,9 @@ function CallGpt(message, setting) {
   let conversation = checkLenAndDelete(newMessages, setting.max_tokens);
 
   let messages = [];
+  if (request.systemMessage) {
+    messages.push({ role: "system", content: request.systemMessage });
+  }
   //模拟对话上下文
   conversation.map((line) => {
     if (line.prompt) {
@@ -189,14 +198,9 @@ function CallGpt(message, setting) {
       }
     }
   });
-  // if (aiUserName && aiUserName.length) {
-  //   prompt += aiUserName + ": ";
-  // }
 
   const startDate = new Date();
-  // console.log("messages", messages);
   let RequestBody = {
-    // prompt: prompt,
     messages,
     model: setting.model,
     max_tokens: setting.max_tokens,
@@ -211,6 +215,7 @@ function CallGpt(message, setting) {
   }
   let url = "https://api.openai.com/v1/chat/completions";
 
+  // send back the conversationId
   if (typeof ssEvent === "function") {
     ssEvent("message", { conversationId: session_id });
   } else {
@@ -222,7 +227,6 @@ function CallGpt(message, setting) {
     "Content-Type": "application/json",
     Authorization: `Bearer ` + setting.api_token,
   });
-  // console.log("error:", err);
   if (err.code != 200) {
     throw new Exception(err.Message, err.code);
   }
