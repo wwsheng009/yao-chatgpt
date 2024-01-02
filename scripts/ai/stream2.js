@@ -114,7 +114,7 @@ function GetSetting() {
     setting.api_token = "";
   }
   if (!setting.api_token) {
-    const access_key = Process("yao.env.get", "OPEN_API_ACCESS_KEY");
+    const access_key = Process("yao.env.get", "OPENAI_KEY");
     if (access_key) {
       setting.api_token = access_key;
     }
@@ -134,6 +134,7 @@ function CallGpt(request, setting) {
 
   let conversationId = -1;
   let newMessages = [];
+  // 根据会话id查找对话历史
   if (session_id !== undefined) {
     const data = Process(
       "scripts.chat.conversation.FindConversationById",
@@ -162,11 +163,11 @@ function CallGpt(request, setting) {
     conversationId = id;
   }
 
-  newMessages.push({
-    ai_user: aiUserName,
-    prompt: ask,
-    end_user: endUserName,
-  });
+  // newMessages.push({
+  //   ai_user: aiUserName,
+  //   prompt: ask,
+  //   end_user: endUserName,
+  // });
 
   // 取最后几行
   if (
@@ -178,14 +179,16 @@ function CallGpt(request, setting) {
       setting.max_send_lines
     );
   }
-  let conversation = checkLenAndDelete(newMessages, setting.max_tokens);
+
+  let conversations = checkLenAndDelete(newMessages, setting.max_tokens);
 
   let messages = [];
   if (request.systemMessage) {
     messages.push({ role: "system", content: request.systemMessage });
   }
+
   //模拟对话上下文
-  conversation.map((line) => {
+  conversations.map((line) => {
     if (line.prompt) {
       if (endUserName && endUserName.length) {
         messages.push({ role: "user", content: line.prompt });
@@ -198,6 +201,16 @@ function CallGpt(request, setting) {
       }
     }
   });
+  messages.push({ role: "user", content: ask });
+
+  // 搜索本地文件
+  let docs = Process("scripts.doc.vector.Match", {}, messages);
+  if (docs.length > 0) {
+    messages = [...docs, ...messages];
+  }
+  // if (Array.isArray(docs) && docs.length) {
+  //   docs.forEach((doc) => messages.user(doc));
+  // }
 
   const startDate = new Date();
   let RequestBody = {
@@ -243,6 +256,7 @@ function CallGpt(request, setting) {
     prompt_len: ask.length,
     completion_len: answer.length,
     request_total_time: seconds,
+    model: setting.model,
   };
   if (reply != null) {
     new_message.created = Process(

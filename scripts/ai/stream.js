@@ -104,7 +104,7 @@ function GetSetting() {
     setting.api_token = "";
   }
   if (!setting.api_token) {
-    const access_key = Process("yao.env.get", "OPEN_API_ACCESS_KEY");
+    const access_key = Process("yao.env.get", "OPENAI_KEY");
     if (access_key) {
       setting.api_token = access_key;
     }

@@ -7,3 +7,7 @@ data
 dist
 plugins/*.so
 .env
+venv
+public/web
+__pycache__
+*.log

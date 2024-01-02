@@ -14,7 +14,7 @@ function CheckAccessKey(path, params, queries, payload, headers) {
   }
   token = token || (queries["token"] && queries["token"][0]);
   if (!token) {
-    throw new Exception("Debug Proxy Call token Not set", 403);
+    throw new Exception("token Not set,please login first", 403);
   }
   const access_key = Process("yao.env.get", "YAO_API_ACCESS_KEY");
   if (!access_key) {
@@ -33,7 +33,7 @@ function CheckChatKey(path, params, queries, payload, headers) {
   }
   token = token || (queries["token"] && queries["token"][0]);
   if (!token) {
-    throw new Exception("Debug Proxy Call token Not set", 403);
+    throw new Exception("Call token Not set", 403);
   }
   const access_key = Process("yao.env.get", "YAO_CHAT_API_KEY");
   if (!access_key) {

@@ -27,7 +27,7 @@
       "name": "object",
       "label": "对象",
       "type": "string",
-      "nullable": false,
+      "nullable": true,
       "index": true
     },
     {
@@ -69,27 +69,32 @@
     {
       "name": "completion_tokens",
       "label": "回复Token数量",
-      "type": "integer"
+      "type": "integer",
+      "default": 0
     },
     {
       "name": "prompt_tokens",
       "label": "提问Token数量",
-      "type": "integer"
+      "type": "integer",
+      "default": 0
     },
     {
       "name": "total_tokens",
       "label": "总Token数量",
-      "type": "integer"
+      "type": "integer",
+      "default": 0
     },
     {
       "name": "request_total_time",
       "label": "请求时间(秒)",
-      "type": "integer"
+      "type": "float",
+      "default": 0
     },
     {
       "name": "created",
       "label": "创建时间",
-      "type": "datetime"
+      "type": "datetime",
+      "nullable": true
     }
   ],
   "relations": {},
@@ -100,3 +105,4 @@
     "soft_deletes": false
   }
 }
+// yao migrate --reset -n chat.message

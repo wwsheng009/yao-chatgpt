@@ -6,6 +6,7 @@
   "guard": "-",
   "paths": [
     {
+      // 对应前端chat web 项目
       "path": "/chat-process",
       "method": "POST",
       "guard": "scripts.security.CheckChatKey",
@@ -32,9 +33,11 @@
     {
       "path": "/verify",
       "method": "POST",
-      "guard": "scripts.security.CheckChatKey",
+      "guard": "-",
       "process": "scripts.chatweb.verify",
-      "in": [],
+      "in": [
+        ":payload"
+      ],
       "out": {
         "status": 200,
         "type": "application/json"

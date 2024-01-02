@@ -97,7 +97,7 @@ function NewMessageApi({
 }
 
 function NewMessageObject(message) {
-  //   console.log();
+  // console.log("NewMessageObject:", message);
   if (message.length == 0) {
     return;
   }
@@ -265,4 +265,3 @@ function DeleteMessageIn({ wheres }) {
   //remembe to return the id in array format
   return array;
 }
-

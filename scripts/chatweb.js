@@ -49,7 +49,7 @@ function config() {
 
 // yao run scripts.chatweb.credit_grants
 function credit_grants() {
-  const access_key = Process("yao.env.get", "OPEN_API_ACCESS_KEY2");
+  const access_key = Process("yao.env.get", "OPENAI_KEY2");
 
   const res = Process(
     "http.get",
@@ -66,7 +66,7 @@ function credit_grants() {
 }
 // yao run scripts.chatweb.usage
 function usage() {
-  const access_key = Process("yao.env.get", "OPEN_API_ACCESS_KEY2");
+  const access_key = Process("yao.env.get", "OPENAI_KEY2");
 
   const res = Process(
     "http.get",
@@ -81,6 +81,16 @@ function usage() {
   //  (that is, it can only be made from the browser). You made it with the following key type: secret.",
   console.log("res", res);
 }
-function verify() {
+function verify(payload) {
+  let token = payload.token;
+
+  const access_key = Process("yao.env.get", "YAO_CHAT_API_KEY");
+  if (!access_key) {
+    throw new Exception("YAO_CHAT_API_KEY Not set", 403);
+  }
+  if (access_key !== token) {
+    throw new Exception("YAO_CHAT_API_KEY not equal token", 403);
+  }
+
   return { status: "Success", message: "Verify successfully", data: undefined };
 }

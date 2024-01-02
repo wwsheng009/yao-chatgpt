@@ -26,7 +26,8 @@
     {
       "name": "description",
       "label": "描述",
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     {
       "name": "api_setting",

@@ -13,6 +13,10 @@
   "optional": {
     "hideNotification": true,
     "hideSetting": false,
-    "remoteCache": false
+    "remoteCache": false,
+    "neo": {
+      "api": "/neo",
+      "studio": false
+    }
   }
 }
