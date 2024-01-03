@@ -136,4 +136,3 @@ function RemoteClient(type, method, ...args) {
   }
   return ret.data;
 }
-

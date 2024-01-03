@@ -10,7 +10,7 @@
       "path": "/chat-process",
       "method": "POST",
       "guard": "scripts.security.CheckChatKey",
-      "process": "scripts.chatweb.process",
+      "process": "scripts.chatweb.chat_process",
       "in": [
         ":payload"
       ],

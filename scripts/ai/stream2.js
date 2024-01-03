@@ -226,7 +226,11 @@ function CallGpt(request, setting) {
   if (stopword) {
     RequestBody.stop = stopword;
   }
-  let url = "https://api.openai.com/v1/chat/completions";
+
+  const OPENAI_AIP_HOST =
+    Process("yao.env.get", "OPENAI_API_HOST") || "https://api.openai.com";
+
+  let url = `${OPENAI_AIP_HOST}/v1/chat/completions`;
 
   // send back the conversationId
   if (typeof ssEvent === "function") {

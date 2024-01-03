@@ -14,9 +14,9 @@ function session() {
   };
 }
 
-//chat process stream
-// yao run scripts.chatweb.process '::{"prompt":"测试"}'
-function process(payload) {
+// chat process stream
+// yao run scripts.chatweb.chat_process '::{"prompt":"测试"}'
+function chat_process(payload) {
   let request = {
     prompt: "",
     options: {

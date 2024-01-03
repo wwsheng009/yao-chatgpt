@@ -162,4 +162,3 @@ function GetSetting() {
   });
   return setting[0];
 }
-

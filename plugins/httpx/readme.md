@@ -1,6 +1,6 @@
 # http client with proxy
 
-支持代理的 http.post 库。
+支持代理的 http.Post 库。
 
 假设你知道怎么使用代理
 

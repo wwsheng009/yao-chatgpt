@@ -9,23 +9,26 @@
 
 // yao run scripts.doc.local.QueryDoc '::{"input":"yao是什么?"}'
 function QueryDoc(payload) {
-  console.log("payload", payload);
   let document = payload.input;
 
   let input = document.replace(/\*|\n/g, " ");
 
-  const embeddingResponse = Process("http.post", "http://localhost:8001/emb", {
+  const embeddingResponse = http.Post("http://localhost:8001/emb", {
     input: input,
   });
-  const [{ embedding }] = embeddingResponse.data;
+  if (!embeddingResponse.data) {
+    throw new Error("请求出错");
+  }
 
-  // ("${JSON.stringify(embedding)}");
+  if (embeddingResponse.code != 200) {
+    throw new Error(embeddingResponse.data.detail[0].msg);
+  }
+  const [{ embedding }] = embeddingResponse.data;
   const q = new Query();
   const query_embedding = `'${JSON.stringify(embedding)}'`;
-  // console.log("query_embedding", query_embedding);
   const match_threshold = payload.threshold || 0.6;
   const match_count = payload.count || 10;
-  const sql = `select id, content, 1 - (embedding <=> ${query_embedding}) as similarity
+  const sql = `select id, filename,path,content, 1 - (embedding <=> ${query_embedding}) as similarity
   from documents where 1 - (embedding <=> ${query_embedding}) > ${match_threshold}
   order by similarity DESC limit ${match_count}`;
 
@@ -34,9 +37,8 @@ function QueryDoc(payload) {
       stmt: sql,
     },
   });
-  const data1 = data.map((x) => x.content);
 
-  return { data: data1 };
+  return { data: data };
 }
 
 // yao run scripts.test.demoSearch
@@ -48,7 +50,7 @@ function demoSearch() {
 function saveText2vect(document) {
   let input = document.replace(/\*|\n/g, " ");
 
-  const embeddingResponse = Process("http.post", "http://localhost:8001/emb", {
+  const embeddingResponse = http.Post("http://localhost:8001/emb", {
     input: input,
   });
 
