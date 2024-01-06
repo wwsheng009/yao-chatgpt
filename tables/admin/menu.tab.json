@@ -30,6 +30,24 @@
               }
             }
           ]
+        },
+        {
+          "title": "重新加载",
+          "width": 3,
+          "action": [
+            {
+              "name": "RefreshMenu",
+              "type": "Common.reloadMenu"
+            },
+            {
+              "name": "message",
+              "type": "Common.showMessage",
+              "payload": {
+                "type": "success",
+                "content": "刷新成功"
+              }
+            }
+          ]
         }
       ],
       "columns": [

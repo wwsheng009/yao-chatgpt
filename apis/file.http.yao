@@ -1,0 +1,23 @@
+{
+  "name": "AI Chat API",
+  "version": "1.0.0",
+  "description": "User API",
+  "group": "",
+  "guard": "-",
+  "paths": [
+    {
+      // 对应前端chat web 项目
+      "path": "/upload",
+      "method": "POST",
+      "guard": "-",
+      "process": "scripts.doc.vector.uploadFile",
+      "in": [
+        "$file.file"
+      ],
+      "out": {
+        "status": 200,
+        "type": "application/json; charset=utf-8"
+      }
+    }
+  ]
+}

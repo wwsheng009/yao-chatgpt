@@ -1,0 +1,79 @@
+{
+    "columns": [
+        {
+            "comment": "ID",
+            "label": "ID",
+            "name": "id",
+            "primary": true,
+            "type": "ID"
+        },
+        {
+            "comment": "文件名",
+            "index": true,
+            "label": "文件名",
+            "name": "filename",
+            "type": "string"
+        },
+        {
+            "comment": "路径",
+            "label": "路径",
+            "name": "path",
+            "nullable": true,
+            "type": "text"
+        },
+        {
+            "comment": "标题",
+            "label": "标题",
+            "name": "title",
+            "nullable": true,
+            "type": "string"
+        },
+        {
+            "comment": "文件类型",
+            "label": "文件类型",
+            "name": "flile_type",
+            "nullable": true,
+            "type": "string"
+        },
+        {
+            "comment": "分隔器",
+            "label": "分隔器",
+            "name": "splitter",
+            "nullable": true,
+            "type": "string"
+        },
+        {
+            "comment": "任务标识",
+            "label": "任务标识",
+            "name": "task_id",
+            "nullable": true,
+            "type": "integer"
+        },
+        {
+            "comment": "向量数据库索引状态",
+            "label": "向量索引状态",
+            "name": "index_status",
+            "nullable": true,
+            "option": [
+                "new",
+                "creating",
+                "done"
+            ],
+            "type": "enum"
+        }
+    ],
+    "name": "文档",
+    "relations": {
+        "vector": {
+            "foreign": "id",
+            "key": "file_id",
+            "label": "向量",
+            "model": "doc.vector",
+            "name": "vector",
+            "type": "hasMany"
+        }
+    },
+    "table": {
+        "name": "doc_file"
+    }
+}

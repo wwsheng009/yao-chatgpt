@@ -1,0 +1,68 @@
+{
+    "action": {
+        "bind": {
+            "table": "doc.vector"
+        }
+    },
+    "fields": {
+        "list": {
+            "内容": {
+                "bind": "content",
+                "edit": {
+                    "props": {
+                        "itemProps": {
+                            "tooltip": "内容"
+                        }
+                    },
+                    "type": "TextArea"
+                }
+            },
+            "嵌入": {
+                "bind": "embedding",
+                "edit": {
+                    "props": {
+                        "itemProps": {
+                            "tooltip": "嵌入"
+                        }
+                    },
+                    "type": "TextArea"
+                }
+            },
+            "索引": {
+                "bind": "index",
+                "edit": {
+                    "props": {
+                        "itemProps": {
+                            "rules": [
+                                {
+                                    "type": "integer"
+                                }
+                            ],
+                            "tooltip": "索引"
+                        }
+                    },
+                    "type": "InputNumber"
+                }
+            }
+        }
+    },
+    "layout": {
+        "list": {
+            "columns": [
+                {
+                    "name": "索引",
+                    "width": 6
+                },
+                {
+                    "name": "内容",
+                    "width": 24
+                },
+                {
+                    "name": "嵌入",
+                    "width": 24
+                }
+            ]
+        }
+    },
+    "name": "doc_vector"
+}

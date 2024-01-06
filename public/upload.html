@@ -1,0 +1,103 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="yao.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Additional styling can be placed here */
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <div class="flex items-start justify-center w-full px-4 py-6">
+        <div id="upload-area" class="w-full max-w-xl p-6 bg-white rounded-md shadow-md">
+            <label for="dropzone-file"
+                class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                    </svg>
+                    <p class="mb-2 text-sm text-gray-700"><span class="font-semibold">Click to upload</span> or drag and
+                        drop</p>
+                    <p class="text-xs text-gray-500">PPTX, DOCX, XLSX, PDF, TXT, MD, MDX, HTML</p>
+                </div>
+                <input id="dropzone-file" type="file" name="file" class="hidden"
+                    accept=".pptx,.docx,.xlsx,.pdf,.txt,.md,.mdx,.html" />
+            </label>
+            <div id="response-message" class="text-center mt-4"></div>
+        </div>
+    </div>
+    <script>
+        const dropzone = document.getElementById('dropzone-file');
+        const uploadArea = document.getElementById('upload-area');
+        const responseMessage = document.getElementById('response-message');
+
+        const allowedTypes = [
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'application/pdf',
+            'text/plain',
+            'text/markdown',
+            'text/html'
+        ];
+
+        function updateResponseMessage(message, isSuccess) {
+            responseMessage.textContent = message;
+            responseMessage.className = isSuccess ? 'text-sm font-medium text-green-600' : 'text-sm font-medium text-red-600';
+        }
+
+        function handleFiles(file) {
+            if (!allowedTypes.includes(file.type)) {
+                updateResponseMessage('Invalid file type. Only PPTX, DOCX, XLSX, PDF, TXT, MD, MDX, HTML files are allowed.', false);
+                return;
+            }
+            const yao = new Yao();
+            yao.Upload('POST', '/file/upload', {}, file).then((res) => {
+                if (res.code && res.message) {
+                    updateResponseMessage(res.message || 'An error occurred while uploading the file.', false);
+                } else {
+                    updateResponseMessage(res.message || 'File uploaded successfully!', true);
+                }
+            })
+        }
+
+        dropzone.addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            handleFiles(file);
+        });
+
+        uploadArea.addEventListener('dragover', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            uploadArea.classList.add('bg-blue-200');
+        });
+
+        uploadArea.addEventListener('dragleave', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            uploadArea.classList.remove('bg-blue-200');
+        });
+
+        uploadArea.addEventListener('drop', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            uploadArea.classList.remove('bg-blue-200');
+            const file = event.dataTransfer.files[0];
+            handleFiles(file);
+        });
+    </script>
+</body>
+
+</html>

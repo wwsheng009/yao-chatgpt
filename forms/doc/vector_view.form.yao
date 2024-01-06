@@ -1,0 +1,216 @@
+{
+    "action": {
+        "bind": {
+            "model": "doc.vector",
+            "option": {
+                "withs": {
+                    "file": {}
+                }
+            }
+        }
+    },
+    "fields": {
+        "form": {
+            "内容": {
+                "bind": "content",
+                "edit": {
+                    "props": {
+                        "itemProps": {
+                            "tooltip": "内容"
+                        }
+                    },
+                    "type": "TextArea"
+                }
+            },
+            "嵌入": {
+                "bind": "embedding",
+                "edit": {
+                    "props": {
+                        "itemProps": {
+                            "tooltip": "嵌入"
+                        }
+                    },
+                    "type": "TextArea"
+                }
+            },
+            "文件ID": {
+                "bind": "file_id",
+                "edit": {
+                    "props": {
+                        "itemProps": {
+                            "rules": [
+                                {
+                                    "type": "integer"
+                                }
+                            ],
+                            "tooltip": "文件ID"
+                        },
+                        "xProps": {
+                            "$remote": {
+                                "process": "yao.component.SelectOptions",
+                                "query": {
+                                    "label": "filename",
+                                    "model": "doc.file",
+                                    "value": "id"
+                                }
+                            }
+                        }
+                    },
+                    "type": "Select"
+                }
+            },
+            "索引": {
+                "bind": "index",
+                "edit": {
+                    "props": {
+                        "itemProps": {
+                            "rules": [
+                                {
+                                    "type": "integer"
+                                }
+                            ],
+                            "tooltip": "索引"
+                        }
+                    },
+                    "type": "InputNumber"
+                }
+            }
+        }
+    },
+    "layout": {
+        "actions": [
+            {
+                "action": [
+                    {
+                        "name": "Fullscreen",
+                        "payload": {},
+                        "type": "Form.fullscreen"
+                    }
+                ],
+                "icon": "icon-maximize-2",
+                "showWhenAdd": true,
+                "showWhenView": true,
+                "title": "切换全屏"
+            },
+            {
+                "action": [
+                    {
+                        "name": "CloseModal",
+                        "payload": {},
+                        "type": "Common.closeModal"
+                    }
+                ],
+                "icon": "icon-arrow-left",
+                "showWhenAdd": true,
+                "showWhenView": true,
+                "title": "返回"
+            },
+            {
+                "action": [
+                    {
+                        "name": "Submit",
+                        "payload": {},
+                        "type": "Form.submit"
+                    },
+                    {
+                        "name": "Back",
+                        "payload": {},
+                        "type": "Common.closeModal"
+                    }
+                ],
+                "icon": "icon-check",
+                "showWhenAdd": true,
+                "style": "primary",
+                "title": "保存"
+            },
+            {
+                "action": [
+                    {
+                        "name": "Confirm",
+                        "payload": {
+                            "content": "确认删除，删除后数据无法恢复？",
+                            "title": "提示"
+                        },
+                        "type": "Common.confirm"
+                    },
+                    {
+                        "name": "Delete",
+                        "payload": {
+                            "model": "doc.vector"
+                        },
+                        "type": "Form.delete"
+                    },
+                    {
+                        "name": "Back",
+                        "payload": {},
+                        "type": "Common.closeModal"
+                    }
+                ],
+                "icon": "icon-trash-2",
+                "style": "danger",
+                "title": "Delete"
+            }
+        ],
+        "form": {
+            "props": {
+                "reference": {
+                    "flatContent": {
+                        "defaultOpen": false,
+                        "name": "文档",
+                        "payload": {
+                            "Form": {
+                                "id": "{{file_id}}",
+                                "model": "doc.file_view",
+                                "type": "view"
+                            }
+                        }
+                    }
+                }
+            },
+            "sections": [
+                {
+                    "columns": [
+                        {
+                            "name": "索引",
+                            "width": 8
+                        },
+                        {
+                            "name": "文件ID",
+                            "width": 8
+                        }
+                    ]
+                },
+                {
+                    "columns": [
+                        {
+                            "name": "列表",
+                            "tabs": [
+                                {
+                                    "columns": [
+                                        {
+                                            "name": "内容",
+                                            "width": 24
+                                        }
+                                    ],
+                                    "title": "内容"
+                                },
+                                {
+                                    "columns": [
+                                        {
+                                            "name": "嵌入",
+                                            "width": 24
+                                        }
+                                    ],
+                                    "title": "嵌入"
+                                }
+                            ],
+                            "width": 24
+                        }
+                    ]
+                }
+            ]
+        },
+        "primary": "id"
+    },
+    "name": "doc_vector"
+}

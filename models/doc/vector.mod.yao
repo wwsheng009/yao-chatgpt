@@ -1,0 +1,55 @@
+{
+  "columns": [
+    {
+      "comment": "ID",
+      "label": "ID",
+      "name": "id",
+      "primary": true,
+      "type": "ID"
+    },
+    {
+      "comment": "索引",
+      "label": "索引",
+      "name": "index",
+      "nullable": true,
+      "type": "integer"
+    },
+    {
+      "comment": "文件ID",
+      "label": "文件ID",
+      "name": "file_id",
+      "nullable": true,
+      "type": "integer"
+    },
+    {
+      "comment": "内容",
+      "label": "内容",
+      "name": "content",
+      "nullable": true,
+      "type": "text"
+    },
+    {
+      "comment": "嵌入",
+      "index": true,
+      "label": "嵌入",
+      "length": 1024,
+      "name": "embedding",
+      "nullable": true,
+      "type": "vector"
+    }
+  ],
+  "name": "doc_vector",
+  "relations": {
+    "file": {
+      "foreign": "file_id",
+      "key": "id",
+      "label": "文档",
+      "model": "doc.file",
+      "name": "file",
+      "type": "hasOne"
+    }
+  },
+  "table": {
+    "name": "doc_vector"
+  }
+}

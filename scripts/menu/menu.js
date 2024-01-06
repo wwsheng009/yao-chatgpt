@@ -1,6 +1,4 @@
 function main() {
-  console.log("xxxxxxxxx");
-
   let items = [
     {
       id: 1,
@@ -25,6 +23,47 @@ function main() {
       name: "聊天",
       path: "/iframe?src=/index.html",
       icon: "icon-trello",
+    },
+    {
+      name: "聊天2",
+      path: "/iframe?src=/web",
+      icon: "icon-trello",
+    },
+    {
+      children: [
+        {
+          name: "文档上传",
+          path: "/iframe?src=/upload.html",
+        },
+        {
+          name: "文档列表",
+          path: "/x/Table/doc.file",
+        },
+        {
+          name: "创建文档表单",
+          path: "/x/Form/doc.file/0/edit",
+        },
+      ],
+      icon: "icon-file-text",
+      name: "文档",
+      parent: null,
+      path: "/x/Table/doc.file",
+    },
+    {
+      children: [
+        {
+          name: "向量列表",
+          path: "/x/Table/doc.vector",
+        },
+        {
+          name: "创建向量",
+          path: "/x/Form/doc.vector/0/edit",
+        },
+      ],
+      icon: "icon-file-text",
+      name: "向量",
+      parent: null,
+      path: "/x/Table/doc.vector",
     },
     {
       id: 2,
@@ -139,11 +178,15 @@ function main() {
           name: "系统设置",
           path: "/setting",
         },
-
         {
           id: 10004,
           name: "用户配置",
           path: "/x/Table/yao.user",
+        },
+        {
+          id: 10005,
+          name: "菜单配置",
+          path: "/x/Table/admin.menu",
         },
       ],
     },

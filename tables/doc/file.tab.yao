@@ -1,0 +1,327 @@
+{
+    "action": {
+        "bind": {
+            "model": "doc.file",
+            "option": {
+                "option": {
+                    "form": "doc.file"
+                },
+                "withs": {
+                    "vector": {}
+                }
+            }
+        }
+    },
+    "fields": {
+        "filter": {
+            "文件名": {
+                "bind": "where.filename.match",
+                "edit": {
+                    "compute": "Trim",
+                    "props": {
+                        "placeholder": "请输入文件名"
+                    },
+                    "type": "Input"
+                }
+            },
+            "标题": {
+                "bind": "where.title.match",
+                "edit": {
+                    "compute": "Trim",
+                    "props": {
+                        "placeholder": "请输入标题"
+                    },
+                    "type": "Input"
+                }
+            }
+        },
+        "table": {
+            "ID": {
+                "bind": "id",
+                "edit": {
+                    "bind": "id",
+                    "props": {
+                        "itemProps": {
+                            "tooltip": "ID"
+                        }
+                    },
+                    "type": "Input"
+                },
+                "view": {
+                    "props": {},
+                    "type": "Text"
+                }
+            },
+            "分隔器": {
+                "bind": "splitter",
+                "edit": {
+                    "bind": "splitter",
+                    "props": {
+                        "itemProps": {
+                            "tooltip": "分隔器"
+                        }
+                    },
+                    "type": "Input"
+                },
+                "view": {
+                    "props": {},
+                    "type": "Text"
+                }
+            },
+            "向量索引状态": {
+                "bind": "index_status",
+                "edit": {
+                    "props": {
+                        "itemProps": {
+                            "rules": [
+                                {
+                                    "enum": [
+                                        "new",
+                                        "creating",
+                                        "done"
+                                    ],
+                                    "type": "enum"
+                                }
+                            ],
+                            "tooltip": "向量数据库索引状态"
+                        },
+                        "options": [
+                            {
+                                "label": "::new",
+                                "value": "new"
+                            },
+                            {
+                                "label": "::creating",
+                                "value": "creating"
+                            },
+                            {
+                                "label": "::done",
+                                "value": "done"
+                            }
+                        ],
+                        "placeholder": "请选择向量索引状态"
+                    },
+                    "type": "Select"
+                },
+                "view": {
+                    "props": {
+                        "options": [
+                            {
+                                "label": "::new",
+                                "value": "new"
+                            },
+                            {
+                                "label": "::creating",
+                                "value": "creating"
+                            },
+                            {
+                                "label": "::done",
+                                "value": "done"
+                            }
+                        ],
+                        "placeholder": "请选择向量索引状态"
+                    },
+                    "type": "Tag"
+                }
+            },
+            "文件名": {
+                "bind": "filename",
+                "edit": {
+                    "bind": "filename",
+                    "props": {
+                        "itemProps": {
+                            "rules": [
+                                {
+                                    "required": true
+                                }
+                            ],
+                            "tooltip": "文件名"
+                        }
+                    },
+                    "type": "Input"
+                },
+                "view": {
+                    "props": {},
+                    "type": "Text"
+                }
+            },
+            "文件类型": {
+                "bind": "flile_type",
+                "edit": {
+                    "bind": "flile_type",
+                    "props": {
+                        "itemProps": {
+                            "tooltip": "文件类型"
+                        }
+                    },
+                    "type": "Input"
+                },
+                "view": {
+                    "props": {},
+                    "type": "Text"
+                }
+            },
+            "标题": {
+                "bind": "title",
+                "edit": {
+                    "bind": "title",
+                    "props": {
+                        "itemProps": {
+                            "tooltip": "标题"
+                        }
+                    },
+                    "type": "Input"
+                },
+                "view": {
+                    "props": {},
+                    "type": "Text"
+                }
+            },
+            "路径": {
+                "bind": "path",
+                "edit": {
+                    "bind": "path",
+                    "props": {
+                        "itemProps": {
+                            "tooltip": "路径"
+                        }
+                    },
+                    "type": "TextArea"
+                },
+                "view": {
+                    "props": {},
+                    "type": "Text"
+                }
+            }
+        }
+    },
+    "layout": {
+        "filter": {
+            "actions": [
+                {
+                    "action": [
+                        {
+                            "name": "OpenModal",
+                            "payload": {
+                                "Form": {
+                                    "model": "doc.file",
+                                    "type": "edit"
+                                }
+                            },
+                            "type": "Common.openModal"
+                        }
+                    ],
+                    "icon": "icon-plus",
+                    "title": "添加",
+                    "width": 3
+                }
+            ],
+            "columns": [
+                {
+                    "name": "文件名",
+                    "width": 4
+                },
+                {
+                    "name": "标题",
+                    "width": 4
+                }
+            ]
+        },
+        "header": {
+            "actions": [],
+            "preset": {}
+        },
+        "primary": "id",
+        "table": {
+            "columns": [
+                {
+                    "name": "ID",
+                    "width": 160
+                },
+                {
+                    "name": "文件名",
+                    "width": 160
+                },
+                {
+                    "name": "标题",
+                    "width": 160
+                },
+                {
+                    "name": "文件类型",
+                    "width": 160
+                },
+                {
+                    "name": "分隔器",
+                    "width": 160
+                },
+                {
+                    "name": "向量索引状态",
+                    "width": 250
+                },
+                {
+                    "name": "路径",
+                    "width": 160
+                }
+            ],
+            "operation": {
+                "actions": [
+                    {
+                        "action": [
+                            {
+                                "name": "OpenModal",
+                                "payload": {
+                                    "Form": {
+                                        "model": "doc.file_view",
+                                        "type": "view"
+                                    }
+                                },
+                                "type": "Common.openModal"
+                            }
+                        ],
+                        "icon": "icon-eye",
+                        "title": "查看"
+                    },
+                    {
+                        "action": [
+                            {
+                                "name": "OpenModal",
+                                "payload": {
+                                    "Form": {
+                                        "model": "doc.file",
+                                        "type": "edit"
+                                    }
+                                },
+                                "type": "Common.openModal"
+                            }
+                        ],
+                        "icon": "icon-edit-2",
+                        "title": "编辑"
+                    },
+                    {
+                        "action": [
+                            {
+                                "name": "Confirm",
+                                "payload": {
+                                    "content": "删除后不可撤销！",
+                                    "title": "确认删除"
+                                },
+                                "type": "Common.confirm"
+                            },
+                            {
+                                "name": "Delete",
+                                "payload": {
+                                    "model": "doc.file"
+                                },
+                                "type": "Table.delete"
+                            }
+                        ],
+                        "icon": "icon-trash-2",
+                        "title": "删除"
+                    }
+                ],
+                "fold": false
+            }
+        }
+    },
+    "name": "文档"
+}

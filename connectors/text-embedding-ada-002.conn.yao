@@ -1,0 +1,11 @@
+{
+  "LANG": "1.0.0",
+  "VERSION": "1.0.0",
+  "label": "text-embedding-ada-002",
+  "type": "openai",
+  "options": {
+    "model": "text-embedding-ada-002",
+    "key": "$ENV.OPENAI_KEY",
+    "proxy": "$ENV.OPENAI_AIP_HOST"
+  }
+}

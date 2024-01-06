@@ -1,0 +1,16 @@
+{
+    "name": "文档加载",
+    "worker_nums": 10,
+    "attempts": 3,
+    "attempt_after": 200,
+    "timeout": 2000,
+    "size": 1000,
+    "process": "scripts.doc.task.TaskProcess",
+    "event": {
+        "next": "",
+        "add": "scripts.doc.task.OnAdd",
+        "success": "scripts.doc.task.OnSuccess",
+        "error": "scripts.doc.task.OnError",
+        "progress": "scripts.doc.task.OnProgress"
+    }
+}

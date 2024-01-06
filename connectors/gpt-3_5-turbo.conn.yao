@@ -5,6 +5,7 @@
   "type": "openai",
   "options": {
     "model": "gpt-3.5-turbo",
-    "key": "$ENV.OPENAI_KEY"
+    "key": "$ENV.OPENAI_KEY",
+    "proxy": "$ENV.OPENAI_AIP_HOST"
   }
 }

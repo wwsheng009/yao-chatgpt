@@ -1,0 +1,261 @@
+{
+    "action": {
+        "after:find": "scripts.doc.file.AfterFind",
+        "before:delete": "scripts.doc.file.BeforeDelete",
+        "bind": {
+            "model": "doc.file",
+            "option": {
+                "withs": {
+                    "vector": {}
+                }
+            }
+        },
+        "save": {
+            "process": "scripts.doc.file.Save"
+        }
+    },
+    "fields": {
+        "form": {
+            "分隔器": {
+                "bind": "splitter",
+                "edit": {
+                    "props": {
+                        "itemProps": {
+                            "tooltip": "分隔器"
+                        }
+                    },
+                    "type": "Input"
+                }
+            },
+            "向量": {
+                "bind": "vector",
+                "edit": {
+                    "props": {
+                        "name": "doc.vector",
+                        "showLabel": true
+                    },
+                    "type": "List"
+                }
+            },
+            "向量索引状态": {
+                "bind": "index_status",
+                "edit": {
+                    "props": {
+                        "itemProps": {
+                            "rules": [
+                                {
+                                    "enum": [
+                                        "new",
+                                        "creating",
+                                        "done"
+                                    ],
+                                    "type": "enum"
+                                }
+                            ],
+                            "tooltip": "向量数据库索引状态"
+                        },
+                        "options": [
+                            {
+                                "label": "::new",
+                                "value": "new"
+                            },
+                            {
+                                "label": "::creating",
+                                "value": "creating"
+                            },
+                            {
+                                "label": "::done",
+                                "value": "done"
+                            }
+                        ],
+                        "placeholder": "请选择向量索引状态"
+                    },
+                    "type": "Select"
+                }
+            },
+            "文件名": {
+                "bind": "filename",
+                "edit": {
+                    "props": {
+                        "itemProps": {
+                            "rules": [
+                                {
+                                    "required": true
+                                }
+                            ],
+                            "tooltip": "文件名"
+                        }
+                    },
+                    "type": "Input"
+                }
+            },
+            "文件类型": {
+                "bind": "flile_type",
+                "edit": {
+                    "props": {
+                        "itemProps": {
+                            "tooltip": "文件类型"
+                        }
+                    },
+                    "type": "Input"
+                }
+            },
+            "标题": {
+                "bind": "title",
+                "edit": {
+                    "props": {
+                        "itemProps": {
+                            "tooltip": "标题"
+                        }
+                    },
+                    "type": "Input"
+                }
+            },
+            "路径": {
+                "bind": "path",
+                "edit": {
+                    "props": {
+                        "itemProps": {
+                            "tooltip": "路径"
+                        }
+                    },
+                    "type": "TextArea"
+                }
+            }
+        }
+    },
+    "layout": {
+        "actions": [
+            {
+                "action": [
+                    {
+                        "name": "Fullscreen",
+                        "payload": {},
+                        "type": "Form.fullscreen"
+                    }
+                ],
+                "icon": "icon-maximize-2",
+                "showWhenAdd": true,
+                "showWhenView": true,
+                "title": "切换全屏"
+            },
+            {
+                "action": [
+                    {
+                        "name": "CloseModal",
+                        "payload": {},
+                        "type": "Common.closeModal"
+                    }
+                ],
+                "icon": "icon-arrow-left",
+                "showWhenAdd": true,
+                "showWhenView": true,
+                "title": "返回"
+            },
+            {
+                "action": [
+                    {
+                        "name": "Submit",
+                        "payload": {},
+                        "type": "Form.submit"
+                    },
+                    {
+                        "name": "Back",
+                        "payload": {},
+                        "type": "Common.closeModal"
+                    }
+                ],
+                "icon": "icon-check",
+                "showWhenAdd": true,
+                "style": "primary",
+                "title": "保存"
+            },
+            {
+                "action": [
+                    {
+                        "name": "Confirm",
+                        "payload": {
+                            "content": "确认删除，删除后数据无法恢复？",
+                            "title": "提示"
+                        },
+                        "type": "Common.confirm"
+                    },
+                    {
+                        "name": "Delete",
+                        "payload": {
+                            "model": "doc.file"
+                        },
+                        "type": "Form.delete"
+                    },
+                    {
+                        "name": "Back",
+                        "payload": {},
+                        "type": "Common.closeModal"
+                    }
+                ],
+                "icon": "icon-trash-2",
+                "style": "danger",
+                "title": "Delete"
+            }
+        ],
+        "form": {
+            "props": {},
+            "sections": [
+                {
+                    "columns": [
+                        {
+                            "name": "文件名",
+                            "width": 8
+                        },
+                        {
+                            "name": "标题",
+                            "width": 8
+                        },
+                        {
+                            "name": "文件类型",
+                            "width": 8
+                        },
+                        {
+                            "name": "分隔器",
+                            "width": 8
+                        },
+                        {
+                            "name": "向量索引状态",
+                            "width": 8
+                        }
+                    ]
+                },
+                {
+                    "columns": [
+                        {
+                            "name": "列表",
+                            "tabs": [
+                                {
+                                    "columns": [
+                                        {
+                                            "name": "路径",
+                                            "width": 24
+                                        }
+                                    ],
+                                    "title": "路径"
+                                },
+                                {
+                                    "columns": [
+                                        {
+                                            "name": "向量",
+                                            "width": 24
+                                        }
+                                    ],
+                                    "title": "向量"
+                                }
+                            ],
+                            "width": 24
+                        }
+                    ]
+                }
+            ]
+        },
+        "primary": "id"
+    },
+    "name": "文档"
+}
