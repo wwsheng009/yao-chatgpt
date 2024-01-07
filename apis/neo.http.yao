@@ -5,10 +5,13 @@
   "group": "neo",
   "paths": [
     {
+      // /api/neo/chat
       "path": "/chat",
       "method": "POST",
       "process": "scripts.neo.chat",
-      "in": [":payload"],
+      "in": [
+        ":payload"
+      ],
       "out": {
         "status": 200,
         "type": "application/json"

@@ -1,6 +1,7 @@
-const { ExCallGpt } = Require("ai.stream2");
+const { ExCallGpt } = Require("ai.chatweb_lib");
 
-//chat session
+// chat session
+// 检查会话ID
 function session() {
   const access_key = Process("yao.env.get", "YAO_CHAT_API_KEY");
   let hasAuth = false;
@@ -81,6 +82,7 @@ function usage() {
   //  (that is, it can only be made from the browser). You made it with the following key type: secret.",
   console.log("res", res);
 }
+// scripts.chatweb.verify
 function verify(payload) {
   let token = payload.token;
 

@@ -1,15 +1,15 @@
 {
-  "name": "AI Chat API",
+  "name": "File Upload API",
   "version": "1.0.0",
-  "description": "User API",
+  "description": "File upload API",
   "group": "",
   "guard": "-",
   "paths": [
     {
-      // 对应前端chat web 项目
+      // 上传文件
       "path": "/upload",
       "method": "POST",
-      "guard": "-",
+      "guard": "bearer-jwt",
       "process": "scripts.doc.vector.uploadFile",
       "in": [
         "$file.file"

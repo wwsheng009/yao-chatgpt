@@ -9,7 +9,7 @@ const MaxTokens = 1536;
  * Match content from the vector database
  * yao run scripts.doc.vector.Match '::{"pathname":"/x/Table"}' '::[{"role":"user", "content":"Yao 是什么"}]'
  *
- * @param {*} context
+ * @param {*} context,由neo调用，不要省略这个参数
  * @param {*} messages
  * @returns
  */
@@ -54,6 +54,7 @@ function uploadFile(file) {
 
   const task_id = Process("tasks.doc.add", id, fname);
   if (task_id == 0) {
+    console.log("创建任务失败");
     throw Error("Create task failed");
   }
   return {
@@ -70,6 +71,64 @@ function Search(input, page) {
   // const params = { input: input, distance: 0.25 };
   // return Process("scripts.doc.Search", params, page, 9);
 }
+
+// scripts.doc.vector.getEmbedding
+function getEmbedding(content) {
+  let input = content.replace(/\*|\n/g, " ");
+
+  let embedding_api_endpoint = Process(
+    "utils.env.Get",
+    "EMBEDDING_API_ENDPOINT"
+  );
+  let embeddingResponse = null;
+  // 使用私有向量服务
+  if (embedding_api_endpoint != "") {
+    embeddingResponse = http.Post(embedding_api_endpoint, {
+      input: input,
+    });
+  } else {
+    embeddingResponse = Process(
+      "openai.Embeddings",
+      "text-embedding-ada-002",
+      input,
+      "user-01"
+    );
+  }
+  if (embeddingResponse.code != 200) {
+    throw new Error(embeddingResponse.data.detail[0].msg);
+  }
+  if (!embeddingResponse || !embeddingResponse.data) {
+    console.log("请求出错");
+    throw new Error("请求出错");
+  }
+  const [{ embedding }] = embeddingResponse.data;
+  return embedding;
+}
+// yao run scripts.doc.vector.QueryDoc '::{"input":"yao是什么?"}'
+function QueryDoc(payload) {
+  let document = payload.input;
+
+  const embedding = getEmbedding(document);
+
+  const q = new Query();
+  const query_embedding = `'${JSON.stringify(embedding)}'`;
+  const match_threshold = payload.threshold || 0.6;
+  const match_count = payload.count || 10;
+  const sql = `select id, file_id,content, 1 - (embedding <=> ${query_embedding}) as similarity
+  from doc_vector where 1 - (embedding <=> ${query_embedding}) > ${match_threshold}
+  order by similarity DESC limit ${match_count}`;
+
+  const data = q.Get({
+    sql: {
+      stmt: sql,
+    },
+  });
+  data.forEach((doc) => {
+    doc.file = Process("models.doc.file.find", doc.file_id, {});
+  });
+  return { data: data };
+}
+
 // yao run scripts.doc.vector.indexFile
 function indexFile(fname, task_id, record_id) {
   let fs = new FS("system");
@@ -90,7 +149,7 @@ function indexFile(fname, task_id, record_id) {
     console.log(
       "",
       `docloader.so plugin error: ${pages.code} ${pages.message}`,
-      "maybe you need install pdf plugin see here: https://github.com/YaoApp/yao-knowledge-pdf"
+      "maybe you need install document loader plugin see here: https://github.com/wwsheng009/yao-plugin-document-loader"
     );
     fs.Remove(fname);
     throw new Exception(pages.message, pages.code);
@@ -106,6 +165,7 @@ function indexFile(fname, task_id, record_id) {
     index_status: "creating",
   });
   const total = pages.data.length;
+
   pages.data.forEach((p, idx) => {
     Process("tasks.doc.progress", task_id, idx, total, ``);
 
@@ -121,30 +181,7 @@ function indexFile(fname, task_id, record_id) {
     //   fs.Remove(file);
     //   throw e;
     // }
-
-    let input = content.replace(/\*|\n/g, " ");
-
-    const source = "local";
-
-    let embeddingResponse = null;
-    if (source == "local") {
-      embeddingResponse = http.Post("http://localhost:8001/emb", {
-        input: input,
-      });
-    } else {
-      embeddingResponse = Process(
-        "openai.Embeddings",
-        "text-embedding-ada-002",
-        input,
-        "user-01"
-      );
-    }
-    if (!embeddingResponse || !embeddingResponse.data) {
-      console.log("请求出错");
-      throw new Error("请求出错");
-    }
-    const [{ embedding }] = embeddingResponse.data;
-
+    const embedding = getEmbedding(content);
     Process("models.doc.vector.save", {
       // filename: file.name,
       // path: filePath,
@@ -156,87 +193,6 @@ function indexFile(fname, task_id, record_id) {
       embedding: JSON.stringify(embedding),
     });
   });
-}
-
-/**
- * Save the content to the vector database
- * @param {*} payload
- * @returns
- */
-function Save(payload) {
-  const fs = new FS("system");
-  const id =
-    payload.fingerprint || Process("utils.str.UUID").replaceAll("-", "");
-  const file = `${id}.pdf`;
-  if (fs.Exists(file)) {
-    throw new Exception(`${id} content exits`, 409);
-  }
-  fs.WriteFileBase64(file, payload.content, "0644");
-  // =============================================================================
-  // Read the PDF content
-  // @todo You can add your own code here
-  // @see https://github.com/YaoApp/yao-knowledge-pdf
-  // ==============================================================================
-  const pages = Process("plugins.pdf.Content", fs.Abs(file));
-  if (pages && pages.code && pages.message) {
-    console.log(
-      "",
-      `pdf.so plugin error: ${pages.code} ${pages.message}`,
-      "maybe you need install pdf plugin see here: https://github.com/YaoApp/yao-knowledge-pdf"
-    );
-    fs.Remove(file);
-    throw new Exception(pages.message, pages.code);
-  }
-  // fs.Remove(file); // debug
-  console.log("Parse the PDF title and summary...");
-  const article = Reduce(pages.join("\n\n"));
-  let title = "";
-  let summary = "";
-  try {
-    title = Process("aigcs.title", article);
-    summary = Process("aigcs.summary", article);
-  } catch (e) {
-    fs.Remove(file);
-    throw e;
-  }
-  // Save the document to the vector database
-  let part = 0;
-  pages.forEach((content, index) => {
-    content = content.replaceAll(" ", "");
-    content = content.replaceAll("\n", "");
-    content = content.replaceAll("\r", "");
-    // Ignore the short content
-    if (content == "" || content.length < 20) {
-      return;
-    }
-    // =============================================================================
-    // Save the document to the vector database
-    // @todo You can add your own code here
-    // ==============================================================================
-    const doc = {
-      type: "pdf",
-      path: file,
-      fingerprint: id,
-      user: "__public",
-      name: title,
-      summary: summary,
-      content: content,
-      part: part,
-    };
-    const result = Process("scripts.doc.Insert", doc);
-    if (result && result.code && result.message) {
-      fs.Remove(file);
-      throw new Exception(result.message, result.code);
-    }
-    part = part + 1;
-    // Debug
-    console.log(doc);
-    // openai api limit
-    time.Sleep(200);
-  });
-  // debug
-  // console.log(pages);
-  return { code: 200, message: "ok" };
 }
 
 /**
@@ -297,7 +253,7 @@ function match(context, messages, maxTokenSize) {
   }
 
   const payload = { input: input, threshold: 0.5, count: 10 };
-  const resp = Process("scripts.doc.local.QueryDoc", payload);
+  const resp = QueryDoc(payload);
   if (resp && resp.code && resp.message) {
     throw new Exception(resp.message, resp.code);
   }

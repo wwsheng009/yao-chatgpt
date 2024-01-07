@@ -10,7 +10,9 @@
       "method": "GET",
       "guard": "-",
       "process": "scripts.ai.chatgpt.Callq",
-      "in": ["$query.q"],
+      "in": [
+        "$query.q"
+      ],
       "out": {
         "status": 200,
         "type": "application/json"
@@ -21,32 +23,26 @@
       "method": "POST",
       "guard": "-",
       "process": "scripts.ai.chatgpt.Call",
-      "in": [":payload"],
+      "in": [
+        ":payload"
+      ],
       "out": {
         "status": 200,
         "type": "application/json"
       }
     },
     {
+      // 以stream的方式返回数据
       "path": "/ask-stream",
       "method": "POST",
       "guard": "-",
-      "process": "scripts.ai.stream.Call",
-      "in": [":payload"],
+      "process": "scripts.ai.chatpgt_stream.Call",
+      "in": [
+        ":payload"
+      ],
       "out": {
         "status": 200,
         "type": "text/event-stream; charset=utf-8"
-      }
-    },
-    {
-      "path": "/ask2",
-      "method": "POST",
-      "guard": "-",
-      "process": "scripts.ai.chatgpt2.Call",
-      "in": [":payload"],
-      "out": {
-        "status": 200,
-        "type": "application/json"
       }
     },
     {
@@ -54,7 +50,9 @@
       "method": "GET",
       "guard": "-",
       "process": "scripts.utils.test.test",
-      "in": [":context"],
+      "in": [
+        ":context"
+      ],
       "out": {
         "status": 200,
         "type": "application/json"
@@ -65,7 +63,9 @@
       "method": "GET",
       "guard": "-",
       "process": "flows.chat.prompt_template",
-      "in": [""],
+      "in": [
+        ""
+      ],
       "out": {
         "status": 200,
         "type": "application/json"
@@ -76,7 +76,10 @@
       "method": "GET",
       "guard": "-",
       "process": "models.chat.prompttemplate.find",
-      "in": ["$param.id", ""],
+      "in": [
+        "$param.id",
+        ""
+      ],
       "out": {
         "status": 200,
         "type": "application/json",

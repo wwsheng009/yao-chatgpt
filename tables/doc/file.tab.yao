@@ -1,5 +1,7 @@
 {
     "action": {
+        "after:find": "scripts.doc.file.AfterFind",
+        "before:delete": "scripts.doc.file.BeforeDelete",
         "bind": {
             "model": "doc.file",
             "option": {
@@ -46,6 +48,27 @@
                         }
                     },
                     "type": "Input"
+                },
+                "view": {
+                    "props": {},
+                    "type": "Text"
+                }
+            },
+            "任务标识": {
+                "bind": "task_id",
+                "edit": {
+                    "bind": "task_id",
+                    "props": {
+                        "itemProps": {
+                            "rules": [
+                                {
+                                    "type": "integer"
+                                }
+                            ],
+                            "tooltip": "任务标识"
+                        }
+                    },
+                    "type": "InputNumber"
                 },
                 "view": {
                     "props": {},
@@ -252,6 +275,10 @@
                 },
                 {
                     "name": "分隔器",
+                    "width": 160
+                },
+                {
+                    "name": "任务标识",
                     "width": 160
                 },
                 {

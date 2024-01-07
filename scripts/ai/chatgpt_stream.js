@@ -53,9 +53,9 @@ function handler(payload) {
   return 1;
 }
 /**
- * yao run scripts.ai.stream.Call '::{"prompt":"你好"}'
- * yao run scripts.ai.stream.Call '::{"prompt":"可以帮我找一下python学习资源吗","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
- * yao run scripts.ai.stream.Call '::{"prompt":"廖雪峰的Python教程","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
+ * yao run scripts.ai.chatpgt_stream.Call '::{"prompt":"你好"}'
+ * yao run scripts.ai.chatpgt_stream.Call '::{"prompt":"可以帮我找一下python学习资源吗","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
+ * yao run scripts.ai.chatpgt_stream.Call '::{"prompt":"廖雪峰的Python教程","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
  *
  *  yao run scripts.chat.conversation.FindConversationById "938d58a4-b976-46b8-a342-7644a2566476"
  */

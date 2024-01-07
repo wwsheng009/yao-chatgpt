@@ -55,11 +55,7 @@ function handler(payload) {
   return 1;
 }
 /**
- * yao run scripts.ai.stream2.Call '::{"prompt":"你好"}'
- * yao run scripts.ai.stream2.Call '::{"prompt":"可以帮我找一下python学习资源吗","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
- * yao run scripts.ai.stream2.Call '::{"prompt":"廖雪峰的Python教程","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
  *
- *  yao run scripts.chat.conversation.FindConversationById "938d58a4-b976-46b8-a342-7644a2566476"
  */
 function ExCallGpt(request) {
   const setting = GetSetting() || {};
@@ -163,12 +159,6 @@ function CallGpt(request, setting) {
     conversationId = id;
   }
 
-  // newMessages.push({
-  //   ai_user: aiUserName,
-  //   prompt: ask,
-  //   end_user: endUserName,
-  // });
-
   // 取最后几行
   if (
     setting.max_send_lines > 0 &&
@@ -208,9 +198,6 @@ function CallGpt(request, setting) {
   if (docs.length > 0) {
     messages = [...docs, ...messages];
   }
-  // if (Array.isArray(docs) && docs.length) {
-  //   docs.forEach((doc) => messages.user(doc));
-  // }
 
   const startDate = new Date();
   let RequestBody = {

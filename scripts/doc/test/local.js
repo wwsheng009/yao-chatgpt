@@ -29,7 +29,7 @@ function QueryDoc(payload) {
   const match_threshold = payload.threshold || 0.6;
   const match_count = payload.count || 10;
   const sql = `select id, filename,path,content, 1 - (embedding <=> ${query_embedding}) as similarity
-  from documents where 1 - (embedding <=> ${query_embedding}) > ${match_threshold}
+  from doc_vector where 1 - (embedding <=> ${query_embedding}) > ${match_threshold}
   order by similarity DESC limit ${match_count}`;
 
   const data = q.Get({
@@ -56,7 +56,7 @@ function saveText2vect(document) {
 
   const [{ embedding }] = embeddingResponse.data;
 
-  Process("models.documents.save", {
+  Process("models.doc.vector.save", {
     content: document,
     embedding: JSON.stringify(embedding),
   });
