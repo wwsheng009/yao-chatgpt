@@ -51,7 +51,8 @@ function handler(payload) {
 //yao run scripts.ai.gemini.test
 function test() {
   const API_KEY = Process("yao.env.get", "GOOGLE_GEMINI_API_ACCESS_KEY");
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:streamGenerateContent?key=${API_KEY}&alt=sse`;
+  const GEMNI_API_HOST = Process("yao.env.get", "GOOGLE_GEMINI_API_HOST");
+  const url = `${GEMNI_API_HOST}/v1beta/models/gemini-pro:streamGenerateContent?key=${API_KEY}&alt=sse`;
   const RequestBody = {
     contents: [
       { parts: [{ text: "Write long a story about a magic backpack." }] },
