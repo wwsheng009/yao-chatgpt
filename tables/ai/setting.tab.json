@@ -324,27 +324,20 @@
         "edit": {
           "props": {
             "placeholder": "请输入 模型",
-            "xProps": {
-              "$remote": {
-                "process": "yao.component.SelectOptions",
-                "query": {
-                  "model": "ai.model",
-                  "label": "title",
-                  "value": "idx",
-                  "wheres": [
-                    {
-                      "column": "status",
-                      "op": "eq",
-                      "value": "enabled"
-                    }
-                  ],
-                  "orders": [
-                    {
-                      "column": "created",
-                      "option": "desc"
-                    }
-                  ]
+            "query": {
+              "from": "ai.model",
+              "labelField": "title",
+              "valueField": "idx",
+              "wheres": [
+                {
+                  "column": "status",
+                  "op": "eq",
+                  "value": "enabled"
                 }
+              ],
+              "params":{
+                "id":"{{id}}",
+                "status":"enabled"
               }
             }
           },
@@ -352,28 +345,17 @@
         },
         "view": {
           "props": {
-            "xProps": {
-              "$remote": {
-                "process": "yao.component.SelectOptions",
-                "query": {
-                  "model": "ai.model",
-                  "label": "title",
-                  "value": "idx",
-                  "wheres": [
-                    {
-                      "column": "status",
-                      "op": "eq",
-                      "value": "enabled"
-                    }
-                  ],
-                  "orders": [
-                    {
-                      "column": "created",
-                      "option": "desc"
-                    }
-                  ]
+            "query": {
+              "from": "ai.model",
+              "labelField": "title",
+              "valueField": "idx",
+              "wheres": [
+                {
+                  "column": "status",
+                  "op": "eq",
+                  "value": "enabled"
                 }
-              }
+              ]
             }
           },
           "type": "Tag"

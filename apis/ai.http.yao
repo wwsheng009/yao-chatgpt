@@ -36,7 +36,7 @@
       "path": "/ask-stream",
       "method": "POST",
       "guard": "-",
-      "process": "scripts.ai.chatpgt_stream.Call",
+      "process": "scripts.ai.deepseek.Call", // "scripts.ai.chatgpt_stream.Call",
       "in": [
         ":payload"
       ],

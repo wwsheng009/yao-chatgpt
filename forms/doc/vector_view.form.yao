@@ -45,15 +45,10 @@
                             ],
                             "tooltip": "文件ID"
                         },
-                        "xProps": {
-                            "$remote": {
-                                "process": "yao.component.SelectOptions",
-                                "query": {
-                                    "label": "filename",
-                                    "model": "doc.file",
-                                    "value": "id"
-                                }
-                            }
+                        "query": {
+                            "labelField": "filename",
+                            "from": "doc.file",
+                            "valueField": "id"
                         }
                     },
                     "type": "Select"

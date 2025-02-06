@@ -1,5 +1,5 @@
 import react from "react";
-import styles from "./index.less";
+import styles from "./chat.less";
 const { useState } = react;
 
 interface IProps {
@@ -20,8 +20,8 @@ const Index = (props: IProps) => {
   const [prompt, setPrompt] = useState("");
   const [session_id, setSessionId] = useState(undefined);
   const [content, setContent] = useState<Content[]>([
-    { content: "你好，AI。", right: true },
-    { content: "你好，人类，有什么可以帮到您。", right: false },
+    { content: "你好,AI。", right: true },
+    { content: "你好,有什么可以帮到您。", right: false },
   ]);
 
   react.useEffect(() => {
@@ -73,6 +73,7 @@ const Index = (props: IProps) => {
         <div className="xgen-col xgen-form-item-control">
           <div className="xgen-form-item-control-input">
             <div
+              className={styles.box}
               style={{
                 display: "flex",
                 flexDirection: "column",

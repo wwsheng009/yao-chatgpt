@@ -51,6 +51,18 @@
       "nullable": false
     },
     {
+      "name": "think",
+      "label": "思考的消息",
+      "type": "text",
+      "nullable": true
+    },
+    {
+      "name": "message_id",
+      "label": "消息ID",
+      "type": "integer",
+      "nullable": true
+    },
+    {
       "name": "completion",
       "label": "回复的消息",
       "type": "text",

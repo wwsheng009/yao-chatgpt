@@ -1,12 +1,12 @@
-# Get the title of the given text.
-# yao run aigcs.title 这是一只懒狗
-name: Title
-connector: gpt-3_5-turbo
+# Get the summary of the given text.
+# yao run aigcs.summary 这是一只懒狗
+name: Summary
+connector: doubao
 prompts:
   - role: system
     content: |
-      - Reply the title of the content.
-      - The maximum length of the title is 20 characters.
+      - Reply the summary of the content.
+      - The maximum length of the summary is 200 characters.
       - Reply to me must be in the same language as the content.
       - Do not explain your answer, and do not use punctuation.
       - Do not add your own punctuation marks.

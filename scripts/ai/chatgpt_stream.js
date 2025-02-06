@@ -1,4 +1,5 @@
 let g_message = "";
+let g_think = "";
 let reply = null;
 // function ssEvent(message, content) {
 //   console.log(`message:${message},${content}`);
@@ -8,6 +9,8 @@ function collect(content) {
   // console.log(`content:${content}`);
   if (typeof ssEvent === "function") {
     ssEvent("messages", content);
+  } else {
+    console.print(content);
   }
 }
 
@@ -32,10 +35,14 @@ function handler(payload) {
         if (message) {
           reply = message;
           let content = message.choices[0]?.delta?.content;
-          // console.log(`content:${content}`);
+          let reasoning_content = message.choices[0]?.delta?.reasoning_content;
 
           if (content) {
             g_message += content;
+            collect(content);
+          }
+          if (reasoning_content) {
+            g_think += content;
             collect(content);
           }
         }
@@ -53,14 +60,14 @@ function handler(payload) {
   return 1;
 }
 /**
- * yao run scripts.ai.chatpgt_stream.Call '::{"prompt":"你好"}'
- * yao run scripts.ai.chatpgt_stream.Call '::{"prompt":"可以帮我找一下python学习资源吗","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
- * yao run scripts.ai.chatpgt_stream.Call '::{"prompt":"廖雪峰的Python教程","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
+ * yao run scripts.ai.chatgpt_stream.Call '::{"prompt":"你好"}'
+ * yao run scripts.ai.chatgpt_stream.Call '::{"prompt":"可以帮我找一下python学习资源吗","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
+ * yao run scripts.ai.chatgpt_stream.Call '::{"prompt":"廖雪峰的Python教程","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
  *
  *  yao run scripts.chat.conversation.FindConversationById "938d58a4-b976-46b8-a342-7644a2566476"
  */
 function Call(message) {
-  // console.log("ai script message", message);
+  console.log("ai script message", message);
   const setting = GetSetting();
   if (!setting || !setting.api_token) {
     return "请在管理界面维护AI连接设置值";
@@ -76,11 +83,11 @@ function Call(message) {
   setting.user_nickname = setting.user_nickname || "用户";
   setting.ai_nickname = setting.ai_nickname || "AI智能助理";
 
-  if (!setting.model.startsWith("gpt-3.5-turbo")) {
-    return Process("scripts.ai.chatgpt_complete.Call", message, setting);
-  } else {
+  // if (!setting.model.startsWith("gpt-3.5-turbo")) {
+  //   return Process("scripts.ai.chatgpt_complete.Call", message, setting);
+  // } else {
     return CallGpt(message, setting);
-  }
+  // }
 }
 function GetSetting() {
   let [setting] = Process("models.ai.setting.Get", {
@@ -142,7 +149,6 @@ function CallGpt(message, setting) {
   let endUserName = setting.user_nickname;
 
   //新对话
-  let newSessionInitMessage; //= "提示:你叫" + chatGptName + "。\n";
 
   if (conversationId < 0) {
     const { uuid, id } = Process(
@@ -212,13 +218,9 @@ function CallGpt(message, setting) {
     RequestBody.stop = stopword;
   }
   //   let url = "https://api.openai.com/v1/completions";
-  let url = "https://api.openai.com/v1/chat/completions";
+  let url = setting.base_url + "/chat/completions";
 
-  // console.log(setting.model);
-  // if (setting.model == "gpt-3.5-turbo-0301") {
-  //   url = "https://api.openai.com/v1/chat/completions";
-  // }
-  // console.log("setting.api_token", setting.api_token);
+
   if (typeof ssEvent === "function") {
     ssEvent("session_id", session_id);
   } else {
@@ -243,6 +245,8 @@ function CallGpt(message, setting) {
     ai_user: aiUserName,
     end_user: endUserName,
     prompt: ask,
+    model: setting.model,
+    think: g_think,
     completion: answer,
     prompt_len: ask.length,
     completion_len: answer.length,

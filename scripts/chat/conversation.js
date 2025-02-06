@@ -11,7 +11,7 @@ function generateUUID() {
       performance.now &&
       performance.now() * 1000) ||
     0; //Time in microseconds since page-load or 0 if unsupported
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+  return "xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
     var r = Math.random() * 16; //random number between 0 and 16
     if (d > 0) {
       //Use timestamp until depleted
@@ -39,13 +39,18 @@ function generateUUID() {
  * @param {string} description 描述
  * @returns {id:string,uuid:uuid}
  */
-function NewConversation(title, description) {
-  let uuid = generateUUID();
+function NewConversation(title, uuid, ...args) {
+  const data = [...args]
+  if (!uuid) {
+    uuid = generateUUID();
+  }
+
   let newID = Process("models.chat.conversation.Create", {
     uuid: uuid,
     api_setting: 1,
     title: title || "new conversation",
-    description: description, //|| "new conversation with openai",
+    ...data[0]
+    // description: description, //|| "new conversation with openai",
   });
   return { id: newID, uuid: uuid };
 }
@@ -136,7 +141,7 @@ function FindConversation() {
 function FindConversationById(uuid) {
   //   CheckConversationId(uuid);
   let list = Process("models.chat.conversation.Get", {
-    select: ["id", "uuid", "title"],
+    select: ["id", "uuid", "title", "message_id", "cookie"],
     withs: {
       messages: {
         query: {

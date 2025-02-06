@@ -25,6 +25,15 @@
       "default": false
     },
     {
+      "name": "base_url",
+      "label": "基础URL",
+      "type": "string",
+      "default": "https://api.openai.com/v1",
+      "length": 200,
+      "index": true,
+      "nullable": true
+    },
+    {
       "name": "model",
       "label": "模型",
       "type": "string",
@@ -84,12 +93,16 @@
       "validations": [
         {
           "method": "min",
-          "args": [0],
+          "args": [
+            0
+          ],
           "message": "{{label}}应大于等于0"
         },
         {
           "method": "max",
-          "args": [1],
+          "args": [
+            1
+          ],
           "message": "{{label}}应小于等于1"
         }
       ]
@@ -102,7 +115,9 @@
       "validations": [
         {
           "method": "min",
-          "args": [0],
+          "args": [
+            0
+          ],
           "message": "{{label}}应大于等于0"
         }
       ]
@@ -115,12 +130,16 @@
       "validations": [
         {
           "method": "min",
-          "args": [-2.0],
+          "args": [
+            -2.0
+          ],
           "message": "{{label}}应大于等于-2.0"
         },
         {
           "method": "max",
-          "args": [2.0],
+          "args": [
+            2.0
+          ],
           "message": "{{label}}应小于等于2"
         }
       ]
@@ -133,12 +152,16 @@
       "validations": [
         {
           "method": "min",
-          "args": [-2.0],
+          "args": [
+            -2.0
+          ],
           "message": "{{label}}应大于等于-2.0"
         },
         {
           "method": "max",
-          "args": [2.0],
+          "args": [
+            2.0
+          ],
           "message": "{{label}}应小于等于2"
         }
       ]
@@ -152,7 +175,9 @@
       "validations": [
         {
           "method": "min",
-          "args": [1],
+          "args": [
+            1
+          ],
           "message": "{{label}}应大于等于1"
         }
       ]
@@ -178,6 +203,7 @@
       "ai_nickname": "AI智能助理",
       "user_nickname": "用户",
       "api_token": "sk-",
+      "base_url": "https://api.openai.com/v1",
       "model": "gpt-3.5-turbo",
       "max_tokens": 2048,
       "stop": "",
@@ -192,3 +218,4 @@
     "soft_deletes": true
   }
 }
+//yao migrate -n ai.setting

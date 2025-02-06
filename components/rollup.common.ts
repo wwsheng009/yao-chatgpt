@@ -1,11 +1,16 @@
 import { defineConfig, InputPluginOption } from "rollup";
+import less from 'rollup-plugin-less';
+import postcss from 'rollup-plugin-postcss';
 
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import glob from "glob";
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-export const plugins = [nodeResolve()];
+export const plugins = [
+  nodeResolve(),// 其他插件...
+  less()
+];
 
 export default defineConfig({
   input: Object.fromEntries(

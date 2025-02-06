@@ -16,7 +16,7 @@ function Check(path, params, queries, payload, headers) {
   }
 
   let data = Process("utils.jwt.Verify", token);
-  return { __sid: data.sid, __global: data.data };
+  return { sid: data.sid, __global: data.data };
 }
 function error() {
   throw new Exception("Not Authorized", 403);
@@ -31,7 +31,7 @@ function CheckToken(path, params, queries, payload, headers) {
 
   // try {
   let data = Process("utils.jwt.Verify", token);
-  return { __sid: data.sid, __global: data.data };
+  return { sid: data.sid, __global: data.data };
   // } catch (error) {
   //   console.log("Error:", error);
   //   console.log("Invalid Token:", token);

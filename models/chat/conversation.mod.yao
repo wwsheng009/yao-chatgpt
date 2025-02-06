@@ -24,6 +24,12 @@
       "nullable": false
     },
     {
+      "name": "cookie",
+      "label": "cookie",
+      "type": "string",
+      "nullable": true
+    },
+    {
       "name": "description",
       "label": "描述",
       "type": "string",
@@ -52,3 +58,4 @@
     "soft_deletes": false
   }
 }
+//yao migrate -n chat.conversation
