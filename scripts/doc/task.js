@@ -6,6 +6,7 @@
  *
  */
 function TaskProcess(task_id, record_id, filename) {
+  console.log(`TaskProcess: #${task_id} ${filename}`);
   // 业务处理
   Process("models.doc.file.update", record_id, {
     task_id: task_id,

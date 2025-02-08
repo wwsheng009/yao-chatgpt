@@ -11,3 +11,4 @@ venv
 public/web
 __pycache__
 *.log
+plugins/*.dll

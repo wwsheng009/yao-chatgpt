@@ -3,7 +3,7 @@ function save(document) {
   let input = document.replace(/\*|\n/g, " ");
   const embeddingResponse = Process(
     "openai.Embeddings",
-    "text-embedding-ada-002",
+    "text-embedding-doubao",
     input,
     ""
   );
@@ -20,7 +20,7 @@ function save(document) {
 function search(words) {
   const embeddingResponse = Process(
     "openai.Embeddings",
-    "text-embedding-ada-002",
+    "text-embedding-doubao",
     words,
     "user-01"
   );

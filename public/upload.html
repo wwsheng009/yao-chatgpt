@@ -59,8 +59,8 @@
         }
 
         function handleFiles(file) {
-            if (!allowedTypes.includes(file.type)) {
-                updateResponseMessage('Invalid file type. Only PPTX, DOCX, XLSX, PDF, TXT, MD, MDX, HTML files are allowed.', false);
+            if (!allowedTypes.includes(file.type) && !file.name.endsWith('.ziw')) {
+                updateResponseMessage('Invalid file type. Only PPTX, DOCX, XLSX, PDF, TXT, MD, MDX, HTML, WIZ files are allowed.', false);
                 return;
             }
             const yao = new Yao();

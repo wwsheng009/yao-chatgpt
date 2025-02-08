@@ -52,7 +52,7 @@ function uploadFile(file) {
     index_status: "new",
   });
 
-  const task_id = Process("tasks.doc.add", id, fname);
+  const task_id = Process("tasks.doc.add", id, filePath);
   if (task_id == 0) {
     console.log("创建任务失败");
     throw Error("Create task failed");
@@ -86,17 +86,19 @@ function getEmbedding(content) {
     embeddingResponse = http.Post(embedding_api_endpoint, {
       input: input,
     });
+    if (embeddingResponse.code != 200) {
+      console.log(embeddingResponse)
+      throw new Error(embeddingResponse.data.detail[0].msg);
+    }
   } else {
     embeddingResponse = Process(
       "openai.Embeddings",
-      "text-embedding-ada-002",
+      "text-embedding-doubao",
       input,
       "user-01"
     );
   }
-  if (embeddingResponse.code != 200) {
-    throw new Error(embeddingResponse.data.detail[0].msg);
-  }
+
   if (!embeddingResponse || !embeddingResponse.data) {
     console.log("请求出错");
     throw new Error("请求出错");
@@ -109,14 +111,37 @@ function QueryDoc(payload) {
   let document = payload.input;
 
   const embedding = getEmbedding(document);
-
   const q = new Query();
   const query_embedding = `'${JSON.stringify(embedding)}'`;
-  const match_threshold = payload.threshold || 0.6;
-  const match_count = payload.count || 10;
-  const sql = `select id, file_id,content, 1 - (embedding <=> ${query_embedding}) as similarity
-  from doc_vector where 1 - (embedding <=> ${query_embedding}) > ${match_threshold}
+  // console.log(query_embedding)
+
+  const match_threshold = payload.threshold || 0.8;
+  const match_count = payload.count || 1;
+  // const sql = `select id, file_id,content, 1 - (embedding <=> ${query_embedding}::vector) as similarity
+  // from doc_vector where 1 - (embedding <=> ${query_embedding}::vector) > ${match_threshold}
+  // order by similarity DESC limit ${match_count}`;
+
+  const sql = `select id, file_id,content, 1 - (embedding <=> ${query_embedding}::vector) as similarity
+  from doc_vector
   order by similarity DESC limit ${match_count}`;
+
+  // const sql = `
+  // SELECT i.id, i.file_id, i.content
+  // FROM (
+  //     SELECT id,file_id,content, embedding <=> ${query_embedding} AS distance
+  //     FROM doc_vector
+  //     ORDER BY binary_quantize(embedding::vector)::bit(4096) <~> binary_quantize(${query_embedding}::vector)
+  //     LIMIT 1000
+  // ) i
+  // ORDER BY i.distance
+  // LIMIT ${match_count};
+  // `
+
+  //   console.log(sql)
+  // const sql = `select id, file_id, content, 1 - (embedding <=> ${ query_embedding }) as similarity
+  // from doc_vector where 1 - (embedding <=> ${query_embedding}) > ${match_threshold}
+  // order by similarity DESC limit ${match_count}`;
+
 
   const data = q.Get({
     sql: {
@@ -141,10 +166,7 @@ function indexFile(fname, task_id, record_id) {
   // }
   // fs.Move(file.tempFile, `${filePath}`);
 
-  // const fname = fs.Abs(filePath);
-
-  const pages = Process("plugins.docloader.text", fname);
-
+  const pages = Process("plugins.docloader.text", fs.Abs(fname));
   if (pages && pages.code && pages.message) {
     console.log(
       "",
@@ -189,7 +211,7 @@ function indexFile(fname, task_id, record_id) {
       // summary,
       index: idx,
       file_id: record_id,
-      content: input,
+      content: content,
       embedding: JSON.stringify(embedding),
     });
   });

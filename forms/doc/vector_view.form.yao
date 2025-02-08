@@ -17,6 +17,10 @@
                     "props": {
                         "itemProps": {
                             "tooltip": "内容"
+                        },
+                        "autoSize": {
+                            "maxRows": 20,
+                            "minRows": 2
                         }
                     },
                     "type": "TextArea"
