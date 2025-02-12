@@ -69,6 +69,12 @@
       "nullable": false
     },
     {
+      "name": "search_result",
+      "label": "搜索结果",
+      "type": "json",
+      "nullable": false
+    },
+    {
       "name": "prompt_len",
       "label": "prompt消息长度",
       "type": "integer"

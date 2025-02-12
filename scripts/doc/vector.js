@@ -72,7 +72,7 @@ function Search(input, page) {
   // return Process("scripts.doc.Search", params, page, 9);
 }
 
-// scripts.doc.vector.getEmbedding
+// scripts.doc.vector.getEmbedding 'test'
 function getEmbedding(content) {
   let input = content.replace(/\*|\n/g, " ");
 
@@ -91,11 +91,14 @@ function getEmbedding(content) {
       throw new Error(embeddingResponse.data.detail[0].msg);
     }
   } else {
+    console.log('input length >' + input.length);
+
+    console.log('input >' + input);
     embeddingResponse = Process(
       "openai.Embeddings",
-      "text-embedding-doubao",
-      input,
-      "user-01"
+      'text-embedding-llamacpp',
+      // "text-embedding-doubao",
+      input
     );
   }
 
@@ -106,8 +109,13 @@ function getEmbedding(content) {
   const [{ embedding }] = embeddingResponse.data;
   return embedding;
 }
-// yao run scripts.doc.vector.QueryDoc '::{"input":"yao是什么?"}'
+// yao run scripts.doc.vector.QueryDoc '::{"input":"系统安装?"}'
+// yao run scripts.doc.vector.QueryDoc "浏览器?"
+
 function QueryDoc(payload) {
+  if (typeof payload === "string") {
+    payload = { input: payload }
+  }
   let document = payload.input;
 
   const embedding = getEmbedding(document);
@@ -116,7 +124,7 @@ function QueryDoc(payload) {
   // console.log(query_embedding)
 
   const match_threshold = payload.threshold || 0.8;
-  const match_count = payload.count || 1;
+  const match_count = payload.count || 5;
   // const sql = `select id, file_id,content, 1 - (embedding <=> ${query_embedding}::vector) as similarity
   // from doc_vector where 1 - (embedding <=> ${query_embedding}::vector) > ${match_threshold}
   // order by similarity DESC limit ${match_count}`;

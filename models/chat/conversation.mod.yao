@@ -17,9 +17,15 @@
       "nullable": false
     },
     {
+      "name": "id_str",
+      "label": "会话ID",
+      "type": "string",
+      "nullable": true
+    },
+    {
       "name": "title",
       "label": "标题",
-      "type": "string",
+      "type": "text",
       "index": true,
       "nullable": false
     },

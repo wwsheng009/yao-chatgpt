@@ -1,4 +1,5 @@
 /**
+ * yao run scripts.chat.conversation.generateUUID
  *  create a uuid
  * https://stackoverflow.com/questions/105034/how-do-i-create-a-guid-uuid
  * @returns string
@@ -141,7 +142,7 @@ function FindConversation() {
 function FindConversationById(uuid) {
   //   CheckConversationId(uuid);
   let list = Process("models.chat.conversation.Get", {
-    select: ["id", "uuid", "title", "message_id", "cookie"],
+    // select: ["id", "uuid", "title", "message_id", "cookie"],
     withs: {
       messages: {
         query: {

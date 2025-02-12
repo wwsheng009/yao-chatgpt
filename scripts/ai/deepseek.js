@@ -28,7 +28,7 @@ function getDeepSeekKey() {
  * @returns
  */
 function handler(payload) {
-  console.log('>' + payload);
+  // console.log('>' + payload);
 
   const lines = payload.split("\n\n");
   for (const line of lines) {
@@ -109,23 +109,50 @@ function deleteSession(session_id) {
  */
 function createSession() {
   const headers = {
-    accept: '*/*',
+
+    'accept': '*/*',
     'accept-encoding': 'gzip, deflate, br, zstd',
     'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+    'cookie': 'HWWAFSESID=6205db7a9a93cabd30d; HWWAFSESTIME=1739075355070; ds_session_id=4068729b423246bc8091241da6d5ed62; __cf_bm=VzVY8yIDNvs5sIiMuTCo0X6Q7gUSrKimfjNZCvsDKro-1739075357-1.0.1.1-u7Aaztbbu_VCqUHH_GdRBWOH6HZ89lU5Fl5Y4udV2pi8yX8Q4J_8KR7Ec7jMyMqoyDAzKj3dTqVwqJ1_cTdiaA; intercom-device-id-guh50jw4=c1b3e117-e3e4-4639-82b6-f8a0d63549dc; Hm_lvt_fb5acee01d9182aabb2b61eb816d24ff=1738557363,1738846569,1739070069,1739075381; Hm_lpvt_fb5acee01d9182aabb2b61eb816d24ff=1739075381; HMACCOUNT=BDD388FE392D28D7; intercom-session-guh50jw4=YWthM2EyaVhWWjRTUjZtTzI1dFEzWXNMLzBUZWlGMGZlbTJLQTZzMW5VL0oxWDRNaE03ay9Mb01MM3hndXVNQk5sMEk1Yi9HNDUxdHgrTi96ZHRBNlYrMVNiVlo1dXhDM2NiLzlUblFTRm89LS1SUDkva081V3dPRkhxQm5FZWg0Vyt3PT0=--923a5c8a19c4fc61e558f8ced9a5ee494e45572f',
+    'dnt': '1',
+    'origin': 'https://chat.deepseek.com',
+    'priority': 'u=1, i',
+    'referer': 'https://chat.deepseek.com/a/chat/s/7c41ecf8-fad1-4d68-a8fe-396cf0c74e7a',
+    'sec-ch-ua': '"Not A(Brand";v="8", "Chromium";v="132", "Microsoft Edge";v="132"',
+    'sec-ch-ua-arch': "x86",
+    'sec-ch-ua-bitness': "64",
+    'sec-ch-ua-full-version': "132.0.2957.140",
+    'sec-ch-ua-full-version-list': '"Not A(Brand";v="8.0.0.0", "Chromium";v="132.0.6834.160", "Microsoft Edge";v="132.0.2957.140"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-model': "",
+    'sec-ch-ua-platform': "Windows",
+    'sec-ch-ua-platform-version': "19.0.0",
+    'sec-fetch-dest': 'empty',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-site': 'same-origin',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Edg/132.0.0.0',
+    'x-app-version': '20241129.1',
+    'x-client-locale': 'zh_CN',
+    'x-client-platform': 'web',
+    'x-client-version': '1.0.0-always',
     authorization: 'Bearer ' + getDeepSeekKey(),
     'Content-Type': 'application/json',
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Edg/132.0.0.0',
+    'x-ds-pow-response': Process("yao.env.get", "DEEPSEKK_POW"),
   };
   const res = http.Post('https://chat.deepseek.com/api/v0/chat_session/create', { character_id: null }, null, null, headers)
 
   if (res.code != 200) {
+    if (res.headers['Content-Type'][0].indexOf("text/html") > -1 && res.data) {
+      msg = Process('encoding.base64.Decode', res.data);
+      console.log(msg);
+    }
     throw new Exception(res.message, res.code);
   }
   //   "Set-Cookie": [
   //     "HWWAFSESID=09956f49d230e854fe7; path=/",
   //     "HWWAFSESTIME=1738804006336; path=/"
   // ],
-  const cookies = res.headers['Set-Cookie'];
+  const cookies = res.headers['Set-Cookie'] || [];
   //build the cookie string from set-cookie,get the first part from the array like cookie: HWWAFSESID=09956f49d230e854fe7;HWWAFSESTIME=1738804006336
 
 
