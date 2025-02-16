@@ -1,13 +1,13 @@
 /**
- * call the bot webpage api
- * 基于浏览器会话信息调用api,只能作为测试用途，不建议在生产环境中使用，因为此种方式无法保证稳定性，
- * 当服务器升级api或是网页升级时，可能会导致调用失败
+ * 调用bot网页API
+ * 基于浏览器会话信息调用API，仅用于测试，不建议生产环境使用
+ * 因为该方式 稳定性不保证，当服务器或网页升级时可能导致调用失败
  */
 
 let g_message = "";
 let reply = null;
-let g_message_id = ""
-let g_conversation_id = ""
+let g_message_id = "";
+let g_conversation_id = "";
 let g_reasoning_duration = -1;
 // 搜索关键字
 let g_search_queries = null;
@@ -15,11 +15,11 @@ let g_search_result = null;
 let g_is_first_thinking = true;
 let g_start_thinking = false;
 
-let botHost = Process("yao.env.get", "BOT.HOST")
+let botHost = Process("yao.env.get", "BOT.HOST");
 
-let message_id = ""
-let event_id = ""
-let retry_flag = ""
+let message_id = "";
+let event_id = "";
+let retry_flag = "";
 
 
 function collect(content) {
@@ -33,9 +33,9 @@ function collect(content) {
 }
 
 /**
- * 回调函数
- * @param {object} payload 数据
- * @returns
+ * 回调函数，处理payload数据
+ * @param {object} payload - 数据
+ * @returns {number} 状态码
  */
 function handler(payload) {
   // console.log('>' + payload);
