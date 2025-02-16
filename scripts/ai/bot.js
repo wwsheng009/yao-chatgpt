@@ -1,5 +1,7 @@
 /**
- * call the deepseek webpage api
+ * call the bot webpage api
+ * 基于浏览器会话信息调用api,只能作为测试用途，不建议在生产环境中使用，因为此种方式无法保证稳定性，
+ * 当服务器升级api或是网页升级时，可能会导致调用失败
  */
 
 let g_message = "";
@@ -29,12 +31,6 @@ function collect(content) {
     console.print(content);
   }
 }
-
-function getDeepSeekKey() {
-  const access_key = Process("yao.env.get", "DEEPSEEK_KEY");
-  return access_key;
-}
-
 
 /**
  * 回调函数
@@ -127,10 +123,6 @@ function handler(payload) {
 }
 /**
  * yao run scripts.ai.bot.Call '你好'
- * yao run scripts.ai.deepseek.Call '::{"prompt":"你好"}'
- * yao run scripts.ai.deepseek.Call '::{"prompt":"可以帮我找一下python学习资源吗","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
- * yao run scripts.ai.deepseek.Call '::{"prompt":"廖雪峰的Python教程","session_id":"938d58a4-b976-46b8-a342-7644a2566476"}'
- *
  *  yao run scripts.chat.conversation.FindConversationById "938d58a4-b976-46b8-a342-7644a2566476"
  */
 function Call(prompt) {
@@ -218,11 +210,9 @@ function CallGpt(message, setting) {
     console.log("session_id", session_id);
   }
 
-  const headers2 = Process("scripts.ai.bot_headers.getHeaders")
-
   console.log("RequestBody:", RequestBody);
   //add cookie will store the conversation into user list
-  let err = http.Stream("POST", url, handler, RequestBody, null, { ...headers2, "cookie": getCookieToString() });
+  let err = http.Stream("POST", url, handler, RequestBody, null, { ...createHeader() });
   if (err.code != 200) {
     console.log("err:,", err);
     throw new Exception(err.Message, err.code);
@@ -276,40 +266,155 @@ function getCookieToString(cookie) {
   // 使用 join 方法将所有键值对用分号和空格连接成一个字符串
   return cookiePairs.join('; ');
 }
-// get conversation by id from server
-//yao run scripts.ai.bot.getConversationById 3e673fa26acd481589c39509a7ca1bc9
-function getConversationById(conversation_id) {
+
+function createHeader() {
   const headers2 = Process("scripts.ai.bot_headers.getHeaders")
+  return { ...headers2, "cookie": getCookieToString() }
+}
+
+function createValidFileName(text, options = {}) {
+  const defaults = {
+    maxLength: 255,          // 最大长度 
+    separator: '_',          // 分隔符 
+    keepPunctuation: false,  // 是否保留标点 
+    trim: true               // 是否执行trim 
+  };
+  const config = { ...defaults, ...options };
+
+  // 多行处理：获取首行并预处理 
+  let processed = text.split(/\r?\n/)[0];
+
+  // 中文友好处理流程 
+  processed = processed
+    // 阶段1：基础清洗 
+    .replace(/[\x00-\x1F\x7F]/g, '')  // 删除控制字符 
+    .replace(/[/\\:*?"<>|]/g, '')     // 过滤系统保留字符 
+
+    // 阶段2：智能字符保留（扩展Unicode支持）es6不支持
+    // .replace(new RegExp(
+    //   `([^\\p{L}\\p{N}${config.keepPunctuation ? '\\p{P}' : ''}_-])`,
+    //   'gu'
+    // ), config.separator)
+
+    // 阶段3：空白处理 
+    .replace(/[\s\u3000]+/g, config.separator)   // 处理全/半角空格 
+
+    // 阶段4：格式优化 
+    .replace(new RegExp(`${config.separator}+`, 'g'), config.separator)
+    .replace(new RegExp(`^${config.separator}+ |${config.separator}+$`, 'g'), '');
+
+  // 添加保留名称检查 
+  const reservedNames = ['CON', 'PRN', 'AUX'];
+  if (reservedNames.includes(processed.toUpperCase())) {
+    processed += '_file';
+  }
+  // 处理Unicode等价性 
+  processed = processed.normalize('NFC');
+
+  // 智能截断策略 
+  const smartTruncate = (str) => {
+    if (str.length <= config.maxLength) return str;
+    const lastSeparator = str.lastIndexOf(config.separator, config.maxLength);
+    return lastSeparator > 0
+      ? str.slice(0, lastSeparator)
+      : str.slice(0, config.maxLength);
+  };
+
+  return config.trim
+    ? smartTruncate(processed).trim()
+    : smartTruncate(processed);
+}
+
+// 输出：Multi-line_Example 
+// yao run scripts.ai.bot.downloadConversation "d194dfdeed764a57a8aabecb7929436e"
+function downloadConversation(conversation_id) {
+  const data = getConversationById(conversation_id);
+
+  let title = data.title;
+  // update the title to valid file name
+  title = createValidFileName(title)
+
+  const messages = data.messages;
+
+  let content = ""
+  content += `# ${data.title}\n\n`
+
+  for (let i = messages.length - 1; i >= 0; i--) {
+    const message = messages[i];
+
+    if (message.prompt) {
+      content += `## 用户: \n\n${message.prompt}\n\n`
+    }
+    if (message.reasoning_text) {
+      content += `## 思考(${message.apply_model})\n\n${message.reasoning_text}\n\n`
+    }
+    if (message.result) {
+      content += `## 回复(${message.apply_model})\n\n${message.result}\n\n`
+    }
+  }
+  const fname = "./bot/" + title + ".md"
+  console.log(fname + " 保存成功")
+
+  Process("fs.data.writefile", fname, content)
+}
+
+
+
+// get conversation history from server
+//  yao run scripts.ai.bot.getHistory
+function getHistory() {
 
   // cookie中的Q与T是必须的参数
   const res = http.Get(
-    `${botHost}/api/assistant/conversation/info`, //不能再使用api key来访问dashboard对象，只能是在浏览器上登录后获取sess-key来访问
+    `${botHost}/api/assistant/conversation/history`, //不能再使用api key来访问dashboard对象，只能是在浏览器上登录后获取sess-key来访问
     {
-      conversation_id,
-      page_size: 10,
+      page_size: 100,
     },
-    { ...headers2, "cookie": getCookieToString() }
+    { ...createHeader() }
   );
   if (res.code != 200) {
     console.log(res)
     throw new Exception(res.message, res.code);
   }
-  return resizeTo.data
+  const data = res.data;
+  if (data.code != null && data.code != 0) {
+    console.log(res.msg)
+    return
+  }
+  return data.data
+}
+// get conversation by id from server
+//yao run scripts.ai.bot.getConversationById 3e673fa26acd481589c39509a7ca1bc9
+//  todo 可能还需要考虑多页请求
+function getConversationById(conversation_id) {
+  const res = http.Get(
+    `${botHost}/api/assistant/conversation/info`, //不能再使用api key来访问dashboard对象，只能是在浏览器上登录后获取sess-key来访问
+    {
+      conversation_id,
+      page_size: 100,
+    },
+    { ...createHeader() }
+  );
+  if (res.code != 200) {
+    console.log(res)
+    throw new Exception(res.message, res.code);
+  }
+
+  if (res.data.code != null && res.data.code != 0) {
+    console.log(res.data.msg)
+  }
+  return res.data.data
 }
 
 // delete session from server
 //yao run scripts.ai.bot.removeConversationById '3e673fa26acd481589c39509a7ca1bc9'
 function removeConversationById(conversation_id) {
-  // cookie中的Q与T是必须的参数
-  const headers2 = Process("scripts.ai.bot_headers.getHeaders")
-
   const res = http.Post(`${botHost}/api/batch/remove/conversation`,
     { cid: conversation_id },
     null,
     null,
     {
-      ...headers2,
-      "cookie": getCookieToString(),
+      ...createHeader(),
       "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
     })
   if (res.code != 200) {
@@ -317,4 +422,18 @@ function removeConversationById(conversation_id) {
     throw new Exception(res.message, res.code);
   }
   return res.data
+}
+
+// download all conversation from server
+//  yao run scripts.ai.bot.downloadAllConversation
+function downloadAllConversation() {
+  const conversations = getHistory().list
+  for (let i = 0; i < conversations.length; i++) {
+    const conversation = conversations[i];
+    if (conversation.conversation_id == "90ac2df7ed5445aa816ef4e7d5c82e75") {
+      // console.log(conversation.content),这里只返回了会话中最后的回复
+      // console.log(conversation)
+    }
+    downloadConversation(conversation.conversation_id)
+  }
 }
