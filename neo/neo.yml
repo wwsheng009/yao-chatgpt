@@ -1,4 +1,4 @@
-connector: doubao
+connector: bailian-ds-r1-70b
 use: "" # default assistannt
 guard: "scripts.auth.token.Check"
 

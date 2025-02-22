@@ -366,7 +366,7 @@ function getHistory() {
 
   // cookie中的Q与T是必须的参数
   const res = http.Get(
-    `${botHost}/api/assistant/conversation/history`, //不能再使用api key来访问dashboard对象，只能是在浏览器上登录后获取sess-key来访问
+    `${botHost}/api/assistant/conversation/history`,
     {
       page_size: 100,
     },
@@ -388,7 +388,7 @@ function getHistory() {
 //  todo 可能还需要考虑多页请求
 function getConversationById(conversation_id) {
   const res = http.Get(
-    `${botHost}/api/assistant/conversation/info`, //不能再使用api key来访问dashboard对象，只能是在浏览器上登录后获取sess-key来访问
+    `${botHost}/api/assistant/conversation/info`,
     {
       conversation_id,
       page_size: 100,

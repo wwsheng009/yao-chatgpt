@@ -142,7 +142,6 @@ function FindConversation() {
 function FindConversationById(uuid) {
   //   CheckConversationId(uuid);
   let list = Process("models.chat.conversation.Get", {
-    // select: ["id", "uuid", "title", "message_id", "cookie"],
     withs: {
       messages: {
         query: {

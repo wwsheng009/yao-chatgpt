@@ -63,6 +63,13 @@
       "nullable": true
     },
     {
+      "name": "message_uuid",
+      "label": "消息UUID",
+      "comment": "消息UUID",
+      "type": "string",
+      "nullable": true
+    },
+    {
       "name": "completion",
       "label": "回复的消息",
       "type": "text",
