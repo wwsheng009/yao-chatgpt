@@ -1,5 +1,5 @@
-connector: bailian-ds-r1-70b
-use: "" # default assistannt
+connector: copilot-tencent
+use: "neo" # default assistannt
 guard: "scripts.auth.token.Check"
 
 

@@ -1,0 +1,9 @@
+{
+    "label": "Model v3",
+    "type": "openai",
+    "options": {
+        "model": "deepseek-r1",
+        "key": "$ENV.COPILOT.TENCENT_TOKEN",
+        "proxy": "https://copilot.tencent.com/v2"
+    }
+}

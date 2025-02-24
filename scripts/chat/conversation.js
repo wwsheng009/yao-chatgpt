@@ -232,7 +232,7 @@ function CheckConversationId(id) {
     ],
   });
   if (!conversation || conversation.length == 0) {
-    throw Exception(`找不到对应的会话ID:${id}`);
+    throw Exception(`找不到对应的会话conversation_id:${id}`);
   }
   return true;
 }

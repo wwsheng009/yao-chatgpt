@@ -79,7 +79,7 @@
       "name": "search_result",
       "label": "搜索结果",
       "type": "json",
-      "nullable": false
+      "nullable": true
     },
     {
       "name": "prompt_len",
