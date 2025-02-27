@@ -10,6 +10,12 @@
     "process": "scripts.menu.menu.main",
     "args": ["demo"]
   },
+  "moapi": {
+    "secret": "$ENV.COPILOT_TENCENT_TOKEN",
+    "mirrors": [
+      "$ENV.COPILOT_TENCENT_HOST"
+    ]
+  },
   "optional": {
     "hideNotification": true,
     "hideSetting": false,

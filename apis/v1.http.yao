@@ -1,0 +1,23 @@
+{
+  "name": "AI Chat API",
+  "version": "1.0.0",
+  "description": "User API",
+  "group": "",
+  "guard": "-",
+  "paths": [
+    {
+      // 以stream的方式返回数据
+      "path": "/chat/completions",
+      "method": "POST",
+      "guard": "-",
+      "process": "moapi.chat.Completions",
+      "in": [
+        ":payload"
+      ],
+      "out": {
+        "status": 200,
+        "type": "text/event-stream; charset=utf-8"
+      }
+    }
+  ]
+}

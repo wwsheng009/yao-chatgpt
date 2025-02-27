@@ -3,7 +3,7 @@
     "type": "openai",
     "options": {
         "model": "deepseek-r1",
-        "key": "$ENV.COPILOT.TENCENT_TOKEN",
-        "proxy": "https://copilot.tencent.com/v2"
+        "key": "$ENV.COPILOT_TENCENT_TOKEN",
+        "proxy": "$ENV.COPILOT_TENCENT_HOST"
     }
 }
