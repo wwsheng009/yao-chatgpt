@@ -7,10 +7,11 @@
   "paths": [
     {
       // 以stream的方式返回数据
+      // /api/v1/chat/completions
       "path": "/chat/completions",
       "method": "POST",
       "guard": "-",
-      "process": "moapi.chat.Completions",
+      "process": "scripts.adapter.tencent.Completions",
       "in": [
         ":payload"
       ],
