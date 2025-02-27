@@ -88,22 +88,59 @@ function Call(prompt) {
   return CallGpt(message, setting);
 }
 
+/**
+ * 删除DeepSeek会话
+ * yao run scripts.ai.deepseek.deleteSession "2dc4a572-a95d-43e4-90c4-9f98bdc71fa2"
+ * @param {string} session_id 会话ID
+ * @returns {object} 返回删除结果
+ */
 function deleteSession(session_id) {
+  if (!session_id) {
+    throw new Exception("会话ID不能为空");
+  }
 
   const headers = {
-    accept: '*/*',
-    'accept-encoding': 'gzip, deflate, br, zstd',
+    'accept': '*/*',
     'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
-    authorization: 'Bearer ' + getDeepSeekKey(),
-    'Content-Type': 'application/json',
-    'x-ds-pow-response': Process("yao.env.get", "DEEPSEKK_POW"),
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Edg/132.0.0.0',
+    'authorization': 'Bearer ' + getDeepSeekKey(),
+    'content-type': 'application/json',
+    'dnt': '1',
+    'origin': 'https://chat.deepseek.com',
+    'referer': 'https://chat.deepseek.com/',
+    'sec-ch-ua': '"Not(A:Brand";v="99", "Microsoft Edge";v="133"',
+    'sec-ch-ua-platform': '"Windows"',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36 Edg/133.0.0.0',
+    'x-app-version': '20241129.1',
+    'x-client-locale': 'zh_CN',
+    'x-client-platform': 'web',
+    'x-client-version': '1.0.0-always'
   };
-  const res = http.Post('https://chat.deepseek.com/api/v0/chat_session/create', { chat_session_id: session_id }, null, null, headers)
 
-  if (res.code != 200) {
-    throw new Exception(res.message, res.code);
+  const requestBody = {
+    chat_session_id: session_id
+  };
+
+  const res = http.Post(
+    'https://chat.deepseek.com/api/v0/chat_session/delete',
+    requestBody,
+    null,
+    null,
+    headers
+  );
+
+  if (res.code !== 200) {
+    throw new Exception(`删除会话失败: ${res.message}`, res.code);
   }
+
+  const data = res.data;
+  if (data.code !== 0) {
+    throw new Exception(`API错误: ${data.msg}`);
+  }
+
+  return {
+    success: true,
+    message: "会话删除成功"
+  };
 }
 /**
  * yao run scripts.ai.deepseek.createSession
@@ -576,4 +613,215 @@ function createValidFileName(text, options = {}) {
   return config.trim
     ? smartTruncate(processed).trim()
     : smartTruncate(processed);
+}
+
+/**
+ * 获取会话列表
+ * yao run scripts.ai.deepseek.fetchSessions 100
+ * @param {number} count 获取数量，默认100
+ * @returns {Array} 会话列表
+ */
+function fetchSessions(count = 100) {
+  const headers = {
+    'accept': '*/*',
+    'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+    'authorization': 'Bearer ' + getDeepSeekKey(),
+    'dnt': '1',
+    'referer': 'https://chat.deepseek.com/',
+    'sec-ch-ua': '"Not(A:Brand";v="99", "Microsoft Edge";v="133", "Chromium";v="133"',
+    'sec-ch-ua-platform': '"Windows"',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36 Edg/133.0.0.0',
+    'x-app-version': '20241129.1',
+    'x-client-locale': 'zh_CN',
+    'x-client-platform': 'web',
+    'x-client-version': '1.0.0-always'
+  };
+
+  const res = http.Get(
+    `https://chat.deepseek.com/api/v0/chat_session/fetch_page?count=${count}`,
+    null,
+    headers
+  );
+
+  if (res.code !== 200) {
+    throw new Exception(`获取会话列表失败: ${res.message}`, res.code);
+  }
+
+  const data = res.data;
+  if (data.code !== 0) {
+    throw new Exception(`API错误: ${data.msg}`);
+  }
+
+  return data.data.biz_data.chat_sessions;
+}
+
+/**
+ * 批量删除会话
+ * yao run scripts.ai.deepseek.batchDeleteSessions '["id1", "id2"]'
+ * @param {Array} session_ids 会话ID数组
+ * @returns {object} 删除结果
+ */
+function batchDeleteSessions(session_ids) {
+  if (!Array.isArray(session_ids) || session_ids.length === 0) {
+    throw new Exception("会话ID列表不能为空");
+  }
+
+  const results = {
+    success: [],
+    failed: []
+  };
+
+  for (const session_id of session_ids) {
+    try {
+      deleteSession(session_id);
+      results.success.push(session_id);
+    } catch (error) {
+      results.failed.push({
+        id: session_id,
+        error: error.message
+      });
+    }
+  }
+
+  return {
+    message: `成功删除 ${results.success.length} 个会话，失败 ${results.failed.length} 个`,
+    details: results
+  };
+}
+
+/**
+ * 删除所有会话
+ * yao run scripts.ai.deepseek.deleteAllSessions
+ * @param {number} count 获取数量，默认100
+ * @returns {object} 删除结果
+ */
+function deleteAllSessions(count = 100) {
+  try {
+    // 获取会话列表
+    const sessions = fetchSessions(count);
+    if (!sessions || sessions.length === 0) {
+      return {
+        message: "没有找到需要删除的会话",
+        details: {
+          success: [],
+          failed: []
+        }
+      };
+    }
+
+    console.log(`找到 ${sessions.length} 个会话需要删除`);
+
+    // 提取会话ID
+    const sessionIds = sessions.map(session => session.id);
+
+    // 批量删除会话
+    const result = batchDeleteSessions(sessionIds);
+
+    // 添加会话标题信息到结果中
+    const sessionMap = {};
+    sessions.forEach(session => {
+      sessionMap[session.id] = {
+        title: session.title,
+        created_at: new Date(session.inserted_at * 1000).toLocaleString()
+      };
+    });
+
+    // 增强结果信息
+    result.details.success = result.details.success.map(id => ({
+      id,
+      ...sessionMap[id],
+      message: "删除成功"
+    }));
+
+    result.details.failed = result.details.failed.map(fail => ({
+      ...fail,
+      ...sessionMap[fail.id]
+    }));
+
+    return result;
+
+  } catch (error) {
+    console.log("删除所有会话时发生错误:", error);
+    return {
+      message: `删除会话失败: ${error.message}`,
+      details: {
+        success: [],
+        failed: [{
+          error: error.message,
+          stage: 'fetch'
+        }]
+      }
+    };
+  }
+}
+
+/**
+ * 批量下载所有会话历史记录
+ * yao run scripts.ai.deepseek.downloadAllSessions
+ * @param {number} count 获取数量，默认100
+ * @returns {object} 下载结果
+ */
+function downloadAllSessions(count = 100) {
+  try {
+    // 获取会话列表
+    const sessions = fetchSessions(count);
+    if (!sessions || sessions.length === 0) {
+      return {
+        message: "没有找到需要下载的会话",
+        details: {
+          success: [],
+          failed: []
+        }
+      };
+    }
+
+    console.log(`找到 ${sessions.length} 个会话需要下载`);
+
+    const results = {
+      success: [],
+      failed: []
+    };
+
+    // 遍历下载每个会话
+    for (const session of sessions) {
+      try {
+        // 下载会话历史
+        downloadChatHistory(session.id);
+
+        results.success.push({
+          id: session.id,
+          title: session.title,
+          created_at: new Date(session.inserted_at * 1000).toLocaleString(),
+          message: "下载成功"
+        });
+
+      } catch (error) {
+        console.log(`会话 ${session.id} 下载失败:`, error);
+        results.failed.push({
+          id: session.id,
+          title: session.title,
+          created_at: new Date(session.inserted_at * 1000).toLocaleString(),
+          error: `下载失败: ${error.message}`
+        });
+      }
+    }
+
+    return {
+      message: `成功下载 ${results.success.length} 个会话，失败 ${results.failed.length} 个`,
+      details: results
+    };
+
+  } catch (error) {
+    console.log("下载所有会话时发生错误:", error);
+    return {
+      message: `下载会话失败: ${error.message}`,
+      details: {
+        success: [],
+        failed: [{
+          error: error.message,
+          stage: 'fetch'
+        }]
+      }
+    };
+  }
 }
