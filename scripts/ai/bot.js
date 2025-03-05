@@ -215,7 +215,7 @@ function CallGpt(message, setting) {
   let err = http.Stream("POST", url, handler, RequestBody, null, { ...createHeader() });
   if (err.code != 200) {
     console.log("err:,", err);
-    throw new Exception(err.Message, err.code);
+    throw new Exception(err.message, err.code);
   }
 
   // console.log("stream replay", reply);

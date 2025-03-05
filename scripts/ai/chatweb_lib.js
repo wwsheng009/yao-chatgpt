@@ -232,7 +232,7 @@ function CallGpt(request, setting) {
     Authorization: `Bearer ` + setting.api_token,
   });
   if (err.code != 200) {
-    throw new Exception(err.Message, err.code);
+    throw new Exception(err.message, err.code);
   }
 
   const endDate = new Date();

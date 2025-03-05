@@ -7,11 +7,26 @@
   "paths": [
     {
       // 以stream的方式返回数据
-      // /api/v1/chat/completions
-      "path": "/chat/completions",
+      // /api/v1/tencent/chat/completions
+      "path": "/tencent/chat/completions",
       "method": "POST",
       "guard": "-",
       "process": "scripts.adapter.tencent.Completions",
+      "in": [
+        ":payload"
+      ],
+      "out": {
+        "status": 200,
+        "type": "text/event-stream; charset=utf-8"
+      }
+    },
+    {
+      // 以stream的方式返回数据
+      // /api/v1/chat/completions
+      "path": "/aardio/chat/completions",
+      "method": "POST",
+      "guard": "-",
+      "process": "scripts.adapter.aardio.Completions",
       "in": [
         ":payload"
       ],

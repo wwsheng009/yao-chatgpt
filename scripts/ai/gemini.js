@@ -63,6 +63,6 @@ function test() {
     "Content-Type": "application/json",
   });
   if (err.code != 200) {
-    throw new Exception(err.Message, err.code);
+    throw new Exception(err.message, err.code);
   }
 }

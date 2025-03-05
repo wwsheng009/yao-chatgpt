@@ -233,7 +233,7 @@ function CallGpt(message, setting) {
   });
   // console.log("err:,", err);
   if (err.code != 200) {
-    throw new Exception(err.Message, err.code);
+    throw new Exception(err.message, err.code);
   }
 
   // console.log("stream replay", reply);
